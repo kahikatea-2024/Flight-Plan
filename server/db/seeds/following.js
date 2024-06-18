@@ -4,8 +4,8 @@
  */
 export async function seed(knex) {
   // Deletes ALL existing entries
-  await knex('trip_users').del()
-  await knex('trip_users').insert([
+  await knex('following_list').del()
+  await knex('following_list').insert([
     {
       following_id: 1,
       user_id: 1,

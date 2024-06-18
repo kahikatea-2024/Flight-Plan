@@ -10,6 +10,7 @@ export async function seed(knex) {
     {
       id: 1,
       trip_id: 1,
+      created_by: '',
       date: '5/7/2024',
       start_time: '1600',
       end_time: '1800',
