@@ -2,7 +2,7 @@ import type { Preview } from '@storybook/react'
 
 //____________Import where Bulma file path below____________
 
-// import '../public/output.css'
+import '../client/styles/main.css'
 
 import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/js/all.min.js'
 
