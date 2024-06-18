@@ -6,7 +6,7 @@ import * as db from '../db/db.ts'
 
 const router = Router()
 
-router.get('/events', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const users = await db.getAllUsers()
 
@@ -17,7 +17,7 @@ router.get('/events', async (req, res) => {
   }
 })
 
-router.get('/events/:id', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const id = Number(req.params.id)
     const user = await db.getUserById(id)
