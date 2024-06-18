@@ -15,3 +15,5 @@
 
 # Dotenv env settings
 .env
+
+*storybook.log
