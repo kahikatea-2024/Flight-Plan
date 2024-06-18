@@ -1,5 +1,7 @@
 import db from './connection.ts'
 import { Events, Users } from '../../models/flightplan.ts'
+
+                          //USERS
 // Get all users
 export async function getAllUsers() {
   const users = await db('users').select()
@@ -11,6 +13,8 @@ export async function getUserById(id: number) {
   return user as Users
 }
 
+                         //EVENTS
+
 // Get all events
 export async function getAllEvents() {
   const events = await db('events').select()
@@ -21,3 +25,7 @@ export async function getEventById(id: number) {
   const event = await db('events').select().first().where({ id })
   return event as Events
 }
+
+                          //
+
+
