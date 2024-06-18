@@ -17,5 +17,15 @@ export async function seed(knex) {
       description: 'meet at zebra cafe',
       notes: 'bring sunblock',
     },
+    {
+      id: 2,
+      trip_id: 1,
+      created_by: '',
+      date: '5/7/2024',
+      start_time: '2000',
+      end_time: '0030',
+      description: 'sunrise bar and grill',
+      notes: 'casual dress',
+    },
   ])
 }
