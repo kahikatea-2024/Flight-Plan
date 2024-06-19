@@ -74,20 +74,43 @@ router.post('/:id', async (req, res) => {
 })
 
 //Update an Event by events.id
-router.patch('/:id', async (req, res) => {
+// router.patch('/:id', async (req, res) => {
+//   try {
+//     const id = Number(req.params.id)
+//     const {
+//       trip_id,
+//       date,
+//       start_time,
+//       end_time,
+//       description,
+//       notes,
+//       created_by,
+//     } = req.body
+//     const updateEvents = await db.updateEventsById(id, {
+//       trip_id,
+//       date,
+//       start_time,
+//       end_time,
+//       description,
+//       notes,
+//       created_by,
+//     })
+//     if (updateEvents) {
+//       res.sendStatus(200)
+//     }
+//   } catch (error) {
+//     console.error(`database error: ${error}`)
+//     res.sendStatus(500)
+//   }
+// })
+
+//Update an Event by Trip id
+router.patch('/:tripId', async (req, res) => {
   try {
-    const id = Number(req.params.id)
-    const {
-      trip_id,
-      date,
-      start_time,
-      end_time,
-      description,
-      notes,
-      created_by,
-    } = req.body
-    const updateEvents = await db.updateEventsById(id, {
-      trip_id,
+    const tripId = Number(req.params.tripId)
+    const { date, start_time, end_time, description, notes, created_by } =
+      req.body
+    const updateEvents = await db.updateEventByTripId(tripId, {
       date,
       start_time,
       end_time,
