@@ -1,9 +1,15 @@
+import { Link } from 'react-router-dom'
+
 export function LogIn() {
-  //TODO if user is logged in, direct to another page
+  //TODO if user is already logged in, direct to another page
+  //ADD all the Auth
+
   return (
     <section>
       <div className="container is-fluid">
-        <h1 className="title has-text-centered">Welcome to TripHive</h1>
+        <h1 className="title has-text-centered has-text-primary">
+          Welcome to TripHive
+        </h1>
         <p className="has-text-centered mb-5">Sign Up or Log In</p>
         <div className="columns is-fluid">
           <div className="column is-half is-offset-one-quarter">
@@ -21,7 +27,9 @@ export function LogIn() {
                 </div>
               </div>
               <div className="field is-grouped is-grouped-centered mt-6">
-                <button className="button is-primary">Log In</button>
+                <Link to={'/my-trips'}>
+                  <button className="button is-primary">Log In</button>
+                </Link>
                 <button className="button is-primary is-light">Sign Up</button>
               </div>
             </form>
