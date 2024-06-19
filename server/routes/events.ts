@@ -104,4 +104,16 @@ router.patch('/:id', async (req, res) => {
   }
 })
 
+// Delete an Event By Id
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    await db.deleteEvent(id)
+    res.sendStatus(200)
+  } catch (error) {
+    console.error(`database error: ${error}`)
+    res.sendStatus(500)
+  }
+})
+
 export default router

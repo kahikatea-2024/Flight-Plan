@@ -164,3 +164,8 @@ export async function updateEventsById(
   const eventToUpdate = await db('events').where({ id }).update(updatedEvent)
   return eventToUpdate
 }
+
+// Delete Event by ID
+export async function deleteEvent(id: number) {
+  return await db('events').where({ id }).del()
+}
