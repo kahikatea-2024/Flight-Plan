@@ -17,7 +17,7 @@ export interface Events {
 }
 
 export interface Users {
-  id: number
+  id: number | undefined
   username: string
   email: string
   firstName: string

@@ -11,15 +11,18 @@ export default function ProfileForm(props: Props) {
     const formData = new FormData(e.currentTarget)
     const firstName = formData.get('firstName') as string
     const lastName = formData.get('lastName') as string
+    const username = formData.get('username') as string
     const email = formData.get('email') as string
     const phoneNumber = formData.get('phoneNumber') as string
     const profilePicture = formData.get('profilePicture') as string
 
     const form = {
+      id: props.user?.id,
       firstName: firstName,
       lastName: lastName,
+      username: username,
       email: email,
-      phoneNumber: phoneNumber,
+      phoneNumber: Number(phoneNumber),
       profilePicture: profilePicture,
     }
 
@@ -41,7 +44,7 @@ export default function ProfileForm(props: Props) {
                     className="input"
                     type="text"
                     // onChange={handleChange}
-                    value={props.user?.firstName}
+                    defaultValue={props.user?.firstName}
                   />
                 </div>
               </div>
@@ -51,7 +54,18 @@ export default function ProfileForm(props: Props) {
                   <input
                     className="input"
                     type="text"
-                    value={props.user?.lastName}
+                    defaultValue={props.user?.lastName}
+                  />
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Username</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    defaultValue={props.user?.username}
                   />
                 </div>
               </div>
@@ -62,7 +76,7 @@ export default function ProfileForm(props: Props) {
                   <input
                     className="input"
                     type="email"
-                    value={props.user?.email}
+                    defaultValue={props.user?.email}
                   />
                 </div>
               </div>
@@ -72,7 +86,7 @@ export default function ProfileForm(props: Props) {
                   <input
                     className="input"
                     type="number"
-                    value={props.user?.phoneNumber}
+                    defaultValue={props.user?.phoneNumber}
                   />
                 </div>
               </div>

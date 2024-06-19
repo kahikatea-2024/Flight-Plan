@@ -6,9 +6,10 @@ import {
 } from '@tanstack/react-query'
 import request from 'superagent'
 import { Users } from '../../models/flightplan.ts'
+import { updateUser } from '../apis/users.ts'
 
 export function useUser(id: number) {
-  // const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
   const { data, isLoading } = useQuery({
     queryKey: ['users', id],
     queryFn: async () => {
@@ -16,14 +17,14 @@ export function useUser(id: number) {
       return res.body as Users
     },
   })
-  // const mutation = useMutation({
-  //   mutationFn: { form },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['users'] })
-  //   },
-  // })
-  // return { data, mutation, isLoading }
-  return { data, isLoading }
+  const mutation = useMutation({
+    mutationFn: (form) => updateUser(form),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    },
+  })
+  return { data, mutation, isLoading }
+  // return { data, isLoading }
   // Extra queries go here e.g. addFruit: useAddFruit()
 }
 

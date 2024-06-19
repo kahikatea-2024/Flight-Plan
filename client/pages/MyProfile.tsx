@@ -1,4 +1,4 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { useUser } from '../hooks/useUsers'
 import ProfileForm from '../components/ProfileForm'
 import { Users } from '../../models/flightplan'
@@ -6,7 +6,7 @@ import { Users } from '../../models/flightplan'
 export function MyProfile() {
   const { data, isLoading, mutation } = useUser(1)
 
-  // console.log(user.data?.firstName)
+  console.log(data?.id)
 
   // const [formState, setFormState] = useState({ user })
 
@@ -14,8 +14,8 @@ export function MyProfile() {
     return <div>Loading...</div>
   }
 
-  async function handleSubmit(form: Users) {
-    mutation.mutate(form)
+  function handleSubmit(form: Users) {
+    mutation.mutate({ form })
   }
 
   // const handleChange = (
