@@ -147,3 +147,20 @@ export async function addNewEventByTripId(
     .returning('id')
   return newEventId
 }
+
+//Edit Events by ID
+export async function updateEventsById(
+  id: number,
+  updatedEvent: {
+    trip_id: number
+    description: string
+    date: string
+    start_time: string
+    end_time: string
+    created_by: number
+    notes: string
+  },
+) {
+  const eventToUpdate = await db('events').where({ id }).update(updatedEvent)
+  return eventToUpdate
+}
