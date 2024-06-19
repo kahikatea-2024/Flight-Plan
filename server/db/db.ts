@@ -1,5 +1,5 @@
 import db from './connection.ts'
-import { Events, Users } from '../../models/flightplan.ts'
+import { EventData, Events, Users } from '../../models/flightplan.ts'
 // Get all users
 export async function getAllUsers() {
   const users = await db('users').select()
@@ -20,4 +20,36 @@ export async function getAllEvents() {
 export async function getEventById(id: number) {
   const event = await db('events').select().first().where({ id })
   return event as Events
+}
+
+//Add New Event
+export async function addNewEvent(newEvent: Events) {
+  return await db('events').insert(newEvent)
+}
+
+//Add New Event by Trip Id
+export async function addNewEventByTripId(newEvent: EventData) {
+  const { tripId, date, startTime, endTime, description, note } = newEvent
+  if (isNaN(tripId)) {
+    throw new Error('invaild tripId')
+  }
+  const [newEventId] = await db('events')
+    .select(
+      'trip_id as tripId',
+      'date',
+      'start_time as startTime',
+      'end_time as endTime',
+      'description',
+      'notes as note',
+    )
+    .insert({
+      tripId,
+      date,
+      startTime,
+      endTime,
+      description,
+      note,
+    })
+    .returning('id')
+  return newEventId
 }

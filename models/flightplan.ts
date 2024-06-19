@@ -31,3 +31,5 @@ export interface Trip_users {
   tripId: number
   userId: number
 }
+
+export type EventData = Omit<Events, 'id'>

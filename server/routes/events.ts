@@ -32,4 +32,16 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+//Add New Event
+router.post('/', async (req, res) => {
+  try {
+    const newEvent = req.body
+    await db.addNewEvent(newEvent)
+    res.sendStatus(201)
+  } catch (error) {
+    console.error(`database error: ${error}`)
+    res.sendStatus(500)
+  }
+})
+
 export default router
