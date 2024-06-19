@@ -31,3 +31,9 @@ export interface Trip_users {
   tripId: number
   userId: number
 }
+
+export interface Friends {
+  id: number
+  firstName: string
+  username: string
+}

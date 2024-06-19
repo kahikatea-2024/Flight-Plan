@@ -1,7 +1,10 @@
 import db from './connection.ts'
-import { Events, Trips, Users } from '../../models/flightplan.ts'
+import { Events, Friends, Trips, Users } from '../../models/flightplan.ts'
 
+//
 //USERS
+//
+
 // Get all Users
 export async function getAllUsers() {
   const users = await db('users').select()
@@ -19,11 +22,28 @@ export async function getTripsByUserId(id: number) {
     .join('trip_users', 'users.id', 'trip_users.user_id')
     .join('trips', 'trip_users.trip_id', 'trips.id')
     .where('users.id', id)
-    .select('first_name', 'last_name', 'trip_name', 'start_date', 'end_date')
+    .select(
+      'first_name as firstName',
+      'last_name as lastName',
+      'trip_name as tripName',
+      'start_date as startDate',
+      'end_date as endDate',
+    )
   return trip as Trips[]
 }
 
+// Get Following by User ID
+export async function getFollowingByUserId(id: number) {
+  const follow = await db('users')
+    .join('following_list', 'users.id', 'following_list.user_id')
+    .where('users.id', id)
+    .select('users.id as id', 'first_name as firstName', 'username')
+  return follow as Friends[]
+}
+
+//
 //EVENTS
+//
 
 // Get all Events
 export async function getAllEvents() {
@@ -36,24 +56,49 @@ export async function getEventById(id: number) {
   return event as Events
 }
 
-//Trips
+//
+//TRIPS
+//
 
 // Get all Trips
 export async function getAllTrips() {
   const trips = await db('trips').select()
   return trips as Trips[]
 }
+
 // Get Trip by ID
 export async function getTripById(id: number) {
   const trip = await db('trips').select().first().where({ id })
   return trip as Trips
 }
-// Get Users going on Trip
+
+// Get Users by Trip ID
 export async function geUsersByTripId(id: number) {
   const trip = await db('trips')
     .join('trip_users', 'trips.id', 'trip_users.trip_id')
     .join('users', 'trip_users.user_id', 'users.id')
     .where('trips.id', id)
-    .select('first_name', 'last_name', 'trip_name', 'email', 'phone_number')
+    .select(
+      'first_name as firstName',
+      'last_name as lastName',
+      'trip_name as tripName',
+      'email',
+      'phone_number as phoneNumber',
+    )
   return trip as Trips[]
+}
+
+// Get Events by Trip ID
+export async function getEventsByTripId(id: number) {
+  const events = await db('trips')
+    .join('events', 'events.trip_id', 'trips.id')
+    .where('trips.id', id)
+    .select(
+      'date',
+      'start_time as startTime',
+      'end_time as endTime',
+      'description',
+      'notes',
+    )
+  return events as Events[]
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
 import db from './connection'
-import { getUserById } from './db'
+import { getAllEvents, getUserById } from './db'
 
 beforeAll(async () => {
   await db.migrate.latest()
@@ -17,5 +17,15 @@ describe('get user by id', () => {
     expect(user).toHaveProperty('username')
     expect(user).toHaveProperty('first_name')
     expect(user).toHaveProperty('email')
+  })
+})
+
+describe('get all events', () => {
+  it('should return all events', async () => {
+    const events = await getAllEvents()
+    expect(events).toHaveLength(2)
+    expect(events[0]).toHaveProperty('created_by')
+    expect(events[1]).toHaveProperty('end_time')
+    expect(events[1]).toHaveProperty('notes')
   })
 })

@@ -33,15 +33,32 @@ router.get('/:id', async (req, res, next) => {
 router.get('/:id/users', async (req, res, next) => {
   try {
     const id = Number(req.params.id)
-    const geUsersByTripId = await db.geUsersByTripId(id)
-
-    if (!geUsersByTripId) {
+    const users = await db.geUsersByTripId(id)
+    if (!users) {
       res.sendStatus(404)
     } else {
-      res.json(geUsersByTripId)
+      res.json(users)
     }
   } catch (err) {
     next(err)
   }
 })
+
+//Get Events by Trip ID
+
+router.get('/:id/events', async (req, res, next) => {
+  try {
+    const id = Number(req.params.id)
+    const events = await db.getEventsByTripId(id)
+
+    if (!events) {
+      res.sendStatus(404)
+    } else {
+      res.json(events)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 export default router
