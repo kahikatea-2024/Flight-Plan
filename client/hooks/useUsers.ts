@@ -16,14 +16,14 @@ export function useUser(id: number) {
       return res.body as Users
     },
   })
-  const mutation = useMutation({
-    mutationFn: { form },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] })
-    },
-  })
-  return { data, mutation, isLoading }
-  // return { data, isLoading }
+  // const mutation = useMutation({
+  //   mutationFn: { form },
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ['users'] })
+  //   },
+  // })
+  // return { data, mutation, isLoading }
+  return { data, isLoading }
   // Extra queries go here e.g. addFruit: useAddFruit()
 }
 
