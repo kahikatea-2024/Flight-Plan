@@ -96,11 +96,7 @@
   "prettier": {
     "semi": false,
     "singleQuote": true,
-    "plugins": [
-  
-    ]
-   
+    "plugins": []
   },
   "browserslist": "> 2%, not dead"
 }
-
