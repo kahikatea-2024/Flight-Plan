@@ -7,7 +7,7 @@ export async function seed(knex) {
   await knex('following_list').del()
   await knex('following_list').insert([
     {
-      following_id: 1,
+      following_id: 2,
       user_id: 1,
     },
   ])
