@@ -9,6 +9,7 @@ import { MyProfile } from './pages/MyProfile.tsx'
 import { MyFriends } from './pages/MyFriends.tsx'
 export default createRoutesFromElements(
   <Route path="/" element={<App />}>
+    {/* Could refactor ^ this to use Layout */}
     <Route index element={<LogIn />} />
     <Route path="/my-trips" element={<MyTrips />} />
     <Route path="/new-trip" element={<NewTrip />} />

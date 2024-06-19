@@ -33,6 +33,12 @@ export interface Trip_users {
   userId: number
 }
 
+export interface Friends {
+  id: number
+  firstName: string
+  username: string
+}
+
 export interface EventData {
   trip_id: number
   date: string
