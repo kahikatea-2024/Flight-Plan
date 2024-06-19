@@ -28,27 +28,35 @@ export async function addNewEvent(newEvent: Events) {
 }
 
 //Add New Event by Trip Id
-export async function addNewEventByTripId(newEvent: EventData) {
-  const { tripId, date, startTime, endTime, description, note } = newEvent
-  if (isNaN(tripId)) {
+export async function addNewEventByTripId(
+  trip_id: number,
+  newEvent: EventData,
+) {
+  const { date, start_time, end_time, description, notes, created_by } =
+    newEvent
+  const id = Number(trip_id)
+  if (isNaN(id)) {
     throw new Error('invaild tripId')
   }
   const [newEventId] = await db('events')
+    .where({ trip_id })
     .select(
-      'trip_id as tripId',
-      'date',
-      'start_time as startTime',
+      ' trip_id as tripId',
+      ' date',
+      ' start_time as startTime',
       'end_time as endTime',
       'description',
-      'notes as note',
+      ' notes as note',
+      'created_by as CreatedBy',
     )
     .insert({
-      tripId,
+      trip_id,
       date,
-      startTime,
-      endTime,
+      start_time,
+      end_time,
       description,
-      note,
+      notes,
+      created_by,
     })
     .returning('id')
   return newEventId

@@ -44,4 +44,33 @@ router.post('/', async (req, res) => {
   }
 })
 
+//Add New Event by Trip id
+router.post('/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    const {
+      trip_id,
+      date,
+      start_time,
+      end_time,
+      description,
+      notes,
+      created_by,
+    } = req.body
+    await db.addNewEventByTripId(id, {
+      trip_id,
+      date,
+      start_time,
+      end_time,
+      description,
+      notes,
+      created_by,
+    })
+    res.sendStatus(201)
+  } catch (error) {
+    console.error(`database error: ${error}`)
+    res.sendStatus(500)
+  }
+})
+
 export default router
