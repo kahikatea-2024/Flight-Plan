@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import 'bulma/css/bulma.css'
+import { Link } from 'react-router-dom'
 // import './styles.scss'
 
 export function NavBar() {
@@ -8,9 +9,9 @@ export function NavBar() {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href="/">
+        <Link to={'/'} className="navbar-item">
           <div>TripHive</div>
-        </a>
+        </Link>
 
         <button
           className={`navbar-burger ${isActive ? 'is-active' : ''}`}
@@ -29,16 +30,27 @@ export function NavBar() {
         className={`navbar-menu ${isActive ? 'is-active' : ''}`}
       >
         <div className="navbar-start">
-          <a className="navbar-item">My Trips</a>
-          <a className="navbar-item">Schedule</a>
+          <Link to={'/my-trips'} className="navbar-item">
+            My Trips
+          </Link>
+          <Link to={'/schedule'} className="navbar-item">
+            Schedule
+          </Link>
           <div className="navbar-item has-dropdown is-hoverable">
-            <a className="navbar-link">More</a>
+            {/* Changed more from anchor tag to div */}
+            <div className="navbar-link">More</div>
             <div className="navbar-dropdown">
-              <a className="navbar-item">My Profile</a>
+              <Link to={'my-profile'} className="navbar-item">
+                My Profile
+              </Link>
 
-              <a className="navbar-item">My Friends</a>
+              <Link to={'my-friends'} className="navbar-item">
+                My Friends
+              </Link>
               <hr className="navbar-divider" />
-              <a className="navbar-item">Log Out</a>
+              <Link to={'/'} className="navbar-item">
+                Log Out
+              </Link>
             </div>
           </div>
         </div>
