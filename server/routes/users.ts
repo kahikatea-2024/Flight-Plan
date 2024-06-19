@@ -6,6 +6,7 @@ import * as db from '../db/db.ts'
 
 const router = Router()
 
+// Get all Users
 router.get('/', async (req, res) => {
   try {
     const users = await db.getAllUsers()
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
-
+// Get User by ID
 router.get('/:id', async (req, res, next) => {
   try {
     const id = Number(req.params.id)
@@ -26,6 +27,21 @@ router.get('/:id', async (req, res, next) => {
       res.sendStatus(404)
     } else {
       res.json(user)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+// Get Trips by User ID
+router.get('/:id/trips', async (req, res, next) => {
+  try {
+    const id = Number(req.params.id)
+    const trip = await db.getTripsByUserId(id)
+
+    if (!trip) {
+      res.sendStatus(404)
+    } else {
+      res.json(trip)
     }
   } catch (err) {
     next(err)

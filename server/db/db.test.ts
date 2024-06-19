@@ -12,7 +12,7 @@ beforeEach(async () => {
 
 describe('get user by id', () => {
   it('should return user', async () => {
-    const user = await getUserById(1)
+    const user = await getUserById(2)
     expect(user).toHaveProperty('id')
     expect(user).toHaveProperty('username')
     expect(user).toHaveProperty('first_name')
