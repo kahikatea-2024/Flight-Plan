@@ -1,17 +1,3 @@
 @import 'bulma/bulma';
 
-.custom-form {
-  width: 100%;
-}
 
-@media (min-width: 1440px) {
-  .custom-form {
-    width: 20vw;
-  }
-}
-
-@media (max-width: 768px) {
-  .custom-form {
-    width: 70vw;
-  }
-}
