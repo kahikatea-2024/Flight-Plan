@@ -1,12 +1,15 @@
 import db from './connection.ts'
-import { Events, Friends, Trips, Users } from '../../models/flightplan.ts'
+import {
+  Events,
+  Friends,
+  Trips,
+  Users,
+  EventData,
+} from '../../models/flightplan.ts'
 
 //
 //USERS
 //
-
-// Get all Users
-import { EventData, Events, Users } from '../../models/flightplan.ts'
 // Get all users
 export async function getAllUsers() {
   const users = await db('users').select()
