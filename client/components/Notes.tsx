@@ -3,15 +3,18 @@ export function Notes() {
     <section>
       <div className="container is-fluid is-centered">
         <div className="columns is-fluid">
-          <div className="column is-half is-offset-one-quarter ">
+          <div className="column ">
+            <h2 className="title has-text-centered has-text-primary">
+              Add A Note
+            </h2>
             <form className="field-is-horizontal is-centered">
               <div className="field">
-                <label className="label is-medium">Notes for the Day</label>
+                <label className="label ">Notes for the Day</label>
                 <div className="control">
                   <textarea
                     className="textarea is-primary text is-size-6 "
                     placeholder="Notes..."
-                    rows="10"
+                    rows="12"
                   />
                 </div>
               </div>

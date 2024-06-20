@@ -3,8 +3,10 @@ export function AddEvent() {
     <section>
       <div className="container is-fluid is-centered">
         <div className="columns is-fluid">
-          <div className="column is-half is-offset-one-quarter ">
-            <h2>Add An Event</h2>
+          <div className="column  ">
+            <h2 className="title has-text-centered has-text-primary">
+              Add An Event
+            </h2>
             <form className="field-is-horizontal is-centered">
               <div className="field">
                 <label className="label">Event Title</label>
@@ -20,9 +22,7 @@ export function AddEvent() {
               <div className="field is-grouped">
                 <div className="column is-third">
                   <div className="field">
-                    <label className="card-content has-text-left">
-                      Start Time
-                    </label>
+                    <label className="label has-text-left">Start Time</label>
                     <input
                       type="text"
                       className="input"
@@ -32,9 +32,7 @@ export function AddEvent() {
                 </div>
                 <div className="column is-third">
                   <div className="field">
-                    <label className="card-content has-text-right">
-                      End Time
-                    </label>
+                    <label className="label has-text-right">End Time</label>
                     <input
                       type="text"
                       className="input"
@@ -51,7 +49,7 @@ export function AddEvent() {
                     type="text"
                     className="textarea"
                     placeholder="Event Notes"
-                    rows="5"
+                    rows="4"
                   />
                 </div>
               </div>
