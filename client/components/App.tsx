@@ -7,7 +7,7 @@ function App() {
       <div className="app">
         <NavBar />
 
-        <h1 className="is-size-3 has-text-centered">TripHive</h1>
+        {/* <h1 className="is-size-3 has-text-centered">TripHive</h1> */}
         <Outlet />
       </div>
     </>
