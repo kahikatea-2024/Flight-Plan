@@ -1,5 +1,11 @@
 import db from './connection.ts'
-import { Events, Friends, Trips, Users } from '../../models/flightplan.ts'
+import {
+  Events,
+  Friends,
+  Trips,
+  TripsData,
+  Users,
+} from '../../models/flightplan.ts'
 
 //
 //USERS
@@ -121,4 +127,14 @@ export async function deleteTrip(id: number) {
 }
 
 // Edit a Trip
-export async function updateTrip(id: number) {}
+export async function updateTrip(id: number, updatedTrip: TripsData) {
+  const { createdBy, tripName, startDate, endDate } = updatedTrip
+
+  const newTrip = await db('trips').where({ id }).update({
+    created_by: createdBy,
+    trip_name: tripName,
+    start_date: startDate,
+    end_date: endDate,
+  })
+  return newTrip
+}

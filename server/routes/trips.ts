@@ -83,6 +83,7 @@ router.post('/', async (req, res) => {
 })
 
 // Delete a Trip
+
 router.delete('/:id', async (req, res) => {
   try {
     const id = Number(req.params.id)
@@ -93,6 +94,19 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
+
 // Patch a Trip
 
+router.patch('/:id', async (req, res) => {
+  try {
+    const { createdBy, tripName, startDate, endDate } = req.body
+    const id = Number(req.params.id)
+    const updatedTrip = { createdBy, tripName, startDate, endDate }
+    const final = await db.updateTrip(id, updatedTrip)
+    res.status(200).json({ updated: final })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
 export default router

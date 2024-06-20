@@ -6,6 +6,8 @@ export interface Trips {
   endDate: string
 }
 
+export type TripsData = Omit<Trips, 'id'>
+
 export interface Events {
   id: number
   tripId: number
