@@ -1,3 +1,47 @@
 @import 'bulma/bulma';
 
+/* Schedule styles */
+.dates-list-container {
+  width: 80vw; /* Default to 80% of the viewport width */
+  margin: 0 auto;
+}
 
+.date-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.date-text {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+/* Adjustments for larger screens */
+@media (min-width: 768px) {
+  .dates-list-container {
+    width: 60vw; /* 60% of the viewport width for medium screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .dates-list-container {
+    width: 50vw; /* 50% of the viewport width for large screens */
+  }
+}
+
+/* Ensure text and button spacing is consistent on smaller screens */
+@media (max-width: 767px) {
+  .date-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .date-text, .button {
+    margin-bottom: 5px;
+    width: 100%;
+  }
+}

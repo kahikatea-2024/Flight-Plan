@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addTrip, getTrips } from '../apis/trips'
+import { getEvents } from '../apis/events'
 
-export function useTrips(userId: number) {
+export function useEvents(tripId: number) {
   // const queryClient = useQueryClient()
-  const { data, isLoading } = useQuery({
-    queryKey: ['trips', userId],
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['events', tripId],
     queryFn: async () => {
-      const res = getTrips(userId)
+      const res = getEvents(tripId)
       return res
     },
   })
@@ -17,5 +17,5 @@ export function useTrips(userId: number) {
   //   },
   // })
   // return { data, mutation, isLoading }
-  return { data, isLoading }
+  return { data, isLoading, isError }
 }
