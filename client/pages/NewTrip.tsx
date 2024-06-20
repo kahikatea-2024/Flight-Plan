@@ -2,11 +2,13 @@ import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 
 import 'react-datepicker/dist/react-datepicker.css'
+import { useNavigate } from 'react-router-dom'
 
 export function NewTrip() {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [tripName, setTripName] = useState('')
+  const navigate = useNavigate()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -14,6 +16,12 @@ export function NewTrip() {
     console.log('Trip Name:', tripName)
     console.log('Start Date:', startDate)
     console.log('End Date:', endDate)
+    navigate('/schedule', {
+      state: {
+        startDate: startDate,
+        endDate: endDate,
+      },
+    })
   }
 
   return (
