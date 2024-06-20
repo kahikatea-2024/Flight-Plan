@@ -3,15 +3,15 @@ import {
   Events,
   Friends,
   Trips,
-  TripsData,
   Users,
+  EventData,
+  TripsData,
 } from '../../models/flightplan.ts'
 
 //
 //USERS
 //
-
-// Get all Users
+// Get all users
 export async function getAllUsers() {
   const users = await db('users').select()
   return users as Users[]
@@ -148,4 +148,51 @@ export async function updateTrip(id: number, updatedTrip: TripsData) {
     end_date: endDate,
   })
   return newTrip
+}
+
+//Add New Event
+export async function addNewEvent(newEvent: Events) {
+  return await db('events').insert(newEvent)
+}
+
+//Add New Event by  Id
+export async function addNewEventByTripId(id: number, newEvent: EventData) {
+  const { tripId, date, startTime, endTime, description, note, createdBy } =
+    newEvent
+
+  const [newEventId] = await db('events')
+    .where({ id })
+    .insert({
+      trip_id: tripId,
+      date,
+      start_time: startTime,
+      end_time: endTime,
+      description,
+      notes: note,
+      created_by: createdBy,
+    })
+    .returning('id')
+  return newEventId
+}
+
+//Edit Events by ID
+export async function updateEventsById(
+  id: number,
+  updatedEvent: {
+    trip_id: number
+    description: string
+    date: string
+    start_time: string
+    end_time: string
+    created_by: number
+    notes: string
+  },
+) {
+  const eventToUpdate = await db('events').where({ id }).update(updatedEvent)
+  return eventToUpdate
+}
+
+// Delete Event by ID
+export async function deleteEvent(id: number) {
+  return await db('events').where({ id }).del()
 }
