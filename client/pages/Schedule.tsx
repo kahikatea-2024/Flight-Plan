@@ -22,12 +22,12 @@ export function Schedule() {
   return (
     <section className="section">
       <div className="container is-fluid">
-        <h1 className="title has-text-centered">Dates List</h1>
+        <h1 className="title has-text-centered">Trip Schedule</h1>
         <ul>
           {dates.map((date, index) => (
             <li key={index}>
               <button onClick={() => handleDateClick(date)}>
-                {format(date, 'yyyy-MM-dd')}
+                {format(date, 'EEE dd MMM')}
               </button>
             </li>
           ))}
