@@ -14,10 +14,12 @@ export interface Events {
   startTime: string
   endTime: string
   note: string
+  createdBy: string
 }
+export type EventData = Omit<Events, 'id'>
 
 export interface Users {
-  id: number
+  id: number | undefined
   username: string
   email: string
   firstName: string
