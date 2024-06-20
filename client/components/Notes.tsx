@@ -14,9 +14,9 @@ export function Notes() {
                     rows="10"
                   />
                 </div>
-                <div className="field is-grouped is-grouped-centered mt-6">
-                  <button className="button is-primary">Save</button>
-                </div>
+              </div>
+              <div className="field is-grouped is-grouped-centered mt-4">
+                <button className="button is-primary">Save</button>
               </div>
             </form>
           </div>
