@@ -1,3 +1,9 @@
+import { Notes } from '../components/Notes'
+
 export function ViewDay() {
-  return <div>View Day Page</div>
+  return (
+    <>
+      <Notes />
+    </>
+  )
 }

@@ -1,13 +1,13 @@
 import request from 'superagent'
-import { Trips } from '../../models/flightplan'
+import { Events } from '../../models/flightplan'
 
-const rootUrl = '/api/v1'
+const rootUrl = '/api/v1/trips'
 
-export function getTrips(userId: number) {
+export function getEvents(tripId: number) {
   // return request.get('users/1/trips').then((res) => {
-  return request.get(rootUrl + `/users/:${userId}/trips`).then((res) => {
+  return request.get(rootUrl + `/:${tripId}/events`).then((res) => {
     console.log(res.body)
-    return res.body as Trips[]
+    return res.body as Events[]
   })
 }
 
