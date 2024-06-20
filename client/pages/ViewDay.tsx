@@ -1,4 +1,5 @@
 import { AddEvent } from '../components/AddEventForm'
+import { EventsByDay } from '../components/EventsByDay'
 import { Notes } from '../components/Notes'
 
 export function ViewDay() {
@@ -13,6 +14,7 @@ export function ViewDay() {
             <AddEvent />
           </div>
         </div>
+        <EventsByDay />
       </div>
     </>
   )

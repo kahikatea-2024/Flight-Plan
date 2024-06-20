@@ -5,8 +5,8 @@ const rootUrl = '/api/v1/trips'
 
 export function getEvents(tripId: number) {
   // return request.get('users/1/trips').then((res) => {
-  return request.get(rootUrl + `/:${tripId}/events`).then((res) => {
-    console.log(res.body)
+  return request.get(rootUrl + `/${tripId}/events`).then((res) => {
+    console.log('event', res.body)
     return res.body as Events[]
   })
 }

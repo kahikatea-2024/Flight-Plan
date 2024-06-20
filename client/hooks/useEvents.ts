@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getEvents } from '../apis/events'
+import { getEvents } from '../apis/events.ts'
+import { Events } from '../../models/flightplan'
 
 export function useEvents(tripId: number) {
   // const queryClient = useQueryClient()
