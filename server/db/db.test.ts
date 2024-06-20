@@ -31,7 +31,7 @@ describe('get user by id', () => {
     const user = await getUserById(2)
     expect(user).toHaveProperty('id')
     expect(user).toHaveProperty('username')
-    expect(user).toHaveProperty('first_name')
+    expect(user).toHaveProperty('firstName')
     expect(user).toHaveProperty('email')
   })
 })

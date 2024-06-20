@@ -16,6 +16,7 @@ export interface Events {
   note: string
   createdBy: string
 }
+export type EventData = Omit<Events, 'id'>
 
 export interface Users {
   id: number | undefined
@@ -37,14 +38,4 @@ export interface Friends {
   id: number
   firstName: string
   username: string
-}
-
-export interface EventData {
-  trip_id: number
-  date: string
-  start_time: string
-  end_time: string
-  description: string
-  notes: string
-  created_by: number
 }

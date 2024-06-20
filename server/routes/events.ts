@@ -43,28 +43,22 @@ router.post('/', async (req, res) => {
   }
 })
 
-//Add New Event by Trip id
+//Add New Event by  id
 router.post('/:id', async (req, res) => {
   try {
     const id = Number(req.params.id)
-    const {
-      trip_id,
+    const { tripId, date, startTime, endTime, description, note, createdBy } =
+      req.body
+    const updatedEvent = {
+      tripId,
       date,
-      start_time,
-      end_time,
+      startTime,
+      endTime,
       description,
-      notes,
-      created_by,
-    } = req.body
-    await db.addNewEventByTripId(id, {
-      trip_id,
-      date,
-      start_time,
-      end_time,
-      description,
-      notes,
-      created_by,
-    })
+      note,
+      createdBy,
+    }
+    await db.addNewEventByTripId(id, updatedEvent)
     res.sendStatus(201)
   } catch (error) {
     res
