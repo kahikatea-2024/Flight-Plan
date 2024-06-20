@@ -5,6 +5,7 @@ import {
   Trips,
   Users,
   EventData,
+  TripsData,
 } from '../../models/flightplan.ts'
 
 //
@@ -118,6 +119,35 @@ export async function getEventsByTripId(id: number) {
       'notes',
     )
   return events as Events[]
+}
+
+// Add a Trip
+export async function addTrip(data: TripsData) {
+  const { createdBy, tripName, startDate, endDate } = data
+  await db('trips').insert({
+    created_by: createdBy,
+    trip_name: tripName,
+    start_date: startDate,
+    end_date: endDate,
+  })
+}
+
+// Delete a Trip
+export async function deleteTrip(id: number) {
+  await db('trips').where({ id }).del()
+}
+
+// Edit a Trip
+export async function updateTrip(id: number, updatedTrip: TripsData) {
+  const { createdBy, tripName, startDate, endDate } = updatedTrip
+
+  const newTrip = await db('trips').where({ id }).update({
+    created_by: createdBy,
+    trip_name: tripName,
+    start_date: startDate,
+    end_date: endDate,
+  })
+  return newTrip
 }
 
 //Add New Event
