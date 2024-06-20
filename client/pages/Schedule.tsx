@@ -8,12 +8,15 @@ const generateDateList = (startDate: Date, endDate: Date): Date[] => {
 export function Schedule() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { startDate, endDate } = location.state || {
+  const { startDate, endDate, tripName } = location.state || {
     startDate: new Date(),
     endDate: new Date(),
+    tripName: 'Trip',
   }
 
-  const dates = generateDateList(new Date(startDate), new Date(endDate))
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+  const dates = generateDateList(start, end)
 
   const handleDateClick = (date: Date) => {
     navigate(`/date/${format(date, 'yyyy-MM-dd')}`)
@@ -23,15 +26,24 @@ export function Schedule() {
     <section className="section">
       <div className="container is-fluid">
         <h1 className="title has-text-centered">Trip Schedule</h1>
-        <ul>
-          {dates.map((date, index) => (
-            <li key={index}>
-              <button onClick={() => handleDateClick(date)}>
-                {format(date, 'EEE dd MMM')}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <h2 className="subtitle has-text-centered">{tripName}</h2>
+        <div className="dates-list-container">
+          <ul>
+            {dates.map((date, index) => (
+              <li key={index} className="date-item">
+                <span className="date-text">
+                  {format(date, 'EEE dd MMM').toUpperCase()}
+                </span>
+                <button
+                  className="button is-primary"
+                  onClick={() => handleDateClick(date)}
+                >
+                  Edit
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   )

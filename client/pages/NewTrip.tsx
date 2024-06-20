@@ -12,7 +12,7 @@ export function NewTrip() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    // Add your form submission logic here
+    // Add form submission logic here
     console.log('Trip Name:', tripName)
     console.log('Start Date:', startDate)
     console.log('End Date:', endDate)
@@ -20,6 +20,7 @@ export function NewTrip() {
       state: {
         startDate: startDate,
         endDate: endDate,
+        tripName,
       },
     })
   }
