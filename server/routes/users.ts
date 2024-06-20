@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import checkJwt, { JwtRequest } from '../auth0.ts'
-import { StatusCodes } from 'http-status-codes'
+// import checkJwt, { JwtRequest } from '../auth0.ts'
+// import { StatusCodes } from 'http-status-codes'
 
 import * as db from '../db/db.ts'
 
@@ -45,6 +45,76 @@ router.get('/:id/trips', async (req, res, next) => {
     }
   } catch (err) {
     next(err)
+  }
+})
+
+// Add User
+router.post('/', async (req, res) => {
+  try {
+    const {
+      id,
+      email,
+      phoneNumber,
+      profilePicture,
+      username,
+      firstName,
+      lastName,
+    } = req.body
+    const newUser = {
+      id,
+      email,
+      phoneNumber,
+      profilePicture,
+      username,
+      firstName,
+      lastName,
+    }
+    await db.addUser(newUser)
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(`database error: ${error}`)
+    res.sendStatus(500)
+  }
+})
+
+// Update a User
+router.patch('/:id', async (req, res) => {
+  try {
+    const {
+      email,
+      phoneNumber,
+      profilePicture,
+      username,
+      firstName,
+      lastName,
+    } = req.body
+    const id = Number(req.params.id)
+    const updatedUser = {
+      email,
+      phoneNumber,
+      profilePicture,
+      username,
+      firstName,
+      lastName,
+    }
+    const final = await db.updateUser(id, updatedUser)
+    if (final) {
+      res.status(200).json({ updated: final })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    await db.deleteUser(id)
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
   }
 })
 
