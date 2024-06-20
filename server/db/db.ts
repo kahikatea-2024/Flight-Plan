@@ -197,17 +197,17 @@ export async function deleteEvent(id: number) {
   return await db('events').where({ id }).del()
 }
 
-//Get All Followers
-export async function getFollowers() {
+//Get All Friends
+export async function getAllFriends() {
   return await db('friends_list').select('friends_id as Friends', 'user_id')
 }
 
-//Add User to Followers/Friends List
+//Add User to /Friends List
 
 export async function addFriendsToList(newFriend: Friends) {
-  const { friends, userId } = newFriend
+  const { friendId, userId } = newFriend
   await db('friends_list').insert({
-    friends_id: friends,
+    friends_id: friendId,
     user_id: userId,
   })
 }

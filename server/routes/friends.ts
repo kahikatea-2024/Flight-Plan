@@ -6,7 +6,7 @@ const router = Router()
 //Get All Followers
 router.get('/', async (req, res) => {
   try {
-    const friends = await db.getFollowers()
+    const friends = await db.getAllFriends()
     res.json(friends)
   } catch (error) {
     console.log(error)
