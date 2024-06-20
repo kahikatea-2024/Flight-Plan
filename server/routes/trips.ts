@@ -65,10 +65,9 @@ router.get('/:id/events', async (req, res, next) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { id, createdBy, tripName, startDate, endDate } = req.body
+    const { createdBy, tripName, startDate, endDate } = req.body
 
     const newTrip = {
-      id,
       createdBy,
       tripName,
       startDate,
@@ -103,7 +102,9 @@ router.patch('/:id', async (req, res) => {
     const id = Number(req.params.id)
     const updatedTrip = { createdBy, tripName, startDate, endDate }
     const final = await db.updateTrip(id, updatedTrip)
-    res.status(200).json({ updated: final })
+    if (final) {
+      res.status(200).json({ updated: final })
+    }
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })

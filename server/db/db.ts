@@ -122,10 +122,9 @@ export async function getEventsByTripId(id: number) {
 }
 
 // Add a Trip
-export async function addTrip(data: Trips) {
-  const { id, createdBy, tripName, startDate, endDate } = data
+export async function addTrip(data: TripsData) {
+  const { createdBy, tripName, startDate, endDate } = data
   await db('trips').insert({
-    id,
     created_by: createdBy,
     trip_name: tripName,
     start_date: startDate,
