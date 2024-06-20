@@ -166,3 +166,8 @@ export async function updateEventsById(
 export async function deleteEvent(id: number) {
   return await db('events').where({ id }).del()
 }
+
+//Get All Followers
+export async function getFollowers() {
+  return await db('following_list').select('user_id as Friends')
+}
