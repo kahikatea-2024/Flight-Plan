@@ -11,11 +11,13 @@ import {
 //
 //USERS
 //
+
 // Get all users
 export async function getAllUsers() {
   const users = await db('users').select()
   return users as Users[]
 }
+
 // Get user by ID
 export async function getUserById(id: number) {
   const user = await db('users')
@@ -57,21 +59,6 @@ export async function getFollowingByUserId(id: number) {
     .where('users.id', id)
     .select('users.id as id', 'first_name as firstName', 'username')
   return follow as Friends[]
-}
-
-//
-//EVENTS
-//
-
-// Get all Events
-export async function getAllEvents() {
-  const events = await db('events').select()
-  return events as Events[]
-}
-// Get event by ID
-export async function getEventById(id: number) {
-  const event = await db('events').select().first().where({ id })
-  return event as Events
 }
 
 //
@@ -148,6 +135,21 @@ export async function updateTrip(id: number, updatedTrip: TripsData) {
     end_date: endDate,
   })
   return newTrip
+}
+
+//
+//EVENTS
+//
+
+// Get all Events
+export async function getAllEvents() {
+  const events = await db('events').select()
+  return events as Events[]
+}
+// Get event by ID
+export async function getEventById(id: number) {
+  const event = await db('events').select().first().where({ id })
+  return event as Events
 }
 
 //Add New Event
