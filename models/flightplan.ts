@@ -24,7 +24,7 @@ export interface Users {
   email: string
   firstName: string
   lastName: string
-  phoneNumber: number
+  phoneNumber: string
   profilePicture: string
 }
 

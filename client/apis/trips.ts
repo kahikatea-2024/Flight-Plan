@@ -10,10 +10,14 @@ export function getTrips(userId: number) {
   })
 }
 
-// export async function addTrip(tripData: Trips) {
-//   const { id, data } = tripData
-//   await request
-//     .post(`/api/v1/trips/${id}`)
-//     .set('Content-Type', 'application/json')
-//     .send({ data })
-// }
+export async function addTrip(tripData: Trips): Promise<void> {
+  try {
+    await request
+      .post(`/api/v1/trips`)
+      .set('Content-Type', 'application/json')
+      .send(tripData)
+  } catch (error) {
+    console.error('Error adding trip:', error)
+    throw error
+  }
+}
