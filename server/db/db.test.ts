@@ -8,7 +8,18 @@ import {
   afterEach,
 } from 'vitest'
 import db from './connection'
-import { getAllEvents, getUserById } from './db'
+import {
+  addTrip,
+  addUser,
+  deleteTrip,
+  deleteUser,
+  getAllEvents,
+  getAllTrips,
+  getAllUsers,
+  getUserById,
+} from './db'
+
+import { TripsData, Users } from '../../models/flightplan.ts'
 import request from 'supertest'
 import server from '../server.ts'
 import { Events } from '../../models/flightplan.ts'
@@ -26,16 +37,131 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
+// Test for getUserById
 describe('get user by id', () => {
   it('should return user', async () => {
     const user = await getUserById(2)
+    console.log(user)
     expect(user).toHaveProperty('id')
     expect(user).toHaveProperty('username')
     expect(user).toHaveProperty('firstName')
     expect(user).toHaveProperty('email')
   })
 })
+// Test for deleteUser
+describe('deleteUser', () => {
+  it('deletes a user from the database', async () => {
+    //Arrange
+    const id = 1
+    //Act
+    await deleteUser(id)
+    const users = await getAllUsers()
+    //Assert
+    expect(users.find((user) => user.id === id)).toBe(undefined)
+  })
+  it('returns a statusCode of 200 on delete and 404 when no user exists', async () => {
+    // Arrange
+    const id = 1
 
+    const res = await request(server).del(`/api/v1/users/${id}`)
+    expect(res.status).toBe(200)
+
+    const res2 = await request(server).get(`/api/v1/users/${id}`)
+    expect(res2.status).toBe(404)
+  })
+})
+
+// Test for addUser
+describe('addUser', () => {
+  it('adds a user to database', async () => {
+    const user = {
+      id: 5,
+      email: 'bradAC@',
+      phoneNumber: '0132566',
+      profilePicture: '',
+      username: 'Braddad',
+      firstName: 'Brad',
+      lastName: 'Craig',
+    }
+
+    await addUser(user)
+    const users = await getAllUsers()
+    expect(users).toHaveLength(3)
+    expect(users[2].username).toBe('Braddad')
+  })
+})
+
+//Test for updateUser
+describe('updateUser', () => {
+  it('patches a user', async () => {
+    const id = 1
+    const updateUser: Partial<Users> = {
+      username: 'jamaica',
+    }
+
+    const response = await request(server)
+      .patch(`/api/v1/users/${id}`)
+      .send(updateUser)
+    expect(response.status).toBe(200)
+  })
+})
+
+// Test for deleteTrip
+describe('deleteTrip', () => {
+  it('deletes a trip from the database', async () => {
+    //Arrange
+    const id = 1
+    //Act
+    await deleteTrip(id)
+    const trips = await getAllTrips()
+    //Assert
+    expect(trips.find((trip) => trip.id === id)).toBe(undefined)
+  })
+  it('returns a statusCode of 200 on delete and 404 when no trip exists', async () => {
+    // Arrange
+    const id = 1
+
+    const res = await request(server).del(`/api/v1/trips/${id}`)
+    expect(res.status).toBe(200)
+
+    const res2 = await request(server).get(`/api/v1/trips/${id}`)
+    expect(res2.status).toBe(404)
+  })
+})
+
+// Test for addTrip
+describe('addTrip', () => {
+  it('adds a trip to database', async () => {
+    const trip = {
+      createdBy: 'Reggie',
+      tripName: 'cape',
+      startDate: 'aaaaa',
+      endDate: 'bbbbb',
+    }
+
+    await addTrip(trip)
+    const trips = await getAllTrips()
+
+    expect(trips).toHaveLength(2)
+    expect(trips[1].trip_name).toBe('cape')
+  })
+})
+
+//Test for updateTrip
+describe('updateTrip', () => {
+  it('patches a trip', async () => {
+    const id = 1
+    const updateTrip: Partial<TripsData> = {
+      tripName: 'jamaica',
+    }
+
+    const response = await request(server)
+      .patch(`/api/v1/trips/${id}`)
+      .send(updateTrip)
+    expect(response.status).toBe(200)
+  })
+})
+// Test for getAllEvents
 describe('get all events', () => {
   it('should return all events', async () => {
     const events = await getAllEvents()
