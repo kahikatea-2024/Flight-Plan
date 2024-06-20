@@ -30,6 +30,8 @@ export interface Users {
   profilePicture: string
 }
 
+export type UserData = Omit<Users, 'id'>
+
 export interface Trip_users {
   id: number
   tripId: number
