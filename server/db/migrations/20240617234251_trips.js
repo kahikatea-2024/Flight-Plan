@@ -8,7 +8,7 @@
 export async function up(knex) {
   return knex.schema.createTable('trips', (table) => {
     table.increments('id').primary()
-    table.integer('created_by')
+    table.string('created_by')
     table.string('trip_name')
     table.string('start_date')
     table.string('end_date')

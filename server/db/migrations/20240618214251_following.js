@@ -6,9 +6,9 @@
 
  */
 export async function up(knex) {
-  return knex.schema.createTable('following_list', (table) => {
-    table.primary(['user_id', 'following_id'])
-    table.string('following_id')
+  return knex.schema.createTable('friends_list', (table) => {
+    table.primary(['user_id', 'friends_id'])
+    table.string('friends_id')
     table.string('user_id')
   })
 }
