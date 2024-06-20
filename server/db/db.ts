@@ -53,7 +53,7 @@ export async function getTripsByUserId(id: number) {
 // Get Following by User ID
 export async function getFollowingByUserId(id: number) {
   const follow = await db('users')
-    .join('following_list', 'users.id', 'following_list.user_id')
+    .join('friends_list', 'users.id', 'friends_list.user_id')
     .where('users.id', id)
     .select('users.id as id', 'first_name as firstName', 'username')
   return follow as Friends[]
@@ -199,5 +199,15 @@ export async function deleteEvent(id: number) {
 
 //Get All Followers
 export async function getFollowers() {
-  return await db('following_list').select('user_id as Friends')
+  return await db('friends_list').select('friends_id as Friends', 'user_id')
+}
+
+//Add User to Followers/Friends List
+
+export async function addFriendsToList(newFriend: Friends) {
+  const { friends, userId } = newFriend
+  await db('friends_list').insert({
+    friends_id: friends,
+    user_id: userId,
+  })
 }

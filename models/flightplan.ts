@@ -37,7 +37,6 @@ export interface Trip_users {
 }
 
 export interface Friends {
-  id: number
-  firstName: string
-  username: string
+  friends: string
+  userId: string
 }
