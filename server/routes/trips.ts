@@ -61,4 +61,53 @@ router.get('/:id/events', async (req, res, next) => {
   }
 })
 
+// Add a Trip
+
+router.post('/', async (req, res) => {
+  try {
+    const { createdBy, tripName, startDate, endDate } = req.body
+
+    const newTrip = {
+      createdBy,
+      tripName,
+      startDate,
+      endDate,
+    }
+    await db.addTrip(newTrip)
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(`database error: ${error}`)
+    res.sendStatus(500)
+  }
+})
+
+// Delete a Trip
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    await db.deleteTrip(id)
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
+// Patch a Trip
+
+router.patch('/:id', async (req, res) => {
+  try {
+    const { createdBy, tripName, startDate, endDate } = req.body
+    const id = Number(req.params.id)
+    const updatedTrip = { createdBy, tripName, startDate, endDate }
+    const final = await db.updateTrip(id, updatedTrip)
+    if (final) {
+      res.status(200).json({ updated: final })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
 export default router
