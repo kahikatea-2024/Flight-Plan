@@ -6,6 +6,7 @@ import {
   Users,
   EventData,
   TripsData,
+  UserData,
 } from '../../models/flightplan.ts'
 
 //
@@ -53,12 +54,58 @@ export async function getTripsByUserId(id: number) {
 }
 
 // Get Following by User ID
+
 export async function getFollowingByUserId(id: number) {
   const follow = await db('users')
     .join('following_list', 'users.id', 'following_list.user_id')
     .where('users.id', id)
     .select('users.id as id', 'first_name as firstName', 'username')
   return follow as Friends[]
+}
+
+// Add a User
+
+export async function addUser(data: Users) {
+  const {
+    id,
+    email,
+    phoneNumber,
+    profilePicture,
+    username,
+    firstName,
+    lastName,
+  } = data
+  await db('users').insert({
+    id,
+    email,
+    phone_number: phoneNumber,
+    profile_picture: profilePicture,
+    username,
+    first_name: firstName,
+    last_name: lastName,
+  })
+}
+
+// Edit a User
+export async function updateUser(id: number, updatedUser: UserData) {
+  const { email, phoneNumber, profilePicture, username, firstName, lastName } =
+    updatedUser
+
+  const newUser = await db('users').where({ id }).update({
+    email,
+    phone_number: phoneNumber,
+    profile_picture: profilePicture,
+    username,
+    first_name: firstName,
+    last_name: lastName,
+  })
+  return newUser
+}
+
+// Delete a User
+
+export async function deleteUser(id: number) {
+  await db('users').where({ id }).del()
 }
 
 //

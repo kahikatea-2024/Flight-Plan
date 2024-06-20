@@ -10,13 +10,16 @@ import {
 import db from './connection'
 import {
   addTrip,
+  addUser,
   deleteTrip,
+  deleteUser,
   getAllEvents,
   getAllTrips,
+  getAllUsers,
   getUserById,
 } from './db'
 
-import { TripsData } from '../../models/flightplan.ts'
+import { TripsData, Users } from '../../models/flightplan.ts'
 import request from 'supertest'
 import server from '../server.ts'
 import { Events } from '../../models/flightplan.ts'
@@ -45,15 +48,61 @@ describe('get user by id', () => {
     expect(user).toHaveProperty('email')
   })
 })
+// Test for deleteUser
+describe('deleteUser', () => {
+  it('deletes a user from the database', async () => {
+    //Arrange
+    const id = 1
+    //Act
+    await deleteUser(id)
+    const users = await getAllUsers()
+    //Assert
+    expect(users.find((user) => user.id === id)).toBe(undefined)
+  })
+  it('returns a statusCode of 200 on delete and 404 when no user exists', async () => {
+    // Arrange
+    const id = 1
 
-// Test for getAllEvents
-describe('get all events', () => {
-  it('should return all events', async () => {
-    const events = await getAllEvents()
-    expect(events).toHaveLength(2)
-    expect(events[0]).toHaveProperty('created_by')
-    expect(events[1]).toHaveProperty('end_time')
-    expect(events[1]).toHaveProperty('notes')
+    const res = await request(server).del(`/api/v1/users/${id}`)
+    expect(res.status).toBe(200)
+
+    const res2 = await request(server).get(`/api/v1/users/${id}`)
+    expect(res2.status).toBe(404)
+  })
+})
+
+// Test for addUser
+describe('addUser', () => {
+  it('adds a user to database', async () => {
+    const user = {
+      id: 5,
+      email: 'bradAC@',
+      phoneNumber: '0132566',
+      profilePicture: '',
+      username: 'Braddad',
+      firstName: 'Brad',
+      lastName: 'Craig',
+    }
+
+    await addUser(user)
+    const users = await getAllUsers()
+    expect(users).toHaveLength(3)
+    expect(users[2].username).toBe('Braddad')
+  })
+})
+
+//Test for updateUser
+describe('updateUser', () => {
+  it('patches a user', async () => {
+    const id = 1
+    const updateUser: Partial<Users> = {
+      username: 'jamaica',
+    }
+
+    const response = await request(server)
+      .patch(`/api/v1/users/${id}`)
+      .send(updateUser)
+    expect(response.status).toBe(200)
   })
 })
 
@@ -110,6 +159,16 @@ describe('updateTrip', () => {
       .patch(`/api/v1/trips/${id}`)
       .send(updateTrip)
     expect(response.status).toBe(200)
+  })
+})
+// Test for getAllEvents
+describe('get all events', () => {
+  it('should return all events', async () => {
+    const events = await getAllEvents()
+    expect(events).toHaveLength(2)
+    expect(events[0]).toHaveProperty('created_by')
+    expect(events[1]).toHaveProperty('end_time')
+    expect(events[1]).toHaveProperty('notes')
   })
 })
 
