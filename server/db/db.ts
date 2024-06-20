@@ -121,6 +121,8 @@ export async function getAllTrips() {
 // Get Trip by ID
 export async function getTripById(id: number) {
   const trip = await db('trips').select().first().where({ id })
+  console.log(trip)
+
   return trip as Trips
 }
 

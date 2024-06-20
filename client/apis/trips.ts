@@ -6,6 +6,8 @@ const rootUrl = '/api/v1'
 export function getTrips(userId: number) {
   // return request.get('/api/v1/users/1/trips').then((res) => {
   return request.get(rootUrl + `/users/${userId}/trips`).then((res) => {
+    console.log(res)
+
     return res.body as Trips[]
   })
 }
