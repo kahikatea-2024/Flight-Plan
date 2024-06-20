@@ -61,4 +61,38 @@ router.get('/:id/events', async (req, res, next) => {
   }
 })
 
+// Add a Trip
+
+router.post('/', async (req, res) => {
+  try {
+    const { id, createdBy, tripName, startDate, endDate } = req.body
+
+    const newTrip = {
+      id,
+      createdBy,
+      tripName,
+      startDate,
+      endDate,
+    }
+    await db.addTrip(newTrip)
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(`database error: ${error}`)
+    res.sendStatus(500)
+  }
+})
+
+// Delete a Trip
+router.delete('/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    await db.deleteTrip(id)
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+// Patch a Trip
+
 export default router

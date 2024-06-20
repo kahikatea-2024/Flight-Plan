@@ -102,3 +102,23 @@ export async function getEventsByTripId(id: number) {
     )
   return events as Events[]
 }
+
+// Add a Trip
+export async function addTrip(data: Trips) {
+  const { id, createdBy, tripName, startDate, endDate } = data
+  await db('trips').insert({
+    id,
+    created_by: createdBy,
+    trip_name: tripName,
+    start_date: startDate,
+    end_date: endDate,
+  })
+}
+
+// Delete a Trip
+export async function deleteTrip(id: number) {
+  await db('trips').where({ id }).del()
+}
+
+// Edit a Trip
+export async function updateTrip(id: number) {}
