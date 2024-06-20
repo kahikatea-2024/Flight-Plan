@@ -39,7 +39,6 @@ router.post('/', async (req, res) => {
     await db.addNewEvent(newEvent)
     res.sendStatus(201)
   } catch (error) {
-    console.error(`database error: ${error}`)
     res.sendStatus(500)
   }
 })
@@ -68,8 +67,9 @@ router.post('/:id', async (req, res) => {
     })
     res.sendStatus(201)
   } catch (error) {
-    console.error(`database error: ${error}`)
-    res.sendStatus(500)
+    res
+      .sendStatus(500)
+      .json({ message: 'Unable to insert new Event to database' })
   }
 })
 
@@ -86,6 +86,7 @@ router.patch('/:id', async (req, res) => {
       notes,
       created_by,
     } = req.body
+
     const updateEvents = await db.updateEventsById(id, {
       trip_id,
       date,
@@ -99,8 +100,7 @@ router.patch('/:id', async (req, res) => {
       res.sendStatus(200)
     }
   } catch (error) {
-    console.error(`database error: ${error}`)
-    res.sendStatus(500)
+    res.sendStatus(500).json({ message: 'Unable to update event to database' })
   }
 })
 

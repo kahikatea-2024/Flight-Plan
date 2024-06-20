@@ -1,9 +1,18 @@
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  beforeEach,
+  vi,
+  afterEach,
+} from 'vitest'
 import db from './connection'
 import { getAllEvents, getUserById } from './db'
 import request from 'supertest'
 import server from '../server.ts'
 import { Events } from '../../models/flightplan.ts'
+import * as connect from './db.ts'
 
 beforeAll(async () => {
   await db.migrate.latest()
@@ -11,6 +20,10 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await db.seed.run()
+})
+// Restore mocks after each test
+afterEach(() => {
+  vi.restoreAllMocks()
 })
 
 describe('get user by id', () => {
@@ -88,5 +101,12 @@ describe('Post/Patch/Delete, /api/v1/events', () => {
     const deleteEvent = await request(server).delete(`/api/v1/events/${id}`)
 
     expect(deleteEvent.status).toBe(200)
+  })
+
+  it("should return 500 when event can't be added", async () => {
+    vi.spyOn(connect, 'addNewEvent').mockRejectedValue(new Error('test'))
+
+    const respone = await request(server).post(`/api/v1/events/`)
+    expect(respone.status).toBe(500)
   })
 })
