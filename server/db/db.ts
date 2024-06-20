@@ -18,7 +18,19 @@ export async function getAllUsers() {
 }
 // Get user by ID
 export async function getUserById(id: number) {
-  const user = await db('users').select().first().where({ id })
+  const user = await db('users')
+    .select(
+      // TODO add auth0 ID
+      'email',
+      'id',
+      'phone_number as phoneNumber',
+      'profile_picture as profilePicture',
+      'username',
+      'first_name as firstName',
+      'last_name as lastName',
+    )
+    .first()
+    .where({ id })
   return user as Users
 }
 
