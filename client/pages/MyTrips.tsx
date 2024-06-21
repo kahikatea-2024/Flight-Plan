@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
+import { format } from 'date-fns'
 
 export function MyTrips() {
   const { data, isLoading, isError } = useTrips(2)
@@ -35,12 +36,12 @@ export function MyTrips() {
                     <div className="field is-grouped">
                       <div className="column is-third">
                         <p className="card-content has-text-left is-size-5">
-                          Start: {startDate}
+                          Start: {format(new Date(startDate), 'dd MMMM yyyy')}
                         </p>
                       </div>
                       <div className="column is-third">
                         <p className="card-content has-text-right is-size-5">
-                          End: {endDate}
+                          End: {format(new Date(endDate), 'dd MMMM yyyy')}
                         </p>
                       </div>
                     </div>
