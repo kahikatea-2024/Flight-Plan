@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
 
 export function MyTrips() {
-  const { data, isLoading, isError } = useTrips(1)
+  const { data, isLoading, isError } = useTrips(2)
+
+  console.log('Trips:', data)
+
   //TODO make dynamic
 
   if (isLoading) {
@@ -36,7 +39,12 @@ export function MyTrips() {
                         </p>
                       </div>
                     </div>
-                    <Link to={'/schedule'}>
+                    <Link
+                      to={{
+                        pathname: '/schedule',
+                        search: `?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&tripName=${encodeURIComponent(tripName)}`,
+                      }}
+                    >
                       {/* //TODO make dynamic */}
                       <button className="button is-primary is-centered mb-5">
                         View Detail

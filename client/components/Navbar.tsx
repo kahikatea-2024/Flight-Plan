@@ -1,10 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'bulma/css/bulma.css'
 import { Link } from 'react-router-dom'
+import { useTrips } from '../hooks/useTrips'
+import { Trips } from '../../models/flightplan'
 // import './styles.scss'
 
 export function NavBar() {
   const [isActive, setIsActive] = useState(false)
+  const { data: trips } = useTrips(2)
+  const [firstTrip, setFirstTrip] = useState<Trips | null>(null)
+
+  useEffect(() => {
+    if (trips && trips.length > 0) {
+      setFirstTrip(trips[0])
+    }
+  }, [trips])
+
+  const schedulePath = firstTrip
+    ? `/schedule?startDate=${encodeURIComponent(firstTrip.startDate)}&endDate=${encodeURIComponent(firstTrip.endDate)}&tripName=${encodeURIComponent(firstTrip.tripName)}`
+    : '#'
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -33,7 +47,7 @@ export function NavBar() {
           <Link to={'/my-trips'} className="navbar-item">
             My Trips
           </Link>
-          <Link to={'/schedule'} className="navbar-item">
+          <Link to={schedulePath} className="navbar-item">
             Schedule
           </Link>
           <div className="navbar-item has-dropdown is-hoverable">
