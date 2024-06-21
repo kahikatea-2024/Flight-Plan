@@ -4,9 +4,9 @@ import {
   Friends,
   Trips,
   Users,
-  EventData,
   TripsData,
   UserData,
+  EventData,
 } from '../../models/flightplan.ts'
 
 //
@@ -157,6 +157,21 @@ export async function getEventsByTripId(id: number) {
   return events as Events[]
 }
 
+// add attendees to trip
+// get trip id, user name/(ids)
+// users table, where username = true pluck id of user
+// inser into join {trip.id, user.id}
+// (multiple = array and map)
+
+// Add User to Trip
+
+// export async function addUserToTrip(id: number, userName: string){
+// const user = await db('trips')
+// .join('trip_users', 'trips.id', 'trip_users.trip_id')
+// .join('users', 'trip_users.user_id', 'users.id').where({userName}).insert()
+
+// }
+
 // Add a Trip
 export async function addTrip(data: Trips) {
   const { id, createdBy, tripName, startDate, endDate } = data
@@ -168,6 +183,10 @@ export async function addTrip(data: Trips) {
     end_date: endDate,
   })
 }
+
+// Add a Trip by User Id
+
+export async function addTripByUserId() {}
 
 // Delete a Trip
 export async function deleteTrip(id: number) {
@@ -198,33 +217,38 @@ export async function getAllEvents() {
 }
 // Get event by ID
 export async function getEventById(id: number) {
+  console.log(id)
   const event = await db('events').select().first().where({ id })
   return event as Events
 }
 
+// Get event by Date
+export async function getEventByDate(date: string) {
+  const event = await db('events').where('date', date).select().first()
+  return event as Events
+}
 //Add New Event
 export async function addNewEvent(newEvent: Events) {
   return await db('events').insert(newEvent)
 }
 
-//Add New Event by  Id
-export async function addNewEventByTripId(id: number, newEvent: EventData) {
-  const { tripId, date, startTime, endTime, description, note, createdBy } =
+//Add New Event by Date
+export async function addNewEventByTripDate(newEvent: EventData) {
+  const { date, tripId, startTime, endTime, description, note, createdBy } =
     newEvent
 
-  const [newEventId] = await db('events')
-    .where({ id })
+  const newEventDate = await db('events')
     .insert({
-      trip_id: tripId,
       date,
+      trip_id: tripId,
       start_time: startTime,
       end_time: endTime,
       description,
       notes: note,
       created_by: createdBy,
     })
-    .returning('id')
-  return newEventId
+    .returning('date')
+  return newEventDate
 }
 
 //Edit Events by ID
