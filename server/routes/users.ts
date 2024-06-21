@@ -11,6 +11,9 @@ router.get('/', async (req, res) => {
   try {
     const users = await db.getAllUsers()
 
+    //gets all info of users
+    //res.json(users) 
+    
     res.json({ users: users.map((user) => user.username) })
   } catch (error) {
     console.log(error)
