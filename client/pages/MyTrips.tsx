@@ -3,7 +3,7 @@ import { useTrips } from '../hooks/useTrips'
 import { format } from 'date-fns'
 
 export function MyTrips() {
-  const { data, isLoading, isError } = useTrips(2)
+  const { data, isLoading, isError } = useTrips(1)
 
   console.log('Trips:', data)
 
