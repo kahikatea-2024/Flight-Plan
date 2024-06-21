@@ -36,7 +36,7 @@ export function MyTrips() {
                         </p>
                       </div>
                     </div>
-                    <Link to={'/view-trip/1'}>
+                    <Link to={'/schedule'}>
                       {/* //TODO make dynamic */}
                       <button className="button is-primary is-centered mb-5">
                         View Detail

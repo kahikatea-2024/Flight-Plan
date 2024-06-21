@@ -6,16 +6,19 @@ import {
   Users,
   EventData,
   TripsData,
+  UserData,
 } from '../../models/flightplan.ts'
 
 //
 //USERS
 //
+
 // Get all users
 export async function getAllUsers() {
   const users = await db('users').select()
   return users as Users[]
 }
+
 // Get user by ID
 export async function getUserById(id: number) {
   const user = await db('users')
@@ -51,6 +54,7 @@ export async function getTripsByUserId(id: number) {
 }
 
 // Get Following by User ID
+
 export async function getFollowingByUserId(id: number) {
   const follow = await db('users')
     .join('friends_list', 'users.id', 'friends_list.user_id')
@@ -59,19 +63,49 @@ export async function getFollowingByUserId(id: number) {
   return follow as Friends[]
 }
 
-//
-//EVENTS
-//
+// Add a User
 
-// Get all Events
-export async function getAllEvents() {
-  const events = await db('events').select()
-  return events as Events[]
+export async function addUser(data: Users) {
+  const {
+    id,
+    email,
+    phoneNumber,
+    profilePicture,
+    username,
+    firstName,
+    lastName,
+  } = data
+  await db('users').insert({
+    id,
+    email,
+    phone_number: phoneNumber,
+    profile_picture: profilePicture,
+    username,
+    first_name: firstName,
+    last_name: lastName,
+  })
 }
-// Get event by ID
-export async function getEventById(id: number) {
-  const event = await db('events').select().first().where({ id })
-  return event as Events
+
+// Edit a User
+export async function updateUser(id: number, updatedUser: UserData) {
+  const { email, phoneNumber, profilePicture, username, firstName, lastName } =
+    updatedUser
+
+  const newUser = await db('users').where({ id }).update({
+    email,
+    phone_number: phoneNumber,
+    profile_picture: profilePicture,
+    username,
+    first_name: firstName,
+    last_name: lastName,
+  })
+  return newUser
+}
+
+// Delete a User
+
+export async function deleteUser(id: number) {
+  await db('users').where({ id }).del()
 }
 
 //
@@ -87,6 +121,8 @@ export async function getAllTrips() {
 // Get Trip by ID
 export async function getTripById(id: number) {
   const trip = await db('trips').select().first().where({ id })
+  console.log(trip)
+
   return trip as Trips
 }
 
@@ -122,9 +158,10 @@ export async function getEventsByTripId(id: number) {
 }
 
 // Add a Trip
-export async function addTrip(data: TripsData) {
-  const { createdBy, tripName, startDate, endDate } = data
+export async function addTrip(data: Trips) {
+  const { id, createdBy, tripName, startDate, endDate } = data
   await db('trips').insert({
+    id,
     created_by: createdBy,
     trip_name: tripName,
     start_date: startDate,
@@ -148,6 +185,21 @@ export async function updateTrip(id: number, updatedTrip: TripsData) {
     end_date: endDate,
   })
   return newTrip
+}
+
+//
+//EVENTS
+//
+
+// Get all Events
+export async function getAllEvents() {
+  const events = await db('events').select()
+  return events as Events[]
+}
+// Get event by ID
+export async function getEventById(id: number) {
+  const event = await db('events').select().first().where({ id })
+  return event as Events
 }
 
 //Add New Event

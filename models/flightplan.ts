@@ -26,9 +26,19 @@ export interface Users {
   email: string
   firstName: string
   lastName: string
-  phoneNumber: number
+  phoneNumber: string
   profilePicture: string
 }
+
+export interface SanitizedUser {
+  id: number | undefined
+  username: string
+  firstName: string
+  lastName: string
+  profilePicture: string
+}
+
+export type UserData = Omit<Users, 'id'>
 
 export interface Trip_users {
   id: number

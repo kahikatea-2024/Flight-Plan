@@ -2,18 +2,39 @@ import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 
 import 'react-datepicker/dist/react-datepicker.css'
+import { useNavigate } from 'react-router-dom'
+import { addTrip } from '../apis/trips'
+import { Trips } from '../../models/flightplan'
 
 export function NewTrip() {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [tripName, setTripName] = useState('')
+  const navigate = useNavigate()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    // Add your form submission logic here
-    console.log('Trip Name:', tripName)
-    console.log('Start Date:', startDate)
-    console.log('End Date:', endDate)
+
+    const tripData: Trips = {
+      id: Date.now(), // or some other unique ID generator
+      createdBy: 'User Name', // replace with actual user id or name
+      tripName,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    }
+
+    try {
+      await addTrip(tripData)
+      navigate('/schedule', {
+        state: {
+          startDate: startDate,
+          endDate: endDate,
+          tripName,
+        },
+      })
+    } catch (error) {
+      console.error('Failed to add trip:', error)
+    }
   }
 
   return (
