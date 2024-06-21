@@ -31,6 +31,22 @@ router.get('/:id', async (req, res, next) => {
     next(err)
   }
 })
+// Get event by Date
+router.get('/date/:date', async (req, res, next) => {
+  try {
+    console.log(req.params.date)
+    const date = req.params.date
+    const event = await db.getEventByDate(date)
+
+    if (!event) {
+      res.sendStatus(404)
+    } else {
+      res.json(event)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
 
 //Add New Event
 router.post('/', async (req, res) => {
@@ -44,21 +60,14 @@ router.post('/', async (req, res) => {
 })
 
 //Add New Event by  id
-router.post('/:id', async (req, res) => {
+router.post('/date/:date', async (req, res) => {
   try {
-    const id = Number(req.params.id)
-    const { tripId, date, startTime, endTime, description, note, createdBy } =
-      req.body
-    const updatedEvent = {
-      tripId,
+    const date = req.params.date
+    const newEvent = {
+      ...req.body,
       date,
-      startTime,
-      endTime,
-      description,
-      note,
-      createdBy,
     }
-    await db.addNewEventByTripId(id, updatedEvent)
+    await db.addNewEventByTripDate(newEvent)
     res.sendStatus(201)
   } catch (error) {
     res
