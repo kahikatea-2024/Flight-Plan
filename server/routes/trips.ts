@@ -65,14 +65,9 @@ router.get('/:id/events', async (req, res, next) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { createdBy, tripName, startDate, endDate } = req.body
+    const { id, createdBy, tripName, startDate, endDate } = req.body
 
-    const newTrip = {
-      createdBy,
-      tripName,
-      startDate,
-      endDate,
-    }
+    const newTrip = { id, createdBy, tripName, startDate, endDate }
     await db.addTrip(newTrip)
     res.sendStatus(200)
   } catch (error) {
