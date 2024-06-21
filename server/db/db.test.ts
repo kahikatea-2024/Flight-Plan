@@ -133,6 +133,7 @@ describe('deleteTrip', () => {
 describe('addTrip', () => {
   it('adds a trip to database', async () => {
     const trip = {
+      id: 1,
       createdBy: 'Reggie',
       tripName: 'cape',
       startDate: 'aaaaa',

@@ -157,6 +157,21 @@ export async function getEventsByTripId(id: number) {
   return events as Events[]
 }
 
+// add attendees to trip
+// get trip id, user name/(ids)
+// users table, where username = true pluck id of user
+// inser into join {trip.id, user.id}
+// (multiple = array and map)
+
+// Add User to Trip
+
+// export async function addUserToTrip(id: number, userName: string){
+// const user = await db('trips')
+// .join('trip_users', 'trips.id', 'trip_users.trip_id')
+// .join('users', 'trip_users.user_id', 'users.id').where({userName}).insert()
+
+// }
+
 // Add a Trip
 export async function addTrip(data: Trips) {
   const { id, createdBy, tripName, startDate, endDate } = data
@@ -171,9 +186,7 @@ export async function addTrip(data: Trips) {
 
 // Add a Trip by User Id
 
-export async function addTripByUserId(){
-  
-}
+export async function addTripByUserId() {}
 
 // Delete a Trip
 export async function deleteTrip(id: number) {
