@@ -238,6 +238,7 @@ export async function addNewEventByTripDate(newEvent: EventData) {
     newEvent
 
   const newEventDate = await db('events')
+    .join('trips', 'trips.id', 'events.trip_id')
     .insert({
       date,
       trip_id: tripId,
