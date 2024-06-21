@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom'
 import { useEvents } from '../hooks/useEvents'
-import { format } from 'date-fns'
 
 //TODO make dynamic and make get events by day back end route
 //Or make calendar selection scroll
@@ -18,17 +17,35 @@ export function EventsByDay() {
     return <p>Error getting events</p>
   }
 
-  const sortedData = data.sort(
-    (a, b) => date,
-    a.startTime.localeCompare(b.startTime),
-  )
-  console.log(sortedData)
+  //SORTING THE TIME
+  data.sort((a, b) => {
+    const parseTime = (time: string): { hour: number; isPM: boolean } => {
+      const hour = parseInt(time) // Get the numerical part of the time
+      const isPM = time.toLowerCase().includes('pm') // Check if it's 'pm'
+      return { hour, isPM }
+    }
+
+    const { hour: hourA, isPM: isPMA } = parseTime(a.startTime)
+    const { hour: hourB, isPM: isPMB } = parseTime(b.startTime)
+
+    // Compare hours taking 'pm' into account
+    if (isPMA && !isPMB) {
+      return 1 // a should come after b (b is am, a is pm)
+    } else if (!isPMA && isPMB) {
+      return -1 // a should come before b (a is am, b is pm)
+    } else {
+      // Same am/pm or both am or both pm, compare numerical hours
+      return hourA - hourB
+    }
+  })
+
+  // console.log('sorted', data)
 
   return (
     <section className="mb-6">
       <div className="container is-fluid">
         <h1 className="is-size-2 has-text-centered has-text-primary">Events</h1>
-        <>{console.log('data', data)}</>
+
         {/* <div className="column is-fluid"> */}
         {data.length >= 1 ? (
           <ul className="">
