@@ -53,9 +53,8 @@ export async function getTripByCreatedBy(id: number) {
 // Get Trip by User ID
 export async function getTripsByUserId(id: number) {
   const trip = await db('users')
-    .join('trip_users', 'users.id', 'trip_users.user_id')
-    .join('trips', 'trip_users.trip_id', 'trips.id')
-    .where('users.id', id)
+    .join('trips', 'users.id', 'trips.created_by')
+    .where('trips.created_by', id)
     .select(
       'first_name as firstName',
       'last_name as lastName',

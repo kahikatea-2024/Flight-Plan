@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
+import { format } from 'date-fns'
 
 export function MyTrips() {
-  const { data, isLoading, isError } = useTrips(1)
+  const { data, isLoading, isError } = useTrips(2)
+
+  console.log('Trips:', data)
+
   //TODO make dynamic
 
   if (isLoading) {
@@ -17,27 +21,37 @@ export function MyTrips() {
         <h1 className="title has-text-centered has-text-primary">My Trips</h1>
         <div className="column is-fluid">
           <div className="column is-half is-offset-one-quarter">
+            <div className="container is-centered">
+              <Link to={'/new-trip'}>
+                <button className="button is-primary mb-5">Add Trip</button>
+              </Link>
+            </div>
             {data.length >= 1 ? (
-              <ul className="card is-primary is-outlined">
+              <ul>
                 {data.map(({ tripName, startDate, endDate }) => (
-                  <li key={tripName}>
+                  <li key={tripName} className="card is-primary is-outlined">
                     <p className="card-header-title is-centered is-size-4">
                       {tripName}
                     </p>
                     <div className="field is-grouped">
                       <div className="column is-third">
                         <p className="card-content has-text-left is-size-5">
-                          Start: {startDate}
+                          Start: {format(new Date(startDate), 'dd MMMM yyyy')}
                         </p>
                       </div>
                       <div className="column is-third">
                         <p className="card-content has-text-right is-size-5">
-                          End: {endDate}
+                          End: {format(new Date(endDate), 'dd MMMM yyyy')}
                         </p>
                       </div>
                     </div>
-                    <Link to={'/schedule'}>
-                      {/* //TODO make dynamic */}
+                    <Link
+                      to={{
+                        pathname: '/schedule',
+                        search: `?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&tripName=${encodeURIComponent(tripName)}`,
+                      }}
+                    >
+                      {/* //TODO user can delete a trip */}
                       <button className="button is-primary is-centered mb-5">
                         View Detail
                       </button>
@@ -54,11 +68,6 @@ export function MyTrips() {
               </>
             )}
             {/* <h2 className="has-text-centered mb-5">Add a new Trip</h2> */}
-            <div className="container is-centered">
-              <Link to={'/new-trip'}>
-                <button className="button is-primary ">Add Trip</button>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
