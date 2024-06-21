@@ -223,9 +223,9 @@ export async function getEventById(id: number) {
 }
 
 // Get event by Date
-export async function getEventByDate(date: string) {
-  const event = await db('events').where('date', date).select().first()
-  return event as Events
+export async function getEventsByDate(date: string) {
+  const event = await db('events').where('date', date).select()
+  return event as Events[]
 }
 //Add New Event
 export async function addNewEvent(newEvent: Events) {
@@ -321,7 +321,7 @@ export async function addFriend(userId: number, friendId: number) {
 
 //Delete Friend from friend list
 
-export async function deleteFriend(userId, friendId) {
+export async function deleteFriend(userId: number, friendId: number) {
   try {
     const deleteRow = await db('friends_list')
       .where({ user_id: userId, friends_id: friendId })
