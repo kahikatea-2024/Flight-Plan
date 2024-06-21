@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { format, eachDayOfInterval } from 'date-fns'
+import { AddTravller } from '../components/AddTraveller'
 
 const generateDateList = (startDate: Date, endDate: Date): Date[] => {
   return eachDayOfInterval({ start: startDate, end: endDate })
@@ -27,6 +28,14 @@ export function Schedule() {
       <div className="container is-fluid">
         <h1 className="title has-text-centered">Trip Schedule</h1>
         <h2 className="subtitle has-text-centered">{tripName}</h2>
+        <div className="travellers-container">
+          <h3 className="has-text-centered">
+            Click + to add a traveller to the trip, double click to remove them
+          </h3>
+          <div className="travellers-wrapper">
+            <AddTravller />
+          </div>
+        </div>
         <div className="dates-list-container">
           <ul>
             {dates.map((date, index) => (
