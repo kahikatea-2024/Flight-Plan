@@ -12,9 +12,9 @@ router.get('/', async (req, res) => {
     const users = await db.getAllUsers()
 
     //gets all info of users
-    //res.json(users) 
-    
-    res.json({ users: users.map((user) => user.username) })
+    res.json(users)
+
+    // res.json({ users: users.map((user) => user.username) })
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })
