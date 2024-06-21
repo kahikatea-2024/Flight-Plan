@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { getEvents } from '../apis/events.ts'
-import { Events } from '../../models/flightplan'
+import { addEvent, getEvents } from '../apis/events.ts'
 
+//TODO change tripId to date
 export function useEvents(tripId: number) {
-  // const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
   const { data, isLoading, isError } = useQuery({
     queryKey: ['events', tripId],
     queryFn: async () => {
@@ -11,12 +11,12 @@ export function useEvents(tripId: number) {
       return res
     },
   })
-  // const mutation = useMutation({
-  //   mutationFn: (data) => addTrip(data),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['trips'] })
-  //   },
-  // })
-  // return { data, mutation, isLoading }
-  return { data, isLoading, isError }
+  const mutation = useMutation({
+    mutationFn: (data) => addEvent(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['events'] })
+    },
+  })
+  return { data, mutation, isLoading, isError }
+  // return { data, isLoading, isError }
 }
