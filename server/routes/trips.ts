@@ -105,4 +105,21 @@ router.patch('/:id', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
+
+// Add User to Trip id
+
+router.post('/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id)
+    const { username } = req.body
+    console.log('route', req.body)
+
+    const final = await db.addUserToTrip(id, username)
+
+    res.status(200).json({ updated: final })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
 export default router

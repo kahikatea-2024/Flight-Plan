@@ -165,12 +165,14 @@ export async function getEventsByTripId(id: number) {
 
 // Add User to Trip
 
-// export async function addUserToTrip(id: number, userName: string){
-// const user = await db('trips')
-// .join('trip_users', 'trips.id', 'trip_users.trip_id')
-// .join('users', 'trip_users.user_id', 'users.id').where({userName}).insert()
-
-// }
+export async function addUserToTrip(tripId: number, username: string) {
+  const userId = await db('users')
+    .select('id')
+    .where('username', username)
+    .first()
+  const attendeeData = { user_id: userId.id, trip_id: tripId }
+  return await db('trip_users').insert(attendeeData)
+}
 
 // Add a Trip
 export async function addTrip(data: Trips) {
