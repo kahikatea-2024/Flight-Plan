@@ -57,7 +57,7 @@ export async function getTripsByUserId(id: number) {
 
 export async function getFollowingByUserId(id: number) {
   const follow = await db('users')
-    .join('following_list', 'users.id', 'following_list.user_id')
+    .join('friends_list', 'users.id', 'friends_list.user_id')
     .where('users.id', id)
     .select('users.id as id', 'first_name as firstName', 'username')
   return follow as Friends[]
@@ -280,4 +280,67 @@ export async function updateEventsById(
 // Delete Event by ID
 export async function deleteEvent(id: number) {
   return await db('events').where({ id }).del()
+}
+
+//Get Friends
+export async function getFriends(UserId: number) {
+  try {
+    const friends = await db('friends_list')
+      .join('users', 'friends_list.friends_id', '=', 'users.id')
+      .select(
+        'users.id as id ',
+        'users.username as username',
+        'users.first_name as firstName',
+        'users.last_name as lastName',
+        'users.profile_picture as profilePicture',
+      )
+      .where('friends_list.user_id', UserId)
+
+    return { friends }
+  } catch (error) {
+    console.error('Error retrieving friends:', error)
+    throw new Error('Failed to retrieve friends')
+  }
+}
+
+//Add User to Friends List
+
+export async function addFriend(userId: number, friendId: number) {
+  //Check if userId and friendId exist in user table
+
+  const userExists = await db('users').where('id', userId).first()
+  const friendExists = await db('users').where('id', friendId).first()
+
+  if (!userExists || !friendExists) {
+    throw new Error('User ID or Friend ID does not exist')
+  }
+
+  try {
+    const newFriend = await db('friends_list').insert({
+      user_id: userId,
+      friends_id: friendId,
+    })
+    return { success: true, message: 'Friend added successfully', newFriend }
+  } catch (error) {
+    console.error('Error inserting friend:', error)
+    throw new Error('Failed to add friend')
+  }
+}
+
+//Delete Friend from friend list
+
+export async function deleteFriend(userId: number, friendId: number) {
+  try {
+    const deleteRow = await db('friends_list')
+      .where({ user_id: userId, friends_id: friendId })
+      .del()
+    if (deleteRow > 0) {
+      return { success: true, message: 'Friend removed successfully' }
+    } else {
+      throw new Error('No such friendship exists')
+    }
+  } catch (error) {
+    console.log('Error delete friend:', error)
+    throw new Error('Failed to delete friend')
+  }
 }
