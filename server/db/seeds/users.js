@@ -5,6 +5,8 @@
 export async function seed(knex) {
   // Deletes ALL existing entries
   await knex('users').del()
+
+  // Inserts seed entries
   await knex('users').insert([
     {
       id: 1,
@@ -27,7 +29,7 @@ export async function seed(knex) {
       profile_picture: '',
     },
     {
-      id: 1,
+      id: 3,
       username: 'BradC',
       email: 'Brad@example.com',
       auth0id: 'auth0|xxx345',
@@ -37,7 +39,7 @@ export async function seed(knex) {
       profile_picture: '',
     },
     {
-      id: 1,
+      id: 4,
       username: 'RegieM',
       email: 'regie@example.com',
       auth0id: 'auth0|xxx456',

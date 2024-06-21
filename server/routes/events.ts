@@ -36,7 +36,7 @@ router.get('/date/:date', async (req, res, next) => {
   try {
     console.log(req.params.date)
     const date = req.params.date
-    const event = await db.getEventByDate(date)
+    const event = await db.getEventsByDate(date)
 
     if (!event) {
       res.sendStatus(404)
