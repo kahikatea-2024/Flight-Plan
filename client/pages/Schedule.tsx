@@ -20,7 +20,7 @@ export function Schedule() {
   const dates = generateDateList(start, end)
 
   const handleDateClick = (date: Date) => {
-    navigate(`/date/${format(date, 'yyyy-MM-dd')}`)
+    navigate(`/date/${format(date, 'dd-MM-yyyy')}`)
   }
 
   return (

@@ -223,9 +223,17 @@ export async function getEventById(id: number) {
 }
 
 // Get event by Date
-export async function getEventByDate(date: string) {
-  const event = await db('events').where('date', date).select().first()
-  return event as Events
+export async function getEventsByDate(date: string) {
+  const event = await db('events')
+    .where('date', date)
+    .select(
+      'date',
+      'start_time as startTime',
+      'end_time as endTime',
+      'description',
+      'notes',
+    )
+  return event as Events[]
 }
 //Add New Event
 export async function addNewEvent(newEvent: Events) {

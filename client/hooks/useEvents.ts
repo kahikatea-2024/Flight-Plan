@@ -2,12 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { addEvent, getEvents } from '../apis/events.ts'
 
 //TODO change tripId to date
-export function useEvents(tripId: number) {
+export function useEvents(date: string) {
   const queryClient = useQueryClient()
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['events', tripId],
+    queryKey: ['events', date],
     queryFn: async () => {
-      const res = getEvents(tripId)
+      const res = getEvents(date)
       return res
     },
   })

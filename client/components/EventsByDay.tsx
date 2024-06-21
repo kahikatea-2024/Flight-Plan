@@ -1,13 +1,15 @@
+import { useParams } from 'react-router-dom'
 import { useEvents } from '../hooks/useEvents'
+import { format } from 'date-fns'
 
 //TODO make dynamic and make get events by day back end route
 //Or make calendar selection scroll
-const day = 1
 
 export function EventsByDay() {
-  const { data, isLoading, isError } = useEvents(day)
-  //TODO make dynamic
+  const day = useParams()
+  const date = day.date
 
+  const { data, isLoading, isError } = useEvents(date)
   console.log('day', day)
   if (isLoading) {
     return <p>Loading</p>
@@ -17,24 +19,25 @@ export function EventsByDay() {
   }
   return (
     <section className="mb-6">
-      <div>day</div>
       <div className="container is-fluid">
-        <h1 className="title has-text-centered has-text-primary">
-          Todays Events
-        </h1>
+        <h1 className="is-size-2 has-text-centered has-text-primary">Events</h1>
+        <>{console.log('data', data)}</>
         {/* <div className="column is-fluid"> */}
         {data.length >= 1 ? (
-          <ul className="card is-primary is-outlined">
-            {data.map(({ id, description, startTime, endTime, notes }) => (
-              <li key={id + description}>
-                <p className="card-content has-text-left is-size-5 pb-1">
+          <ul className="">
+            {data.map(({ id, description, startTime, endTime, note }) => (
+              <li
+                key={id + description}
+                className="card is-primary is-outlined"
+              >
+                <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
                   <span> Start Time: {startTime} </span>
                   <span className="ml-6">End Time: {endTime}</span>
                 </p>
 
                 <p className="card-content is-size-5 pb-1">{description}</p>
                 <div className="">
-                  <p className="card-content is-size-5">Note: {notes}</p>
+                  <p className="card-content is-size-5">Note: {note}</p>
                 </div>
               </li>
             ))}

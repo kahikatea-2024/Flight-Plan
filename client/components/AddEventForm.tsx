@@ -1,41 +1,38 @@
 import { useState } from 'react'
 import { EventData } from '../../models/flightplan'
 import { addEvent } from '../apis/events'
+import { useParams } from 'react-router-dom'
 
-// { tripId, selectedDate, userId }
 export function AddEvent() {
-  //use params for date
-  const selectedDate = '1/07/2024'
+  const selectedDate = useParams()
   const tripId = 1
-  const userId = 2
+  const userId = '2'
 
   const [title, setTitle] = useState('')
   // const [startDate, setStartDate] = useState(selectedDate)
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
-  const [startTimeOfDay, setStartTimeOfDay] = useState('')
-  const [endTimeOfDay, setEndTimeOfDay] = useState('')
+  const [startTimeOfDay, setStartTimeOfDay] = useState('AM')
+  const [endTimeOfDay, setEndTimeOfDay] = useState('PM')
   const [note, setNote] = useState('')
 
   //TODO - fix state for AM/PM
-  function combineTimeAndDay(
-    startTime: string,
-    startTimeOfDay: string,
-  ): string {
+  function combineTimeAndDay(time: string, timeOfDay: string): string {
     // Combine time and day using template literals
-    return `${startTime}${startTimeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
+    return `${time}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
   }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     // console.log('time', startTime, startTimeOfDay)
     const startTimeCombined = combineTimeAndDay(startTime, startTimeOfDay)
+    const endTimeCombined = combineTimeAndDay(endTime, endTimeOfDay)
     // console.log('com', startTimeCombined)
     const eventData: EventData = {
       tripId: tripId,
       description: title,
-      date: selectedDate,
+      date: selectedDate.date,
       startTime: startTimeCombined,
-      endTime: endTime,
+      endTime: endTimeCombined,
       note: note,
       createdBy: userId,
     }
@@ -45,7 +42,7 @@ export function AddEvent() {
     } catch (error) {
       console.error('Failed to add event:', error)
     }
-    console.log(eventData)
+    console.log('data', eventData)
   }
 
   return (
@@ -53,7 +50,7 @@ export function AddEvent() {
       <div className="container is-fluid is-centered">
         <div className="columns is-fluid">
           <div className="column  ">
-            <h2 className="title has-text-centered has-text-primary">
+            <h2 className="is-size-2 has-text-centered has-text-primary">
               Add An Event
             </h2>
             <form
