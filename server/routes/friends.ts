@@ -24,11 +24,11 @@ router.post('/add-friend', async (req, res) => {
 
 // GET /api/friends/:userId
 router.get('/:userId', async (req, res) => {
-  const userId = Number(req.params.userId)
+  const { userId } = req.params
   console.log(userId)
 
   try {
-    const friends = await db.getFriends(userId)
+    const friends = await db.getFriends(parseInt(userId))
     res.status(200).json(friends)
   } catch (error) {
     res.status(500)
@@ -36,5 +36,18 @@ router.get('/:userId', async (req, res) => {
 })
 
 //Delete Followers
+router.delete('/delete-friend', async (req, res) => {
+  const { userId, friendId } = req.body
+
+  if (!userId || !friendId) {
+    return res.status(400).json({ error: 'User ID and Friend ID are required' })
+  }
+  try {
+    const result = await db.deleteFriend(parseInt(userId), parseInt(friendId))
+    res.status(200).json(result)
+  } catch (error) {
+    res.status(500)
+  }
+})
 
 export default router
