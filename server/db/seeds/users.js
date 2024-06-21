@@ -27,7 +27,7 @@ export async function seed(knex) {
       profile_picture: '',
     },
     {
-      id: 1,
+      id: 3,
       username: 'BradC',
       email: 'Brad@example.com',
       auth0id: 'auth0|xxx345',
@@ -37,7 +37,7 @@ export async function seed(knex) {
       profile_picture: '',
     },
     {
-      id: 1,
+      id: 4,
       username: 'RegieM',
       email: 'regie@example.com',
       auth0id: 'auth0|xxx456',
