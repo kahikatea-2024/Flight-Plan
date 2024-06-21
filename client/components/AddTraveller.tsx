@@ -7,21 +7,21 @@ export function AddTravller() {
   const fakeFriends: SanitizedUser[] = [
     {
       id: 2,
-      username: 'aimee',
+      username: 'AimeeK',
       firstName: 'Aimee',
       lastName: 'Kilmartin',
       profilePicture: '',
     },
     {
       id: 3,
-      username: 'brad',
+      username: 'BradC',
       firstName: 'Brad',
       lastName: 'Craig',
       profilePicture: '',
     },
     {
       id: 4,
-      username: 'regie',
+      username: 'RegieM',
       firstName: 'Regie',
       lastName: 'Malonzo',
       profilePicture: '',
@@ -30,7 +30,7 @@ export function AddTravller() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedFriends, setSelectedFriends] = useState<SanitizedUser[]>([])
-  const { isLoading, isError,} = useAddUserToTrips();
+  const { isLoading, isError } = useAddUserToTrips()
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
@@ -56,15 +56,14 @@ export function AddTravller() {
     // Call your hook to add each selected friend to the trip
     selectedFriends.forEach(async (friend) => {
       try {
-        await addUserToTrip(tripId, friend.username) 
+        await addUserToTrip(tripId, friend.username)
         console.log(friend.username)
         console.log(`Added ${friend.username} to the trip successfully`)
       } catch (error) {
         console.error(`Failed to add ${friend.username} to the trip`, error)
-        
       }
     })
-    setSelectedFriends([]) 
+    setSelectedFriends([])
   }
 
   return (
