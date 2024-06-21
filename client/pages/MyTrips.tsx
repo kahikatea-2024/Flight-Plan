@@ -51,7 +51,7 @@ export function MyTrips() {
                         search: `?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&tripName=${encodeURIComponent(tripName)}`,
                       }}
                     >
-                      {/* //TODO make dynamic */}
+                      {/* //TODO user can delete a trip */}
                       <button className="button is-primary is-centered mb-5">
                         View Detail
                       </button>
