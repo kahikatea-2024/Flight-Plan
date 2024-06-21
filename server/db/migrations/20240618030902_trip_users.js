@@ -8,8 +8,8 @@
 export async function up(knex) {
   return knex.schema.createTable('trip_users', (table) => {
     table.increments('id').primary()
-    table.integer('trip_id').references('trips.id')
-    table.integer('user_id').references('users.id')
+    table.integer('trip_id')
+    table.integer('user_id')
   })
 }
 
