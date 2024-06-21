@@ -10,11 +10,22 @@ export async function seed(knex) {
     {
       id: 1,
       trip_id: 1,
-      date: '5/7/2024',
+      created_by: 2,
+      date: '10-07-2024',
       start_time: '1600',
       end_time: '1800',
       description: 'meet at zebra cafe',
       notes: 'bring sunblock',
+    },
+    {
+      id: 2,
+      trip_id: 1,
+      created_by: 2,
+      date: '15/07/2024',
+      start_time: '2000',
+      end_time: '0030',
+      description: 'sunrise bar and grill',
+      notes: 'casual dress',
     },
   ])
 }

@@ -35,12 +35,14 @@
     "@auth0/auth0-react": "^1.12.0",
     "bulma": "^1.0.1",
     "express": "^4.17.2",
-    "express-jwt": "^7.7.5",
+    "express-jwt": "^8.4.1",
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^2.1.5",
     "knex": "^2.5.1",
     "node-sass": "^9.0.0",
+    "react-date-picker": "^11.0.0",
+    "react-datepicker": "^7.1.0",
     "sqlite3": "^5.1.6",
     "superagent": "^8.1.2"
   },
@@ -96,11 +98,7 @@
   "prettier": {
     "semi": false,
     "singleQuote": true,
-    "plugins": [
-  
-    ]
-   
+    "plugins": []
   },
   "browserslist": "> 2%, not dead"
 }
-
