@@ -20,10 +20,15 @@ export function MyTrips() {
         <h1 className="title has-text-centered has-text-primary">My Trips</h1>
         <div className="column is-fluid">
           <div className="column is-half is-offset-one-quarter">
+            <div className="container is-centered">
+              <Link to={'/new-trip'}>
+                <button className="button is-primary mb-5">Add Trip</button>
+              </Link>
+            </div>
             {data.length >= 1 ? (
-              <ul className="card is-primary is-outlined">
+              <ul>
                 {data.map(({ tripName, startDate, endDate }) => (
-                  <li key={tripName}>
+                  <li key={tripName} className="card is-primary is-outlined">
                     <p className="card-header-title is-centered is-size-4">
                       {tripName}
                     </p>
@@ -62,11 +67,6 @@ export function MyTrips() {
               </>
             )}
             {/* <h2 className="has-text-centered mb-5">Add a new Trip</h2> */}
-            <div className="container is-centered">
-              <Link to={'/new-trip'}>
-                <button className="button is-primary ">Add Trip</button>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
