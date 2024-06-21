@@ -48,6 +48,22 @@ router.get('/:id/trips', async (req, res, next) => {
   }
 })
 
+// Get Trips by CreatedBy
+router.get('/:id/created', async (req, res, next) => {
+  try {
+    const id = Number(req.params.id)
+    const trip = await db.getTripByCreatedBy(id)
+
+    if (!trip) {
+      res.sendStatus(404)
+    } else {
+      res.json(trip)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 // Add User
 router.post('/', async (req, res) => {
   try {
@@ -106,6 +122,8 @@ router.patch('/:id', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
+
+//delet user
 
 router.delete('/:id', async (req, res) => {
   try {

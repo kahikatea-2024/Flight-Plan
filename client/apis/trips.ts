@@ -23,3 +23,18 @@ export async function addTrip(tripData: Trips): Promise<void> {
     throw error
   }
 }
+
+export async function addUserToTrip(
+  id: number,
+  username: string,
+): Promise<void> {
+  try {
+    await request
+      .post(`/api/v1/trips${id}`)
+      .set('Content-Type', 'application/json')
+      .send({ username })
+  } catch (error) {
+    console.error('Error adding trip:', error)
+    throw error
+  }
+}

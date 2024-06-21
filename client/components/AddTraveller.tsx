@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { SanitizedUser } from '../../models/flightplan'
+import { useAddUserToTrips } from '../hooks/useTrips'
+import { addUserToTrip } from '../apis/trips'
 
 export function AddTravller() {
   const fakeFriends: SanitizedUser[] = [
@@ -28,6 +30,7 @@ export function AddTravller() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedFriends, setSelectedFriends] = useState<SanitizedUser[]>([])
+  const { isLoading, isError,} = useAddUserToTrips();
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
@@ -47,6 +50,21 @@ export function AddTravller() {
     setSelectedFriends(
       selectedFriends.filter((friend) => friend.id !== friendId),
     )
+  }
+
+  const handleAddTravellers = async () => {
+    // Call your hook to add each selected friend to the trip
+    selectedFriends.forEach(async (friend) => {
+      try {
+        await addUserToTrip(tripId, friend.username) 
+        console.log(friend.username)
+        console.log(`Added ${friend.username} to the trip successfully`)
+      } catch (error) {
+        console.error(`Failed to add ${friend.username} to the trip`, error)
+        
+      }
+    })
+    setSelectedFriends([]) 
   }
 
   return (
@@ -93,6 +111,12 @@ export function AddTravller() {
           ></button>
         </div>
       )}
+      <button className="button is-success" onClick={handleAddTravellers}>
+        Add Travellers to Trip
+      </button>
     </div>
   )
 }
+// function useaddUserToTrips(tripId: any, username: string) {
+//   throw new Error('Function not implemented.')
+// }
