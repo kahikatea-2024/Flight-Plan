@@ -280,11 +280,11 @@ export async function getFriends(UserId: number) {
     const friends = await db('friends_list')
       .join('users', 'friends_list.friends_id', '=', 'users.id')
       .select(
-        'users.id',
-        'users.username',
-        'users.first_name',
-        'users.last_name',
-        'users.profile_picture',
+        'users.id as id ',
+        'users.username as username',
+        'users.first_name as firstName',
+        'users.last_name as lastName',
+        'users.profile_picture as profilePicture',
       )
       .where('friends_list.user_id', UserId)
 
