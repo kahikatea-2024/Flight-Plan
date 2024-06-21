@@ -18,6 +18,7 @@ export interface Events {
   note: string
   createdBy: string
 }
+export type EventWithoutDate = Omit<Events, 'date',>
 export type EventData = Omit<Events, 'id'>
 
 export interface Users {
