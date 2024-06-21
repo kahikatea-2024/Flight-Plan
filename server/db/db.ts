@@ -198,16 +198,51 @@ export async function deleteEvent(id: number) {
 }
 
 //Get All Friends
-export async function getAllFriends() {
-  return await db('friends_list').select('friends_id as Friends', 'user_id')
+export async function getFriends(UserId: number) {
+  const friends = await db('friends_list')
+    .join('users', 'friends_list.friends_id', '=', 'users.id')
+    .select(
+      'users.id',
+      'users.username',
+      'users.first_name',
+      'users.last_name',
+      'users.profile_picture',
+    )
+    .where('friends_list.user_id', UserId)
+  console.log(friends)
+  return friends
 }
 
 //Add User to /Friends List
 
-export async function addFriendsToList(newFriend: Friends) {
-  const { friendId, userId } = newFriend
-  await db('friends_list').insert({
-    friends_id: friendId,
-    user_id: userId,
-  })
+export async function addFriend(userId: number, friendId: number) {
+  //Check if userId and friendId exist in user table
+
+  const userExists = await db('users').where('id', userId).first()
+  const friendExists = await db('users').where('id', friendId).first()
+
+  console.log('user exist', userExists)
+  console.log('friend exist', friendExists)
+
+  if (!userExists || !friendExists) {
+    throw new Error('User ID or Friend ID does not exist')
+  }
+  const friendshipExists = await db('friends_list')
+    .where({ user_id: userId, friends_id: friendId })
+    .orWhere({ user_id: friendId, friends_id: userId })
+    .first()
+
+  if (friendshipExists) {
+    return { success: false, message: 'Friendship already exists' }
+  }
+  try {
+    const newFriend = await db('friends_list').insert({
+      user_id: userId,
+      friends_id: friendId,
+    })
+    return { success: true, message: 'Friend added successfully', newFriend }
+  } catch (error) {
+    console.error('Error inserting friend:', error)
+    throw new Error('Failed to add friend')
+  }
 }

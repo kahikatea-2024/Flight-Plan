@@ -3,29 +3,35 @@ import * as db from '../db/db.ts'
 
 const router = Router()
 
-//Get All Followers
-router.get('/', async (req, res) => {
+//Add Friends
+router.post('/add-friend', async (req, res) => {
+  const { userId, friendId } = req.body
+
+  if (!userId || !friendId) {
+    return res.status(400).json({ error: 'User ID and Friend ID are required' })
+  }
+
   try {
-    const friends = await db.getAllFriends()
-    res.json(friends)
+    const result = await db.addFriend(parseInt(userId), parseInt(friendId)) // Ensure IDs are integers
+
+    res.status(200).json(result)
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ message: 'Something went wrong' })
+    res.status(500)
   }
 })
 
-//Get Followers by ID
+//Get Friends
 
-//Add followers
-router.post('/', async (req, res) => {
+// GET /api/friends/:userId
+router.get('/:userId', async (req, res) => {
+  const userId = Number(req.params.userId)
+  console.log(userId)
+
   try {
-    const { friends, userId } = req.body
-    const newFriend = { friends, userId }
-    await db.addFriendsToList(newFriend)
-    res.sendStatus(201)
+    const friends = await db.getFriends(userId)
+    res.status(200).json(friends)
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ message: 'Something went wrong' })
+    res.status(500)
   }
 })
 
