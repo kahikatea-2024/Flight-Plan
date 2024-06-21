@@ -17,6 +17,13 @@ export function EventsByDay() {
   if (isError || !data) {
     return <p>Error getting events</p>
   }
+
+  const sortedData = data.sort(
+    (a, b) => date,
+    a.startTime.localeCompare(b.startTime),
+  )
+  console.log(sortedData)
+
   return (
     <section className="mb-6">
       <div className="container is-fluid">

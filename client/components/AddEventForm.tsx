@@ -22,11 +22,9 @@ export function AddEvent() {
     return `${time}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
   }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    // console.log('time', startTime, startTimeOfDay)
     const startTimeCombined = combineTimeAndDay(startTime, startTimeOfDay)
     const endTimeCombined = combineTimeAndDay(endTime, endTimeOfDay)
-    // console.log('com', startTimeCombined)
+
     const eventData: EventData = {
       tripId: tripId,
       description: title,
