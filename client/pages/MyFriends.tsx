@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMyFriends } from '../hooks/useMyFriends'
+
 interface User {
   id?: number
   username?: string
@@ -11,25 +12,28 @@ interface User {
   profile_picture?: string
 }
 
+const LOCAL_STORAGE_KEY = 'addedFriends'
+
 export function MyFriends() {
   const [email, setEmail] = useState('')
   const [addedFriends, setAddedFriends] = useState<User[]>([])
   const [message, setMessage] = useState('')
-
   const { data: users, isLoading, isError } = useMyFriends()
 
-  //Stores friends To local
+  // Initialize addedFriends from localStorage on component mount
   useEffect(() => {
-    const storedFriends = localStorage.getItem('localStorage')
+    const storedFriends = localStorage.getItem(LOCAL_STORAGE_KEY)
     if (storedFriends) {
       setAddedFriends(JSON.parse(storedFriends))
     }
   }, [])
 
+  // Update localStorage whenever addedFriends changes
   useEffect(() => {
-    localStorage.setItem('localStorage', JSON.stringify(addedFriends))
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(addedFriends))
   }, [addedFriends])
 
+  // Function to handle adding a friend
   const handleFindFriend = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -46,15 +50,23 @@ export function MyFriends() {
       } else {
         setMessage('')
         setAddedFriends((prevFriends) => [...prevFriends, user])
+        setEmail('') // Clear the input after adding the friend
+
+        // Update localStorage
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify([...addedFriends, user]),
+        )
       }
     } else {
       setMessage('User not found')
     }
-
-    setEmail('') // Clear the input after checking the friend
   }
 
+  // Function to handle removing a friend
   const handleRemoveFriend = (friendId: number | undefined) => {
+    if (!friendId) return
+
     const confirmed = window.confirm(
       'Are you sure you want to remove this friend?',
     )
@@ -62,8 +74,13 @@ export function MyFriends() {
       setAddedFriends((prevFriends) =>
         prevFriends.filter((friend) => friend.id !== friendId),
       )
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify(addedFriends.filter((friend) => friend.id !== friendId)),
+      )
     }
   }
+
   if (isLoading) return <p>Loading....</p>
   if (isError) return <p>Error loading users</p>
 
@@ -100,11 +117,11 @@ export function MyFriends() {
           {message && <p className="has-text-centered">{message}</p>}
           {addedFriends.length > 0 && (
             <div className="box has-text-centered">
-              <h3 className="card-header-tittle is-centered is-size-4 mb-5">
+              <h3 className="card-header-title is-centered is-size-4 mb-5">
                 Added Friends:
               </h3>
               {addedFriends.map((friend) => (
-                <div className="text mb-5" key={friend.id}>
+                <div className="text mb-5" key={`${friend.id}-${friend.email}`}>
                   <h4>Username: {friend.username}</h4>
                   <p>
                     Name: {friend.first_name} {friend.last_name}
