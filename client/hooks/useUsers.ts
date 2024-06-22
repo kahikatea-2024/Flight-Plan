@@ -1,9 +1,4 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  MutationFunction,
-} from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import request from 'superagent'
 import { Users } from '../../models/flightplan.ts'
 import { updateUser } from '../apis/users.ts'
@@ -18,7 +13,10 @@ export function useUser(id: number) {
     },
   })
   const mutation = useMutation({
-    mutationFn: (form) => updateUser(form),
+    mutationFn: async (form: Users) => {
+      const res = await updateUser(form) // Ensure to await addEvent
+      return res
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
     },

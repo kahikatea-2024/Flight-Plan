@@ -1,20 +1,22 @@
 import request from 'superagent'
-import { Events } from '../../models/flightplan'
+import { EventData, Events } from '../../models/flightplan'
 
-const rootUrl = '/api/v1/trips'
+const rootUrl = '/api/v1/'
 
-export function getEvents(tripId: number) {
+export function getEvents(date: string) {
   // return request.get('users/1/trips').then((res) => {
-  return request.get(rootUrl + `/:${tripId}/events`).then((res) => {
-    console.log(res.body)
+  return request.get(rootUrl + `events/date/${date}`).then((res) => {
+    console.log('get event', res.body)
     return res.body as Events[]
   })
 }
+// http://localhost:3000/api/v1/events/date/21-06-2024
 
-// export async function addTrip(tripData: Trips) {
-//   const { id, data } = tripData
-//   await request
-//     .post(`/api/v1/trips/${id}`)
-//     .set('Content-Type', 'application/json')
-//     .send({ data })
-// }
+export async function addEvent(eventData: EventData) {
+  const { date, ...rest } = eventData
+  console.log('api', date, rest)
+  await request
+    .post(`/api/v1/events/date/${date}`)
+    .set('Content-Type', 'application/json')
+    .send(rest)
+}

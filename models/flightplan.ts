@@ -16,7 +16,7 @@ export interface Events {
   startTime: string
   endTime: string
   note: string
-  createdBy: string
+  createdBy: number
 }
 export type EventWithoutDate = Omit<Events, 'date'>
 export type EventData = Omit<Events, 'id'>

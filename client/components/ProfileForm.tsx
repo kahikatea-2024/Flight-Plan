@@ -22,7 +22,7 @@ export default function ProfileForm(props: Props) {
       lastName: lastName,
       username: username,
       email: email,
-      phoneNumber: Number(phoneNumber),
+      phoneNumber: phoneNumber,
       profilePicture: profilePicture,
     }
 
