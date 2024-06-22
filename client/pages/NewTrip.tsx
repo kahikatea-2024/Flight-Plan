@@ -5,19 +5,22 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { useNavigate } from 'react-router-dom'
 import { addTrip } from '../apis/trips'
 import { Trips } from '../../models/flightplan'
+import { useAuth } from '../context/UserContext'
 
 export function NewTrip() {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [tripName, setTripName] = useState('')
   const navigate = useNavigate()
+  const { state } = useAuth()
+  const userId = state.user?.id
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const tripData: Trips = {
       id: Date.now(), // or some other unique ID generator
-      createdBy: 1, // replace with actual user id or name
+      createdBy: userId || 0, // might need to handle the 0 user differently..
       tripName,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),

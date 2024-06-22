@@ -3,6 +3,7 @@ import 'bulma/css/bulma.css'
 import { Link } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
 import { Trips } from '../../models/flightplan'
+import { useAuth } from '../context/UserContext'
 
 // import './styles.scss'
 
@@ -10,6 +11,8 @@ export function NavBar() {
   const [isActive, setIsActive] = useState(false)
   const { data: trips } = useTrips(1)
   const [firstTrip, setFirstTrip] = useState<Trips | null>(null)
+
+  const { state } = useAuth()
 
   useEffect(() => {
     if (trips && trips.length > 0) {
@@ -75,7 +78,11 @@ export function NavBar() {
         <div className="navbar-end">
           <div className="navbar-item">
             {/* TODO: Conditional render user with AUTH */}
-            <div>User Name</div>
+            {state.user ? (
+              <div>{state.user.username}</div>
+            ) : (
+              <div>Please Sign In</div>
+            )}
           </div>
         </div>
       </div>
