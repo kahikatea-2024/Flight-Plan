@@ -17,7 +17,7 @@ export function NewTrip() {
 
     const tripData: Trips = {
       id: Date.now(), // or some other unique ID generator
-      createdBy: 2, // replace with actual user id or name
+      createdBy: 1, // replace with actual user id or name
       tripName,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
@@ -25,13 +25,9 @@ export function NewTrip() {
 
     try {
       await addTrip(tripData)
-      navigate('/schedule', {
-        state: {
-          startDate: startDate,
-          endDate: endDate,
-          tripName,
-        },
-      })
+      navigate(
+        `/schedule?startDate=${encodeURIComponent(tripData.startDate)}&endDate=${encodeURIComponent(tripData.endDate)}&tripName=${encodeURIComponent(tripData.tripName)}`,
+      )
     } catch (error) {
       console.error('Failed to add trip:', error)
     }

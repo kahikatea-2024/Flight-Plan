@@ -4,10 +4,9 @@ import { format } from 'date-fns'
 
 export function MyTrips() {
   const { data, isLoading, isError } = useTrips(1)
+  //TODO make dynamic
 
   console.log('Trips:', data)
-
-  //TODO make dynamic
 
   if (isLoading) {
     return <p>Loading</p>
@@ -15,6 +14,21 @@ export function MyTrips() {
   if (isError || !data) {
     return <p>Error getting trips</p>
   }
+
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString)
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd MMMM yyyy')
+      } else {
+        throw new Error('Invalid date')
+      }
+    } catch (error) {
+      console.error('Error formatting date:', dateString, error)
+      return 'Invalid date'
+    }
+  }
+
   return (
     <section>
       <div className="container is-fluid has-text-centered">
@@ -36,12 +50,12 @@ export function MyTrips() {
                     <div className="field is-grouped">
                       <div className="column is-third">
                         <p className="card-content has-text-left is-size-5">
-                          Start: {format(new Date(startDate), 'dd MMMM yyyy')}
+                          Start: {formatDate(startDate)}
                         </p>
                       </div>
                       <div className="column is-third">
                         <p className="card-content has-text-right is-size-5">
-                          End: {format(new Date(endDate), 'dd MMMM yyyy')}
+                          End: {formatDate(endDate)}
                         </p>
                       </div>
                     </div>
@@ -51,7 +65,6 @@ export function MyTrips() {
                         search: `?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&tripName=${encodeURIComponent(tripName)}`,
                       }}
                     >
-                      {/* //TODO user can delete a trip */}
                       <button className="button is-primary is-centered mb-5">
                         View Detail
                       </button>
@@ -67,7 +80,6 @@ export function MyTrips() {
                 </p>
               </>
             )}
-            {/* <h2 className="has-text-centered mb-5">Add a new Trip</h2> */}
           </div>
         </div>
       </div>

@@ -16,12 +16,13 @@ export interface Events {
   startTime: string
   endTime: string
   note: string
-  createdBy: string
+  createdBy: number
 }
 export type EventWithoutDate = Omit<Events, 'date'>
 export type EventData = Omit<Events, 'id'>
 
 export interface Users {
+  find(arg0: (user: any) => boolean): unknown
   id: number | undefined
   username: string
   email: string

@@ -12,6 +12,7 @@ export function getTrips(userId: number) {
   })
 }
 
+//TODO Do we need to send userId through here?
 export async function addTrip(tripData: Trips): Promise<void> {
   try {
     await request

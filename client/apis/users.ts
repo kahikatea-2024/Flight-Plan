@@ -3,10 +3,9 @@ import request from 'superagent'
 
 const rootUrl = '/api/v1'
 
-export function getUsers(): Promise<string[]> {
-  return request.get(rootUrl + '/users').then((res) => {
-    return res.body
-  })
+export async function getUsers(): Promise<string[]> {
+  const res = await request.get(rootUrl + '/users')
+  return res.body
 }
 
 export async function updateUser(formData: User) {

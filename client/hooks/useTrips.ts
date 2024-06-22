@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addTrip, addUserToTrip, getTrips } from '../apis/trips'
+import { useQuery } from '@tanstack/react-query'
+import { getTrips } from '../apis/trips'
 
 export function useTrips(userId: number) {
   // const queryClient = useQueryClient()
