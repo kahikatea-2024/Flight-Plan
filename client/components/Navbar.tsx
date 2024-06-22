@@ -7,7 +7,7 @@ import { Trips } from '../../models/flightplan'
 
 export function NavBar() {
   const [isActive, setIsActive] = useState(false)
-  const { data: trips } = useTrips(2)
+  const { data: trips } = useTrips(1)
   const [firstTrip, setFirstTrip] = useState<Trips | null>(null)
 
   useEffect(() => {

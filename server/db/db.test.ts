@@ -134,7 +134,7 @@ describe('addTrip', () => {
   it('adds a trip to database', async () => {
     const trip = {
       id: 1,
-      createdBy: 'Reggie',
+      createdBy: 2,
       tripName: 'cape',
       startDate: 'aaaaa',
       endDate: 'bbbbb',
@@ -144,7 +144,7 @@ describe('addTrip', () => {
     const trips = await getAllTrips()
 
     expect(trips).toHaveLength(2)
-    expect(trips[1].trip_name).toBe('cape')
+    expect(trips[1].tripName).toBe('cape')
   })
 })
 
@@ -179,7 +179,7 @@ describe('Post/Patch/Delete, /api/v1/events', () => {
     const fakeEvent: Events = {
       id: 2,
       tripId: 1,
-      createdBy: '1',
+      createdBy: 1,
       date: '15/8/2024',
       startTime: '1100',
       endTime: '1300',
@@ -196,7 +196,7 @@ describe('Post/Patch/Delete, /api/v1/events', () => {
     const existingEvent: Events = {
       id: 2,
       tripId: 1,
-      createdBy: '1',
+      createdBy: 1,
       date: '15/8/2024',
       startTime: '1100',
       endTime: '1300',
