@@ -1,6 +1,6 @@
 export interface Trips {
   id: number
-  createdBy: string
+  createdBy: number
   tripName: string
   startDate: string
   endDate: string
