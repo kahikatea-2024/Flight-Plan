@@ -78,7 +78,7 @@ export function NavBar() {
             {state.user ? (
               <div>{state.user.username}</div>
             ) : (
-              <div>User Name</div>
+              <div>Please Sign In</div>
             )}
           </div>
         </div>

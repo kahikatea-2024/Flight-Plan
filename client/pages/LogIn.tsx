@@ -1,46 +1,46 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/UserContext'
 import { useState } from 'react'
-import { Users } from '../../models/flightplan'
+import { useFetchUsers } from '../hooks/useFetchUsers'
 
-const users: Users[] = [
-  {
-    id: 1,
-    username: 'callumG',
-    email: 'callum@example.com',
-    firstName: 'callum',
-    lastName: 'green',
-    phoneNumber: '0213456789',
-    profilePicture: '',
-  },
-  {
-    id: 2,
-    username: 'AimeeK',
-    email: 'Aimee@example.com',
-    firstName: 'Aimee',
-    lastName: 'kilmartin',
-    phoneNumber: '021334577',
-    profilePicture: '',
-  },
-  {
-    id: 3,
-    username: 'BradC',
-    email: 'Brad@example.com',
-    firstName: 'Brad',
-    lastName: 'Craig',
-    phoneNumber: '0213575644',
-    profilePicture: '',
-  },
-  {
-    id: 4,
-    username: 'RegieM',
-    email: 'regie@example.com',
-    firstName: 'regie',
-    lastName: 'malonzo',
-    phoneNumber: '0213456757',
-    profilePicture: '',
-  },
-]
+// const users: Users[] = [
+//   {
+//     id: 1,
+//     username: 'callumG',
+//     email: 'callum@example.com',
+//     firstName: 'callum',
+//     lastName: 'green',
+//     phoneNumber: '0213456789',
+//     profilePicture: '',
+//   },
+//   {
+//     id: 2,
+//     username: 'AimeeK',
+//     email: 'Aimee@example.com',
+//     firstName: 'Aimee',
+//     lastName: 'kilmartin',
+//     phoneNumber: '021334577',
+//     profilePicture: '',
+//   },
+//   {
+//     id: 3,
+//     username: 'BradC',
+//     email: 'Brad@example.com',
+//     firstName: 'Brad',
+//     lastName: 'Craig',
+//     phoneNumber: '0213575644',
+//     profilePicture: '',
+//   },
+//   {
+//     id: 4,
+//     username: 'RegieM',
+//     email: 'regie@example.com',
+//     firstName: 'regie',
+//     lastName: 'malonzo',
+//     phoneNumber: '0213456757',
+//     profilePicture: '',
+//   },
+// ]
 
 export function LogIn() {
   //TODO if user is already logged in, direct to another page
@@ -49,6 +49,8 @@ export function LogIn() {
   const { dispatch } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
+
+  const { users, loading, error } = useFetchUsers()
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -59,6 +61,14 @@ export function LogIn() {
     } else {
       alert('Invalid email')
     }
+  }
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
+  if (error) {
+    return <p>{error}</p>
   }
   return (
     <section>
