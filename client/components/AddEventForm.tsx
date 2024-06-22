@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 export function AddEvent() {
   const selectedDate = useParams()
   const tripId = 1
-  const userId = '2'
+  const userId = 1
 
   const [title, setTitle] = useState('')
   // const [startDate, setStartDate] = useState(selectedDate)
@@ -21,14 +21,16 @@ export function AddEvent() {
     // Combine time and day using template literals
     return `${time}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
   }
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+
+  //event was unused in the handle submit, have removed
+  const handleSubmit = async () => {
     const startTimeCombined = combineTimeAndDay(startTime, startTimeOfDay)
     const endTimeCombined = combineTimeAndDay(endTime, endTimeOfDay)
 
     const eventData: EventData = {
       tripId: tripId,
       description: title,
-      date: selectedDate.date,
+      date: selectedDate.date as string,
       startTime: startTimeCombined,
       endTime: endTimeCombined,
       note: note,

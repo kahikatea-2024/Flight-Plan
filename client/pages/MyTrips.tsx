@@ -1,32 +1,33 @@
-import { Link } from 'react-router-dom';
-import { useTrips } from '../hooks/useTrips';
-import { format } from 'date-fns';
+import { Link } from 'react-router-dom'
+import { useTrips } from '../hooks/useTrips'
+import { format } from 'date-fns'
 
 export function MyTrips() {
-  const { data, isLoading, isError } = useTrips(1);
+  const { data, isLoading, isError } = useTrips(1)
+  //TODO make dynamic
 
-  console.log('Trips:', data);
+  console.log('Trips:', data)
 
   if (isLoading) {
-    return <p>Loading</p>;
+    return <p>Loading</p>
   }
   if (isError || !data) {
-    return <p>Error getting trips</p>;
+    return <p>Error getting trips</p>
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     try {
-      const date = new Date(dateString);
+      const date = new Date(dateString)
       if (!isNaN(date.getTime())) {
-        return format(date, 'dd MMMM yyyy');
+        return format(date, 'dd MMMM yyyy')
       } else {
-        throw new Error('Invalid date');
+        throw new Error('Invalid date')
       }
     } catch (error) {
-      console.error('Error formatting date:', dateString, error);
-      return 'Invalid date';
+      console.error('Error formatting date:', dateString, error)
+      return 'Invalid date'
     }
-  };
+  }
 
   return (
     <section>
@@ -83,5 +84,5 @@ export function MyTrips() {
         </div>
       </div>
     </section>
-  );
+  )
 }

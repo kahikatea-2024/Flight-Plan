@@ -56,7 +56,7 @@ export function AddTravller() {
           <span
             key={friend.id}
             className="tag is-info is-medium"
-            onDoubleClick={() => handleRemoveFriend(friend.id)}
+            onDoubleClick={() => handleRemoveFriend(friend.id as number)}
             style={{ cursor: 'pointer' }}
           >
             {friend.username}

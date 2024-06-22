@@ -8,7 +8,7 @@ export function EventsByDay() {
   const day = useParams()
   const date = day.date
 
-  const { data, isLoading, isError } = useEvents(date)
+  const { data, isLoading, isError } = useEvents(date as string)
   console.log('day', day)
   if (isLoading) {
     return <p>Loading</p>

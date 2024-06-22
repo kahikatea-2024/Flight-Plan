@@ -14,7 +14,7 @@ export function Notes() {
                   <textarea
                     className="textarea text is-size-6 "
                     placeholder="Notes..."
-                    rows="12"
+                    // rows="12"
                   />
                 </div>
               </div>
