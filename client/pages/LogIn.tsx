@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { AddNewUser } from '../components/AddNewUser'
 
 export function LogIn() {
   //TODO if user is already logged in, direct to another page
@@ -6,7 +7,8 @@ export function LogIn() {
 
   return (
     <section>
-      <div className="container is-fluid">
+      <AddNewUser />
+      {/* <div className="container is-fluid">
         <h1 className="title has-text-centered has-text-primary">
           Welcome to TripHive
         </h1>
@@ -35,7 +37,7 @@ export function LogIn() {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   )
 }

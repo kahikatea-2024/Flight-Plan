@@ -7,6 +7,7 @@ import {
   TripsData,
   UserData,
   EventData,
+  NewUser,
 } from '../../models/flightplan.ts'
 
 //
@@ -64,21 +65,10 @@ export async function getFollowingByUserId(id: number) {
 
 // Add a User
 
-export async function addUser(data: Users) {
-  const {
-    id,
-    email,
-    phoneNumber,
-    profilePicture,
-    username,
-    firstName,
-    lastName,
-  } = data
+export async function addUser(data: NewUser) {
+  const { email, username, firstName, lastName } = data
   await db('users').insert({
-    id,
     email,
-    phone_number: phoneNumber,
-    profile_picture: profilePicture,
     username,
     first_name: firstName,
     last_name: lastName,
