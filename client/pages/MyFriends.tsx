@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMyFriends } from '../hooks/useMyFriends'
 interface User {
   id?: number
@@ -17,9 +17,20 @@ export function MyFriends() {
   const [message, setMessage] = useState('')
 
   const { data: users, isLoading, isError } = useMyFriends()
-  // console.log(users)
 
-  const handleFindFriend = (e) => {
+  //Stores friends To local
+  useEffect(() => {
+    const storedFriends = localStorage.getItem('localStorage')
+    if (storedFriends) {
+      setAddedFriends(JSON.parse(storedFriends))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('localStorage', JSON.stringify(addedFriends))
+  }, [addedFriends])
+
+  const handleFindFriend = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!users) return
@@ -41,6 +52,17 @@ export function MyFriends() {
     }
 
     setEmail('') // Clear the input after checking the friend
+  }
+
+  const handleRemoveFriend = (friendId) => {
+    const confirmed = window.confirm(
+      'Are you sure you want to remove this friend?',
+    )
+    if (confirmed) {
+      setAddedFriends((prevFriends) =>
+        prevFriends.filter((friend) => friend.id !== friendId),
+      )
+    }
   }
   if (isLoading) return <p>Loading....</p>
   if (isError) return <p>Error loading users</p>
@@ -87,6 +109,12 @@ export function MyFriends() {
                   <p>
                     Name: {friend.first_name} {friend.last_name}
                   </p>
+                  <button
+                    className="button is-danger is-small"
+                    onClick={() => handleRemoveFriend(friend.id)}
+                  >
+                    Remove
+                  </button>
                 </div>
               ))}
             </div>
