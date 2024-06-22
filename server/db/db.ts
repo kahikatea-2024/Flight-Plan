@@ -40,9 +40,8 @@ export async function getUserById(id: number) {
 // Get Trip by User ID
 export async function getTripsByUserId(id: number) {
   const trip = await db('users')
-    .join('trip_users', 'users.id', 'trip_users.user_id')
-    .join('trips', 'trip_users.trip_id', 'trips.id')
-    .where('users.id', id)
+    .join('trips', 'users.id', 'trips.created_by')
+    .where('trips.created_by', id)
     .select(
       'first_name as firstName',
       'last_name as lastName',
@@ -165,12 +164,14 @@ export async function getEventsByTripId(id: number) {
 
 // Add User to Trip
 
-// export async function addUserToTrip(id: number, userName: string){
-// const user = await db('trips')
-// .join('trip_users', 'trips.id', 'trip_users.trip_id')
-// .join('users', 'trip_users.user_id', 'users.id').where({userName}).insert()
-
-// }
+export async function addUserToTrip(tripId: number, username: string) {
+  const userId = await db('users')
+    .select('id')
+    .where('username', username)
+    .first()
+  const attendeeData = { user_id: userId.id, trip_id: tripId }
+  return await db('trip_users').insert(attendeeData)
+}
 
 // Add a Trip
 export async function addTrip(data: Trips) {

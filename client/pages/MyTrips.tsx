@@ -1,43 +1,69 @@
-import { Link } from 'react-router-dom'
-import { useTrips } from '../hooks/useTrips'
+import { Link } from 'react-router-dom';
+import { useTrips } from '../hooks/useTrips';
+import { format } from 'date-fns';
 
 export function MyTrips() {
-  const { data, isLoading, isError } = useTrips(1)
-  //TODO make dynamic
+  const { data, isLoading, isError } = useTrips(1);
+
+  console.log('Trips:', data);
 
   if (isLoading) {
-    return <p>Loading</p>
+    return <p>Loading</p>;
   }
   if (isError || !data) {
-    return <p>Error getting trips</p>
+    return <p>Error getting trips</p>;
   }
+
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        return format(date, 'dd MMMM yyyy');
+      } else {
+        throw new Error('Invalid date');
+      }
+    } catch (error) {
+      console.error('Error formatting date:', dateString, error);
+      return 'Invalid date';
+    }
+  };
+
   return (
     <section>
       <div className="container is-fluid has-text-centered">
         <h1 className="title has-text-centered has-text-primary">My Trips</h1>
         <div className="column is-fluid">
           <div className="column is-half is-offset-one-quarter">
+            <div className="container is-centered">
+              <Link to={'/new-trip'}>
+                <button className="button is-primary mb-5">Add Trip</button>
+              </Link>
+            </div>
             {data.length >= 1 ? (
-              <ul className="card is-primary is-outlined">
+              <ul>
                 {data.map(({ tripName, startDate, endDate }) => (
-                  <li key={tripName}>
+                  <li key={tripName} className="card is-primary is-outlined">
                     <p className="card-header-title is-centered is-size-4">
                       {tripName}
                     </p>
                     <div className="field is-grouped">
                       <div className="column is-third">
                         <p className="card-content has-text-left is-size-5">
-                          Start: {startDate}
+                          Start: {formatDate(startDate)}
                         </p>
                       </div>
                       <div className="column is-third">
                         <p className="card-content has-text-right is-size-5">
-                          End: {endDate}
+                          End: {formatDate(endDate)}
                         </p>
                       </div>
                     </div>
-                    <Link to={'/schedule'}>
-                      {/* //TODO make dynamic */}
+                    <Link
+                      to={{
+                        pathname: '/schedule',
+                        search: `?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&tripName=${encodeURIComponent(tripName)}`,
+                      }}
+                    >
                       <button className="button is-primary is-centered mb-5">
                         View Detail
                       </button>
@@ -53,15 +79,9 @@ export function MyTrips() {
                 </p>
               </>
             )}
-            {/* <h2 className="has-text-centered mb-5">Add a new Trip</h2> */}
-            <div className="container is-centered">
-              <Link to={'/new-trip'}>
-                <button className="button is-primary ">Add Trip</button>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

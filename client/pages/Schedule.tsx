@@ -9,12 +9,10 @@ const generateDateList = (startDate: Date, endDate: Date): Date[] => {
 export function Schedule() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { startDate, endDate, tripName } = location.state || {
-    startDate: new Date(),
-    endDate: new Date(),
-    tripName: 'Trip',
-  }
-
+  const searchParams = new URLSearchParams(location.search)
+  const startDate = searchParams.get('startDate') || new Date().toISOString()
+  const endDate = searchParams.get('endDate') || new Date().toISOString()
+  const tripName = searchParams.get('tripName') || 'Trip'
   const start = new Date(startDate)
   const end = new Date(endDate)
   const dates = generateDateList(start, end)
