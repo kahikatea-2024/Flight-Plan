@@ -91,7 +91,7 @@ export default function AddNewUser() {
             </div>
           </div>
           <div className="field is-grouped is-grouped-centered mt-6">
-            <Link to={'/my-trips'}>
+            <Link to={'/'}>
               <button className="button is-primary">Sign Up</button>
             </Link>
           </div>
