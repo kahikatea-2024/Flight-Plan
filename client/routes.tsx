@@ -7,10 +7,13 @@ import { Schedule } from './pages/Schedule.tsx'
 import { ViewDay } from './pages/ViewDay.tsx'
 import { MyProfile } from './pages/MyProfile.tsx'
 import { MyFriends } from './pages/MyFriends.tsx'
+import SignUp from './pages/SignUp.tsx'
 export default createRoutesFromElements(
   <Route path="/" element={<App />}>
     {/* Could refactor ^ this to use Layout */}
     <Route index element={<LogIn />} />
+    <Route path="/sign-up" element={<SignUp />} />
+
     <Route path="/my-trips" element={<MyTrips />} />
     <Route path="/new-trip" element={<NewTrip />} />
     <Route path="/schedule" element={<Schedule />} />

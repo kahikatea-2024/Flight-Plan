@@ -7,8 +7,7 @@ export function LogIn() {
 
   return (
     <section>
-      <AddNewUser />
-      {/* <div className="container is-fluid">
+      <div className="container is-fluid">
         <h1 className="title has-text-centered has-text-primary">
           Welcome to TripHive
         </h1>
@@ -32,12 +31,14 @@ export function LogIn() {
                 <Link to={'/my-trips'}>
                   <button className="button is-primary">Log In</button>
                 </Link>
-                <button className="button is-primary is-light">Sign Up</button>
+                <Link to={'/sign-up'}>
+                  <button className="button is-light">Sign Up</button>
+                </Link>
               </div>
             </form>
           </div>
         </div>
-      </div> */}
+      </div>
     </section>
   )
 }
