@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { AddNewUser } from '../components/AddNewUser'
 import { useAuth } from '../context/UserContext'
 import { useState } from 'react'
 import { useFetchUsers } from '../hooks/useFetchUsers'
@@ -106,7 +107,9 @@ export function LogIn() {
                 <button className="button is-primary" type="submit">
                   Log In
                 </button>
-                <button className="button is-primary is-light">Sign Up</button>
+                <Link to={'/sign-up'}>
+                  <button className="button is-light">Sign Up</button>
+                </Link>
               </div>
             </form>
           </div>

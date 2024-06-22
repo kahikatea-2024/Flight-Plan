@@ -41,6 +41,13 @@ export interface SanitizedUser {
 
 export type UserData = Omit<Users, 'id'>
 
+export interface NewUser {
+  username: string
+  email: string
+  firstName: string
+  lastName: string
+}
+
 export interface Trip_users {
   id: number
   tripId: number
