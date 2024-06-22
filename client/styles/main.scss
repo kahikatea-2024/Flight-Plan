@@ -81,3 +81,17 @@
   display: flex;
   flex-direction: column;
 }
+
+
+.navbar-logo {
+  max-height: 3rem; 
+  max-width: auto;  
+  // transition: transform 0.3s ease-in-out; 
+
+  padding-top: 5px;
+}
+
+
+// .navbar-logo:hover {
+//   transform: scale(1.1);
+// }

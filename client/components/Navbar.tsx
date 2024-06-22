@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
 import { Trips } from '../../models/flightplan'
 import { useAuth } from '../context/UserContext'
+
 // import './styles.scss'
 
 export function NavBar() {
@@ -27,7 +28,9 @@ export function NavBar() {
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <Link to={'/'} className="navbar-item">
-          <div>TripHive</div>
+          <div>
+            <img className="navbar-logo" src="public/1.png" alt="logo" />
+          </div>
         </Link>
 
         <button
