@@ -69,25 +69,9 @@ router.get('/:id/created', async (req, res, next) => {
 
 // Add User
 router.post('/', async (req, res) => {
+  console.log('post route')
   try {
-    const {
-      id,
-      email,
-      phoneNumber,
-      profilePicture,
-      username,
-      firstName,
-      lastName,
-    } = req.body
-    const newUser = {
-      id,
-      email,
-      phoneNumber,
-      profilePicture,
-      username,
-      firstName,
-      lastName,
-    }
+    const newUser = req.body
     await db.addUser(newUser)
     res.sendStatus(200)
   } catch (error) {

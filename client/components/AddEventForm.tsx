@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 
 export function AddEvent() {
   const selectedDate = useParams()
+  // TODO update these!!
   const tripId = 1
   const userId = 1
 

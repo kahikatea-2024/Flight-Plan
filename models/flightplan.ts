@@ -22,7 +22,6 @@ export type EventWithoutDate = Omit<Events, 'date'>
 export type EventData = Omit<Events, 'id'>
 
 export interface Users {
-  find(arg0: (user: any) => boolean): unknown
   id: number | undefined
   username: string
   email: string
@@ -41,6 +40,13 @@ export interface SanitizedUser {
 }
 
 export type UserData = Omit<Users, 'id'>
+
+export interface NewUser {
+  username: string
+  email: string
+  firstName: string
+  lastName: string
+}
 
 export interface Trip_users {
   id: number
