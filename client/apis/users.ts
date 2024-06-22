@@ -1,9 +1,10 @@
 import { User } from '@auth0/auth0-react'
 import request from 'superagent'
+import { Users } from '../../models/flightplan'
 
 const rootUrl = '/api/v1'
 
-export async function getUsers(): Promise<string[]> {
+export async function getUsers(): Promise<Users[]> {
   const res = await request.get(rootUrl + '/users')
   return res.body
 }

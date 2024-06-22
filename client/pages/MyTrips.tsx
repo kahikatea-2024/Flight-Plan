@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
 import { format } from 'date-fns'
+import { useAuth } from '../context/UserContext'
 
 export function MyTrips() {
-  const { data, isLoading, isError } = useTrips(1)
+  const { state } = useAuth()
+  const userId = state.user?.id
+  const { data, isLoading, isError } = useTrips(userId || 0)
   //TODO make dynamic
 
   console.log('Trips:', data)
