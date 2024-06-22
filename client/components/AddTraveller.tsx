@@ -52,19 +52,19 @@ export function AddTravller() {
     )
   }
 
-  // const handleAddTravellers = async () => {
-  //
-  //   selectedFriends.forEach(async (friend) => {
-  //     try {
-  //       await addUserToTrip(tripId, friend.username)
-  //       console.log(friend.username)
-  //       console.log(`Added ${friend.username} to the trip successfully`)
-  //     } catch (error) {
-  //       console.error(`Failed to add ${friend.username} to the trip`, error)
-  //     }
-  //   })
-  //   setSelectedFriends([])
-  // }
+  const handleAddTravellers = async () => {
+  
+    selectedFriends.forEach(async (friend) => {
+      try {
+        await addUserToTrip(tripId, friend.username)
+        console.log(friend.username)
+        console.log(`Added ${friend.username} to the trip successfully`)
+      } catch (error) {
+        console.error(`Failed to add ${friend.username} to the trip`, error)
+      }
+    })
+    setSelectedFriends([])
+  }
 
   return (
     <div>
@@ -110,9 +110,9 @@ export function AddTravller() {
           ></button>
         </div>
       )}
-      {/* <button className="button is-success" onClick={handleAddTravellers}>
+      <button className="button is-success" onClick={handleAddTravellers}>
         Add Travellers to Trip
-      </button> */}
+      </button>
     </div>
   )
 }

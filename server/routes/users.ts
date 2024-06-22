@@ -126,7 +126,7 @@ router.patch('/:id', async (req, res) => {
   }
 })
 
-//delet user
+//delete user
 
 router.delete('/:id', async (req, res) => {
   try {
