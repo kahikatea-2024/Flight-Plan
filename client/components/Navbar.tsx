@@ -29,7 +29,7 @@ export function NavBar() {
       <div className="navbar-brand">
         <Link to={'/'} className="navbar-item">
           <div>
-            <img className="navbar-logo" src="public/1.png" alt="logo" />
+            <img className="navbar-logo" src="/1.png" alt="logo" />
           </div>
         </Link>
 
