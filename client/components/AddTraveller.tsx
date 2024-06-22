@@ -122,6 +122,12 @@ export function AddTravller({
           ></button>
         </div>
       )}
+      <button className="button is-success" onClick={handleAddTravellers}>
+        Add Travellers to Trip
+      </button>
     </div>
   )
 }
+// function useaddUserToTrips(tripId: any, username: string) {
+//   throw new Error('Function not implemented.')
+// }
