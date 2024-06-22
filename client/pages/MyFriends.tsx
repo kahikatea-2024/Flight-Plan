@@ -54,7 +54,7 @@ export function MyFriends() {
     setEmail('') // Clear the input after checking the friend
   }
 
-  const handleRemoveFriend = (friendId) => {
+  const handleRemoveFriend = (friendId: number | undefined) => {
     const confirmed = window.confirm(
       'Are you sure you want to remove this friend?',
     )
