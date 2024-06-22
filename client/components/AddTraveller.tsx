@@ -1,25 +1,27 @@
 import { useState } from 'react'
 import { SanitizedUser } from '../../models/flightplan'
+import { useAddUserToTrips } from '../hooks/useTrips'
+import { addUserToTrip } from '../apis/trips'
 
 export function AddTravller() {
   const fakeFriends: SanitizedUser[] = [
     {
       id: 2,
-      username: 'aimee',
+      username: 'AimeeK',
       firstName: 'Aimee',
       lastName: 'Kilmartin',
       profilePicture: '',
     },
     {
       id: 3,
-      username: 'brad',
+      username: 'BradC',
       firstName: 'Brad',
       lastName: 'Craig',
       profilePicture: '',
     },
     {
       id: 4,
-      username: 'regie',
+      username: 'RegieM',
       firstName: 'Regie',
       lastName: 'Malonzo',
       profilePicture: '',
@@ -28,6 +30,7 @@ export function AddTravller() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedFriends, setSelectedFriends] = useState<SanitizedUser[]>([])
+  // const { isLoading, isError } = useAddUserToTrips()
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
@@ -47,6 +50,20 @@ export function AddTravller() {
     setSelectedFriends(
       selectedFriends.filter((friend) => friend.id !== friendId),
     )
+  }
+
+  const handleAddTravellers = async () => {
+  
+    selectedFriends.forEach(async (friend) => {
+      try {
+        await addUserToTrip(tripId, friend.username)
+        console.log(friend.username)
+        console.log(`Added ${friend.username} to the trip successfully`)
+      } catch (error) {
+        console.error(`Failed to add ${friend.username} to the trip`, error)
+      }
+    })
+    setSelectedFriends([])
   }
 
   return (
@@ -93,6 +110,12 @@ export function AddTravller() {
           ></button>
         </div>
       )}
+      <button className="button is-success" onClick={handleAddTravellers}>
+        Add Travellers to Trip
+      </button>
     </div>
   )
 }
+// function useaddUserToTrips(tripId: any, username: string) {
+//   throw new Error('Function not implemented.')
+// }
