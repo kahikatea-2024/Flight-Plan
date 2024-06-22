@@ -17,7 +17,7 @@ export function NewTrip() {
 
     const tripData: Trips = {
       id: Date.now(), // or some other unique ID generator
-      createdBy: 2, // replace with actual user id or name
+      createdBy: 1, // replace with actual user id or name
       tripName,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
