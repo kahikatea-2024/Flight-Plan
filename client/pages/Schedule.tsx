@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { format, eachDayOfInterval } from 'date-fns'
 import { AddTraveller } from '../components/AddTraveller'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Users as User } from '../../models/flightplan'
 
 const generateDateList = (startDate: Date, endDate: Date): Date[] => {
@@ -18,10 +18,12 @@ export function Schedule() {
   const start = new Date(startDate)
   const end = new Date(endDate)
   const dates = generateDateList(start, end)
-
-  const parsedTripId = parseInt(searchParams.get('tripid') || '', 10)
-
   const [selectedFriends, setSelectedFriends] = useState<User[]>([])
+
+  // Parse tripId from URL parameters
+  const parsedTripId = parseInt(searchParams.get('tripId') || '', 10) // Ensure to handle NaN if not found or invalid
+
+  console.log('Parsed tripId:', parsedTripId) // Log the parsed tripId
 
   const handleSelectFriend = (friend: User) => {
     setSelectedFriends((prevFriends) => [...prevFriends, friend])

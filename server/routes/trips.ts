@@ -123,12 +123,16 @@ router.post('/:id', async (req, res) => {
   }
 })
 
-router.post('/:tripId/users', async (req, res) => {
-  const tripId = Number(req.params)
-  const { userId } = req.body
+// Route to handle adding user to trip
+router.post('/:id/users', async (req, res) => {
   try {
-    const tripUser = await db.addUserToTrip(tripId, userId)
-    res.status(201).json(tripUser)
+    const tripId = Number(req.params.id)
+    const { username } = req.body // Ensure username is sent in the body
+    console.log('Route handler received:', { tripId, username })
+
+    const result = await db.addUserToTrip(tripId, username)
+
+    res.status(200).json({ updated: result })
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: 'Something went wrong' })

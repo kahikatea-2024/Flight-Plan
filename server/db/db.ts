@@ -173,6 +173,7 @@ export async function addUserToTrip(tripId: number, username: string) {
     .where('username', username)
     .first()
   const attendeeData = { user_id: userId.id, trip_id: tripId }
+  console.log('Inserting attendee data:', attendeeData)
   return await db('trip_users').insert(attendeeData)
 }
 

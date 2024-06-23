@@ -25,11 +25,12 @@ export async function addTrip(tripData: Trips): Promise<void> {
   }
 }
 
-export async function addUserToTrip(tripId: number, userId: string) {
+export async function addUserToTrip(tripId: number, username: string) {
   try {
+    console.log('Sending request to add user to trip:', { tripId, username }) // Log the data being sent
     const response = await request
-      .post(`/api/v1/trips/${tripId}/users`)
-      .send({ userId })
+      .post(`/api/v1/trips/${tripId}/users`) // Ensure this matches your backend route
+      .send({ username }) // Ensure 'username' is sent as per backend expectation
       .set('Content-Type', 'application/json')
 
     console.log('User added to trip successfully. Response:', response.body)

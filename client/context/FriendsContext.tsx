@@ -1,14 +1,14 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react'
 
 interface User {
-  id?: number
-  username?: string
-  email?: string
-  auth0id?: string
-  first_name?: string
-  last_name?: string
-  phone_number?: string
-  profile_picture?: string
+  id: number
+  username: string
+  email: string
+  auth0id: string
+  first_name: string
+  last_name: string
+  phone_number: string
+  profile_picture: string
 }
 
 interface FriendsContextType {

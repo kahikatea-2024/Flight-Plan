@@ -33,6 +33,8 @@ export function AddTraveller({
 
   const handleSelectFriend = async (friend: User) => {
     try {
+      console.log('Selected friend:', friend) // Log the selected friend
+      console.log('Adding to trip with ID:', tripId) // Log the tripId
       await addUserToTrip(tripId, friend.username) // Ensure tripId is passed here
       setSelectedFriends([...selectedFriends, friend])
       onSelectFriend(friend)
