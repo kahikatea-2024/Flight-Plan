@@ -122,4 +122,16 @@ router.post('/:id', async (req, res) => {
     res.status(500).json({ message: 'Something went wrong' })
   }
 })
+
+router.post('/:tripId/users', async (req, res) => {
+  const tripId = Number(req.params)
+  const { userId } = req.body
+  try {
+    const tripUser = await db.addUserToTrip(tripId, userId)
+    res.status(201).json(tripUser)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
 export default router

@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { format, eachDayOfInterval } from 'date-fns'
 import { AddTraveller } from '../components/AddTraveller'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Users as User } from '../../models/flightplan'
 
 const generateDateList = (startDate: Date, endDate: Date): Date[] => {
@@ -19,6 +19,8 @@ export function Schedule() {
   const end = new Date(endDate)
   const dates = generateDateList(start, end)
 
+  const parsedTripId = parseInt(searchParams.get('tripid') || '', 10)
+
   const [selectedFriends, setSelectedFriends] = useState<User[]>([])
 
   const handleSelectFriend = (friend: User) => {
@@ -26,9 +28,8 @@ export function Schedule() {
   }
 
   const handleRemoveFriend = (friendId: number) => {
-    // Assuming `id` is a string
     setSelectedFriends((prevFriends) =>
-      prevFriends.filter((friend) => friend.sub !== friendId),
+      prevFriends.filter((friend) => friend.id !== friendId),
     )
   }
 
@@ -49,7 +50,7 @@ export function Schedule() {
             <AddTraveller
               onSelectFriend={handleSelectFriend}
               onRemoveFriend={handleRemoveFriend}
-              tripId={tripId}
+              tripId={parsedTripId} // Pass tripId to AddTraveller
             />
           </div>
           <div className="selected-friends-list">
@@ -57,16 +58,17 @@ export function Schedule() {
               <ul>
                 {selectedFriends.map((friend) => (
                   <li
-                    key={friend.sub}
-                    onDoubleClick={() => handleRemoveFriend(friend.sub)}
+                    key={friend.id}
+                    onDoubleClick={() => handleRemoveFriend(friend.id)}
                   >
-                    {friend.name}
+                    {friend.firstName}
                   </li>
                 ))}
               </ul>
             )}
           </div>
         </div>
+
         <div className="dates-list-container">
           <ul>
             {dates.map((date, index) => (

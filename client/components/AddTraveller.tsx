@@ -1,30 +1,29 @@
 import React, { useState } from 'react'
 import { useFriends } from '../context/FriendsContext'
-import { addTrips, addUserToTrip } from '../apis/trips'
-import { Trips } from '../../models/flightplan'
+import { addUserToTrip } from '../apis/trips'
 
 interface User {
   id: number
   username: string
   email: string
   auth0id: string
-  first_name: string
-  last_name: string
-  phone_number: string
-  profile_picture: string
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  profilePicture: string
 }
 
-interface AddTravllerProps {
+interface AddTravellerProps {
   onSelectFriend: (friend: User) => void
   onRemoveFriend: (friendId: number) => void
-  tripId: number
+  tripId: number // Ensure tripId is passed as a prop
 }
 
 export function AddTraveller({
   onSelectFriend,
   onRemoveFriend,
   tripId,
-}: AddTravllerProps) {
+}: AddTravellerProps) {
   const { friends, removeFriend } = useFriends()
   const [selectedFriends, setSelectedFriends] = useState<User[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -34,7 +33,7 @@ export function AddTraveller({
 
   const handleSelectFriend = async (friend: User) => {
     try {
-      await addUserToTrip(tripId, friend.username)
+      await addUserToTrip(tripId, friend.username) // Ensure tripId is passed here
       setSelectedFriends([...selectedFriends, friend])
       onSelectFriend(friend)
       closeModal()
