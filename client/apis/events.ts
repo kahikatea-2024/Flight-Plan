@@ -3,9 +3,9 @@ import { EventData, Events } from '../../models/flightplan'
 
 const rootUrl = '/api/v1/'
 
-export function getEvents(date: string) {
+export function getEvents(id: string, date: string) {
   // return request.get('users/1/trips').then((res) => {
-  return request.get(rootUrl + `events/date/${date}`).then((res) => {
+  return request.get(rootUrl + `events/date/${id}/${date}`).then((res) => {
     console.log('get event', res.body)
     return res.body as Events[]
   })

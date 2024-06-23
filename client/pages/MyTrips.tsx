@@ -45,7 +45,7 @@ export function MyTrips() {
             </div>
             {data.length >= 1 ? (
               <ul>
-                {data.map(({ tripName, startDate, endDate }) => (
+                {data.map(({ tripName, startDate, endDate, id }) => (
                   <li key={tripName} className="card is-primary is-outlined">
                     <p className="card-header-title is-centered is-size-4">
                       {tripName}
@@ -65,7 +65,7 @@ export function MyTrips() {
                     <Link
                       to={{
                         pathname: '/schedule',
-                        search: `?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&tripName=${encodeURIComponent(tripName)}`,
+                        search: `?tripId=${encodeURIComponent(id)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&tripName=${encodeURIComponent(tripName)}`,
                       }}
                     >
                       <button className="button is-primary is-centered mb-5">

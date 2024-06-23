@@ -57,6 +57,7 @@ export async function getTripsByUserId(id: number) {
     .join('trips', 'users.id', 'trips.created_by')
     .where('trips.created_by', id)
     .select(
+      'trips.id as id',
       'first_name as firstName',
       'last_name as lastName',
       'trip_name as tripName',
@@ -227,9 +228,11 @@ export async function getEventById(id: number) {
 }
 
 // Get event by Date
-export async function getEventsByDate(date: string) {
+export async function getEventsByDate(id: string, date: string) {
   const event = await db('events')
     .where('date', date)
+    .join('events', 'events.trip_id', 'trips.id')
+    .where('trips.id', id)
     .select(
       'date',
       'start_time as startTime',
