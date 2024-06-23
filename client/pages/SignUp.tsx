@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NewUser } from '../../models/flightplan'
 import { addNewUser } from '../apis/newUser'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function AddNewUser() {
   const [username, setUsername] = useState('')
@@ -10,9 +10,12 @@ export default function AddNewUser() {
   const [lastName, setLastName] = useState('')
   // const [password, setPassword] = useState('')
 
+  const navigate = useNavigate()
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     console.log('submitted')
+    navigate('/')
 
     const newUser: NewUser = {
       username: username,
@@ -91,9 +94,9 @@ export default function AddNewUser() {
             </div>
           </div>
           <div className="field is-grouped is-grouped-centered mt-6">
-            <Link to={'/'}>
-              <button className="button is-primary">Sign Up</button>
-            </Link>
+            <button type="submit" className="button is-primary">
+              Sign Up
+            </button>
           </div>
         </form>
       </div>

@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { AddNewUser } from '../components/AddNewUser'
 import { useAuth } from '../context/UserContext'
 import { useState } from 'react'
 import { useFetchUsers } from '../hooks/useFetchUsers'

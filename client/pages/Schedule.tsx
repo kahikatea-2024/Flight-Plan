@@ -15,6 +15,7 @@ export function Schedule() {
   const startDate = searchParams.get('startDate') || new Date().toISOString()
   const endDate = searchParams.get('endDate') || new Date().toISOString()
   const tripName = searchParams.get('tripName') || 'Trip'
+  const tripId = searchParams.get('tripId') || 'tripId'
   const start = new Date(startDate)
   const end = new Date(endDate)
   const dates = generateDateList(start, end)
@@ -35,8 +36,8 @@ export function Schedule() {
     )
   }
 
-  const handleDateClick = (date: Date) => {
-    navigate(`/date/${format(date, 'yyyy-MM-dd')}`)
+  const handleDateClick = (tripId: string, date: Date) => {
+    navigate(`/tripId/${tripId}/date/${format(date, 'yyyy-MM-dd')}`)
   }
 
   return (
@@ -80,7 +81,7 @@ export function Schedule() {
                 </span>
                 <button
                   className="button is-primary"
-                  onClick={() => handleDateClick(date)}
+                  onClick={() => handleDateClick(tripId, date)}
                 >
                   Edit
                 </button>

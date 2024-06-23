@@ -3,12 +3,12 @@ import { addEvent, getEvents } from '../apis/events.ts'
 import { EventData } from '../../models/flightplan.ts'
 
 //TODO change tripId to date
-export function useEvents(date: string) {
+export function useEvents(id: string, date: string) {
   const queryClient = useQueryClient()
   const { data, isLoading, isError } = useQuery({
     queryKey: ['events', date],
     queryFn: async () => {
-      const res = getEvents(date)
+      const res = getEvents(id, date)
       return res
     },
   })
