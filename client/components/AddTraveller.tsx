@@ -1,4 +1,7 @@
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { useFriends } from '../context/FriendsContext'
+import { addTrips, addUserToTrip } from '../apis/trips'
+import { Trips } from '../../models/flightplan'
 
 interface User {
   id: number
@@ -14,68 +17,56 @@ interface User {
 interface AddTravllerProps {
   onSelectFriend: (friend: User) => void
   onRemoveFriend: (friendId: number) => void
-  propSelectedFriends: User[]
 }
 
 export function AddTravller({
   onSelectFriend,
   onRemoveFriend,
-  propSelectedFriends,
 }: AddTravllerProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { friends, removeFriend } = useFriends()
   const [selectedFriends, setSelectedFriends] = useState<User[]>([])
-  const [availableFriends, setAvailableFriends] = useState<User[]>([])
-
-  // Initialize availableFriends from localStorage on component mount
-  useEffect(() => {
-    const storedFriends = localStorage.getItem('addedFriends')
-    if (storedFriends) {
-      const parsedFriends = JSON.parse(storedFriends)
-      setAvailableFriends(parsedFriends)
-    }
-  }, [])
+  const [tripId, setTripId] = useState<number | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
-  const handleSelectFriend = (friend: User) => {
-    // Check if friend is already selected
-    if (
-      !selectedFriends.some((selectedFriend) => selectedFriend.id === friend.id)
-    ) {
-      // Update selectedFriends state
-      setSelectedFriends([...selectedFriends, friend])
-      // Remove friend from availableFriends
-      setAvailableFriends(availableFriends.filter((f) => f.id !== friend.id))
-      // Notify parent component (via onSelectFriend) about the selection
-      onSelectFriend(friend)
-      // Update localStorage with the updated selectedFriends
-      localStorage.setItem(
-        'addedFriends',
-        JSON.stringify([...selectedFriends, friend]),
-      )
+  const createTrip = async (tripData: Trips) => async () => {
+    try {
+      const newTripId = await addTrips(tripData)
+      setTripId(newTripId)
+    } catch (error) {
+      console.error('Error creating trip:', error)
+      throw error
     }
-    closeModal() // Close the modal after selecting a friend
+  }
+
+  const handleSelectFriend = async (friend: User) => {
+    try {
+      if (!tripId) {
+        // Create trip first if tripId is not available
+        await createTrip(/* provide trip data here */)
+      }
+
+      // Now tripId should be available, add user to trip
+      await addUserToTrip(tripId!, friend.username) // tripId! assumes tripId is not null
+
+      // Update selectedFriends state and call onSelectFriend
+      setSelectedFriends([...selectedFriends, friend])
+      onSelectFriend(friend)
+      closeModal()
+    } catch (error) {
+      console.error('Error adding user to trip:', error)
+      // Handle error as needed
+    }
   }
 
   const handleRemoveFriend = (friendId: number) => {
-    // Notify parent component (via onRemoveFriend) about the removal
     onRemoveFriend(friendId)
-    // Update selectedFriends state
+    removeFriend(friendId)
     setSelectedFriends(
       selectedFriends.filter((friend) => friend.id !== friendId),
     )
-    // Find the removed friend from propSelectedFriends
-    const friendToAddBack = propSelectedFriends.find((f) => f.id === friendId)
-    if (friendToAddBack) {
-      // Add friend back to availableFriends
-      setAvailableFriends([...availableFriends, friendToAddBack])
-      // Update localStorage with the updated selectedFriends
-      localStorage.setItem(
-        'addedFriends',
-        JSON.stringify(selectedFriends.filter((f) => f.id !== friendId)),
-      )
-    }
   }
 
   return (
@@ -103,7 +94,7 @@ export function AddTravller({
             <div className="box">
               <h2 className="title">Select a Friend</h2>
               <ul>
-                {availableFriends.map((friend) => (
+                {friends.map((friend) => (
                   <li key={friend.id}>
                     <button
                       className="button"
@@ -125,6 +116,3 @@ export function AddTravller({
     </div>
   )
 }
-// function useaddUserToTrips(tripId: any, username: string) {
-//   throw new Error('Function not implemented.')
-// }

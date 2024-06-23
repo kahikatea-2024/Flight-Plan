@@ -22,7 +22,7 @@ export type EventWithoutDate = Omit<Events, 'date'>
 export type EventData = Omit<Events, 'id'>
 
 export interface Users {
-  id: number | undefined
+  id: number
   username: string
   email: string
   firstName: string

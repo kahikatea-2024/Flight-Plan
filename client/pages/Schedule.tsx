@@ -59,7 +59,6 @@ export function Schedule() {
             <AddTravller
               onSelectFriend={handleSelectFriend}
               onRemoveFriend={handleRemoveFriend}
-              propSelectedFriends={selectedFriends}
             />
           </div>
         </div>
