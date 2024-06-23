@@ -2,18 +2,6 @@ import React, { useState } from 'react'
 import { useMyFriends } from '../hooks/useMyFriends'
 import { useFriends } from '../context/FriendsContext'
 import { useAuth } from '../context/UserContext'
-import { useAddFriend } from '../hooks/useAddFriend'
-
-interface User {
-  id?: number
-  username?: string
-  email?: string
-  auth0id?: string
-  first_name?: string
-  last_name?: string
-  phone_number?: string
-  profile_picture?: string
-}
 
 export function MyFriends() {
   const [email, setEmail] = useState('')

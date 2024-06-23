@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { format, eachDayOfInterval } from 'date-fns'
-import { AddTravller } from '../components/AddTraveller'
-import { useEffect, useState } from 'react'
-import { User } from '@auth0/auth0-react'
+import { AddTraveller } from '../components/AddTraveller'
+import { useState } from 'react'
+import { Users as User } from '../../models/flightplan'
 
 const generateDateList = (startDate: Date, endDate: Date): Date[] => {
   return eachDayOfInterval({ start: startDate, end: endDate })
@@ -21,26 +21,16 @@ export function Schedule() {
 
   const [selectedFriends, setSelectedFriends] = useState<User[]>([])
 
-  useEffect(() => {
-    const storedFriends = localStorage.getItem('addedFriends')
-    if (storedFriends) {
-      setSelectedFriends(JSON.parse(storedFriends))
-    }
-  }, []) // Retrieve from localStorage on component mount
-
   const handleSelectFriend = (friend: User) => {
     setSelectedFriends((prevFriends) => [...prevFriends, friend])
   }
 
   const handleRemoveFriend = (friendId: number) => {
+    // Assuming `id` is a string
     setSelectedFriends((prevFriends) =>
-      prevFriends.filter((friend) => friend.id !== friendId),
+      prevFriends.filter((friend) => friend.sub !== friendId),
     )
   }
-
-  useEffect(() => {
-    localStorage.setItem('addedFriends', JSON.stringify(selectedFriends))
-  }, [selectedFriends]) // Store to localStorage whenever selectedFriends changes
 
   const handleDateClick = (date: Date) => {
     navigate(`/date/${format(date, 'yyyy-MM-dd')}`)
@@ -56,10 +46,25 @@ export function Schedule() {
             Click + to add a traveller to the trip, double click to remove them
           </h3>
           <div className="travellers-wrapper">
-            <AddTravller
+            <AddTraveller
               onSelectFriend={handleSelectFriend}
               onRemoveFriend={handleRemoveFriend}
+              tripId={tripId}
             />
+          </div>
+          <div className="selected-friends-list">
+            {selectedFriends.length > 0 && (
+              <ul>
+                {selectedFriends.map((friend) => (
+                  <li
+                    key={friend.sub}
+                    onDoubleClick={() => handleRemoveFriend(friend.sub)}
+                  >
+                    {friend.name}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
         <div className="dates-list-container">

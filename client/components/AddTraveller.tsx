@@ -17,41 +17,24 @@ interface User {
 interface AddTravllerProps {
   onSelectFriend: (friend: User) => void
   onRemoveFriend: (friendId: number) => void
+  tripId: number
 }
 
-export function AddTravller({
+export function AddTraveller({
   onSelectFriend,
   onRemoveFriend,
+  tripId,
 }: AddTravllerProps) {
   const { friends, removeFriend } = useFriends()
   const [selectedFriends, setSelectedFriends] = useState<User[]>([])
-  const [tripId, setTripId] = useState<number | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
-  const createTrip = async (tripData: Trips) => async () => {
-    try {
-      const newTripId = await addTrips(tripData)
-      setTripId(newTripId)
-    } catch (error) {
-      console.error('Error creating trip:', error)
-      throw error
-    }
-  }
-
   const handleSelectFriend = async (friend: User) => {
     try {
-      if (!tripId) {
-        // Create trip first if tripId is not available
-        await createTrip(/* provide trip data here */)
-      }
-
-      // Now tripId should be available, add user to trip
-      await addUserToTrip(tripId!, friend.username) // tripId! assumes tripId is not null
-
-      // Update selectedFriends state and call onSelectFriend
+      await addUserToTrip(tripId, friend.username)
       setSelectedFriends([...selectedFriends, friend])
       onSelectFriend(friend)
       closeModal()
