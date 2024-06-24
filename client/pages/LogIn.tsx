@@ -45,12 +45,15 @@ export default function LogIn() {
               onSubmit={handleLogin}
             >
               <div className="field">
-                <label className="label is-medium">Email</label>
+                <label className="label is-medium" htmlFor="email">
+                  Email
+                </label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     placeholder="Email"
+                    id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
