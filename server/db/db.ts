@@ -249,6 +249,7 @@ export async function getEventsByDate(id: string, date: string) {
       'end_time as endTime',
       'description',
       'notes as note',
+      'type as type',
     )
 
   return event as Events[]
@@ -269,6 +270,7 @@ export async function addNewEventByTripDate(newEvent: EventData) {
     note,
     createdBy,
     location,
+    type,
   } = newEvent
 
   const newEventDate = await db('events')
@@ -282,6 +284,7 @@ export async function addNewEventByTripDate(newEvent: EventData) {
       notes: note,
       created_by: createdBy,
       location: location,
+      type: type,
     })
     .returning('date')
   return newEventDate
@@ -299,6 +302,7 @@ export async function updateEventsById(
     created_by: number
     notes: string
     location: string
+    type: string
   },
 ) {
   const eventToUpdate = await db('events').where({ id }).update(updatedEvent)

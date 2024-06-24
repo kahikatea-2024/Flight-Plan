@@ -51,7 +51,15 @@ export function EventsByDay() {
         {data.length >= 1 ? (
           <ul className="">
             {data.map(
-              ({ id, description, startTime, endTime, note, location }) => (
+              ({
+                id,
+                description,
+                startTime,
+                endTime,
+                note,
+                location,
+                type,
+              }) => (
                 <li
                   key={id + description}
                   className="card is-primary is-outlined"
@@ -59,6 +67,9 @@ export function EventsByDay() {
                   <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
                     <span> Start Time: {startTime} </span>
                     <span className="ml-6">End Time: {endTime}</span>
+                  </p>
+                  <p className="card-content is-size-5 pb-1">
+                    Event Type: {type}
                   </p>
 
                   <p className="card-content is-size-5 pb-1">

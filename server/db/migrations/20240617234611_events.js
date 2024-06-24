@@ -16,6 +16,7 @@ export async function up(knex) {
     table.string('description')
     table.string('notes')
     table.string('location')
+    table.string('type')
   })
 }
 

@@ -14,6 +14,7 @@ export function AddEvent() {
   const [formData, setFormData] = useState({
     title: ' ',
     location: ' ',
+    type: ' ',
     startHour: ' ',
     startMinutes: ' ',
     startAMPM: ' ',
@@ -26,6 +27,7 @@ export function AddEvent() {
   const [formErrors, setFormErrors] = useState({
     title: ' ',
     location: ' ',
+    type: ' ',
     startHour: ' ',
     startMinutes: ' ',
     startAMPM: ' ',
@@ -49,10 +51,18 @@ export function AddEvent() {
         ...prevState,
         title: 'Please enter a descriptive title.',
       }))
-    } else if (name === 'location' && value.length < 5) {
+      // } else if (name === 'location' && value.length < 5) {
+      //   setFormErrors((prevState) => ({
+      //     ...prevState,
+      //     location: 'Please enter a location.',
+      //   }))
+    } else if (
+      name === 'type' &&
+      !['Event', 'Flight', 'Accommodation'].includes(value)
+    ) {
       setFormErrors((prevState) => ({
         ...prevState,
-        location: 'Please enter a location.',
+        type: 'Please select a type.',
       }))
     } else if (name === 'startHour' && (value > 12 || isNaN(value))) {
       setFormErrors((prevState) => ({
@@ -118,6 +128,7 @@ export function AddEvent() {
       tripId: tripId,
       description: formData.title,
       location: formData.location,
+      type: formData.type,
       date: selectedDate as string,
       startTime: startTimeCombined,
       endTime: endTimeCombined,
@@ -187,6 +198,42 @@ export function AddEvent() {
                   )}
                 </div>
               </div>
+              <div className="control">
+                <span className="radio">
+                  <label className="radio">
+                    <input
+                      type="radio"
+                      name="type"
+                      value={formData.type}
+                      onChange={handleChange}
+                    />
+                    Event
+                  </label>
+                  <label className="radio">
+                    <input
+                      type="radio"
+                      name="type"
+                      value={formData.type}
+                      onChange={handleChange}
+                    />
+                    Flight
+                  </label>
+                  <label className="radio">
+                    <input
+                      type="radio"
+                      name="type"
+                      value={formData.type}
+                      onChange={handleChange}
+                    />
+                    Accommodation
+                  </label>
+
+                  {formErrors.type && (
+                    <span className="error">{formErrors.type}</span>
+                  )}
+                </span>
+              </div>
+
               <div className="event-time">
                 <div className="time-wrapper">
                   <div className="field has-addons">
