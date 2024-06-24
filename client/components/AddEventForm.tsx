@@ -1,49 +1,138 @@
 import { useState } from 'react'
 import { EventData } from '../../models/flightplan'
-import { addEvent } from '../apis/events'
+import { addEvent, getEvents } from '../apis/events'
 import { useParams } from 'react-router-dom'
 
 export function AddEvent() {
-  const selectedDate = useParams()
+  const params = useParams()
   // TODO update these!!
-  const tripId = 1
+  const tripId = Number(params.id)
+  const selectedDate = params.date
   const userId = 1
+  console.log('params', selectedDate)
 
-  const [title, setTitle] = useState('')
-  // const [startDate, setStartDate] = useState(selectedDate)
-  const [startTime, setStartTime] = useState('')
-  const [endTime, setEndTime] = useState('')
-  const [startTimeOfDay, setStartTimeOfDay] = useState('AM')
-  const [endTimeOfDay, setEndTimeOfDay] = useState('PM')
-  const [note, setNote] = useState('')
+  const [formData, setFormData] = useState({
+    title: ' ',
+    startHour: ' ',
+    startMinutes: ' ',
+    startAMPM: ' ',
+    endHour: ' ',
+    endMinutes: ' ',
+    endAMPM: ' ',
+    note: ' ',
+  })
 
-  //TODO - fix state for AM/PM
-  function combineTimeAndDay(time: string, timeOfDay: string): string {
-    // Combine time and day using template literals
-    return `${time}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
+  const [formErrors, setFormErrors] = useState({
+    title: ' ',
+    startHour: ' ',
+    startMinutes: ' ',
+    startAMPM: ' ',
+    endHour: ' ',
+    endMinutes: ' ',
+    endAMPM: ' ',
+    note: ' ',
+  })
+
+  // Event handlers for form field changes
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+
+    // Perform validation checks and update the error state
+    if (name === 'title' && value.length < 5) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        title: 'Please enter a descriptive title.',
+      }))
+    } else if (name === 'startHour' && (value > 12 || isNaN(value))) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        startHour: 'Please enter a valid hour between 0 - 12.',
+      }))
+    } else if (name === 'startMinutes' && (value > 60 || isNaN(value))) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        startMinutes: 'Please choose a valid time between 0 - 60 minutes.',
+      }))
+    } else if (name === 'startAMPM' && !['AM', 'PM'].includes(value)) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        startAMPM: 'Please choose AM or PM.',
+      }))
+    } else if (name === 'endHour' && (value > 12 || isNaN(value))) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        endHour: 'Please enter a valid hour between 0 - 12.',
+      }))
+    } else if (name === 'endMinutes' && (value > 60 || isNaN(value))) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        endMinutes: 'Please choose a valid time between 0 - 60 minutes.',
+      }))
+    } else if (name === 'endAMPM' && !['AM', 'PM'].includes(value)) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        endAMPM: 'Please choose AM or PM.',
+      }))
+    } else {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        [name]: ' ', // Reset error message
+      }))
+    }
   }
 
-  //event was unused in the handle submit, have removed
-  const handleSubmit = async () => {
-    const startTimeCombined = combineTimeAndDay(startTime, startTimeOfDay)
-    const endTimeCombined = combineTimeAndDay(endTime, endTimeOfDay)
+  function combineTimeAndDay(
+    hour: string,
+    minutes: string,
+    timeOfDay: string,
+  ): string {
+    // Combine time and day using template literals
+    return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const startTimeCombined = combineTimeAndDay(
+      formData.startHour,
+      formData.startMinutes,
+      formData.startAMPM,
+    )
+    const endTimeCombined = combineTimeAndDay(
+      formData.endHour,
+      formData.endMinutes,
+      formData.endAMPM,
+    )
 
     const eventData: EventData = {
       tripId: tripId,
-      description: title,
-      date: selectedDate.date as string,
+      description: formData.title,
+      date: selectedDate as string,
       startTime: startTimeCombined,
       endTime: endTimeCombined,
-      note: note,
+      note: formData.note,
       createdBy: userId,
     }
 
-    try {
-      await addEvent(eventData)
-    } catch (error) {
-      console.error('Failed to add event:', error)
+    const isFormValid = Object.values(formErrors).every(
+      (error) => error === ' ',
+    )
+
+    if (isFormValid) {
+      try {
+        await addEvent(eventData)
+        const events = await getEvents(
+          tripId.toString(),
+          selectedDate as string,
+        )
+        console.log('get events', events)
+      } catch (error) {
+        console.error('Failed to add event:', error)
+      }
     }
-    console.log('data', eventData)
   }
 
   return (
@@ -65,59 +154,108 @@ export function AddEvent() {
                     type="text"
                     className="input"
                     placeholder="Event Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
                   />
+                  {formErrors.title && (
+                    <div className="error">{formErrors.title}</div>
+                  )}
                 </div>
               </div>
               <div className="event-time">
                 <div className="time-wrapper">
                   <div className="field has-addons">
-                    <label className="label">Start</label>
-                    <p className="control">
+                    <label className="label">Event Time</label>
+                    <div className="control">
                       <input
                         className="input"
                         type="text"
-                        placeholder="Start Time"
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
+                        placeholder="00"
+                        name="startHour"
+                        value={formData.startHour}
+                        onChange={handleChange}
                       />
-                    </p>
-                    <p className="control">
+                      {formErrors.startHour && (
+                        <div className="error">{formErrors.startHour}</div>
+                      )}
+                    </div>
+                    <div className="control">
+                      <input
+                        className="input"
+                        type="text"
+                        placeholder="00"
+                        name="startMinutes"
+                        value={formData.startMinutes}
+                        onChange={handleChange}
+                      />
+                      {formErrors.startMinutes && (
+                        <div className="error">{formErrors.startMinutes}</div>
+                      )}
+                    </div>
+                    <div className="control">
                       <span className="select">
+                        {formErrors.startAMPM && (
+                          <span className="error">{formErrors.startAMPM}</span>
+                        )}
                         <select
-                          value={startTimeOfDay}
-                          onChange={(e) => setStartTimeOfDay(e.target.value)}
+                          name="startAMPM"
+                          value={formData.startAMPM}
+                          onChange={handleChange}
                         >
+                          <option>Select</option>
+
                           <option>AM</option>
                           <option>PM</option>
                         </select>
                       </span>
-                    </p>
+                    </div>
                   </div>
                 </div>
                 <div className="field has-addons ml-4">
-                  <label className="label"> End</label>
-                  <p className="control">
+                  <div className="control">
                     <input
                       className="input"
                       type="text"
-                      placeholder="End Time"
-                      value={endTime}
-                      onChange={(e) => setEndTime(e.target.value)}
+                      placeholder="00"
+                      name="endHour"
+                      value={formData.endHour}
+                      onChange={handleChange}
                     />
-                  </p>
-                  <p className="control">
+                    {formErrors.endHour && (
+                      <div className="error">{formErrors.endHour}</div>
+                    )}
+                  </div>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      name="endMinutes"
+                      placeholder="00"
+                      value={formData.endMinutes}
+                      onChange={handleChange}
+                    />
+                    {formErrors.endMinutes && (
+                      <div className="error">{formErrors.endMinutes}</div>
+                    )}
+                  </div>
+                  <div className="control">
                     <span className="select">
+                      {formErrors.endAMPM && (
+                        <span className="error">{formErrors.endAMPM}</span>
+                      )}
                       <select
-                        value={endTimeOfDay}
-                        onChange={(e) => setEndTimeOfDay(e.target.value)}
+                        name="endAMPM"
+                        value={formData.endAMPM}
+                        onChange={handleChange}
                       >
+                        <option>Select</option>
+
                         <option>AM</option>
                         <option>PM</option>
                       </select>
                     </span>
-                  </p>
+                  </div>
                 </div>
               </div>
               <div className="field">
@@ -127,10 +265,14 @@ export function AddEvent() {
                     type="text"
                     className="input"
                     placeholder="Event Note"
+                    name="note"
                     // rows="4"
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
+                    value={formData.note}
+                    onChange={handleChange}
                   />
+                  {formErrors.note && (
+                    <div className="error">{formErrors.note}</div>
+                  )}
                 </div>
               </div>
 

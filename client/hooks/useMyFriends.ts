@@ -8,7 +8,7 @@ export function useMyFriends() {
     queryKey: ['friends'],
     queryFn: async () => {
       const res = await request.get('/api/v1/users')
-      console.log(res.body)
+
       return res.body as Users
     },
   })
