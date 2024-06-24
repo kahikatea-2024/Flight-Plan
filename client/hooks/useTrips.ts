@@ -7,7 +7,7 @@ export function useTrips(userId: number) {
     queryKey: ['trips', userId],
     queryFn: async () => {
       const res = await getTrips(userId)
-      console.log('hook', res)
+
       return res
     },
   })
@@ -30,4 +30,4 @@ export function useTrips(userId: number) {
 //   })
 
 //   return { data, isLoading, isError }
-// 
+//

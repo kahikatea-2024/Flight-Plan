@@ -10,7 +10,7 @@ const generateDateList = (startDate: Date, endDate: Date): Date[] => {
   return eachDayOfInterval({ start: startDate, end: endDate })
 }
 
-export function Schedule() {
+export default function Schedule() {
   const { selectedFriends, setSelectedFriends } = useSelectedFriends()
   const navigate = useNavigate()
   const location = useLocation()

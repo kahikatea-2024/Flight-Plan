@@ -1,15 +1,16 @@
 import { useParams } from 'react-router-dom'
 import { useEvents } from '../hooks/useEvents'
 
-//TODO make dynamic and make get events by day back end route
-//Or make calendar selection scroll
-
 export function EventsByDay() {
-  const day = useParams()
-  const date = day.date
+  const params = useParams()
+  const date = params.date
+  const tripId = params.id
 
-  const { data, isLoading, isError } = useEvents(date as string)
-  console.log('day', day)
+  const { data, isLoading, isError } = useEvents(
+    tripId as string,
+    date as string,
+  )
+
   if (isLoading) {
     return <p>Loading</p>
   }

@@ -42,7 +42,7 @@ import { useFetchUsers } from '../hooks/useFetchUsers'
 //   },
 // ]
 
-export function LogIn() {
+export default function LogIn() {
   //TODO if user is already logged in, direct to another page
   //ADD all the Auth
 

@@ -3,7 +3,7 @@ import { useMyFriends } from '../hooks/useMyFriends'
 import { useFriends } from '../context/FriendsContext'
 import { useAuth } from '../context/UserContext'
 
-export function MyFriends() {
+export default function MyFriends() {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const { friends, addFriend: addFriendContext, removeFriend } = useFriends()
