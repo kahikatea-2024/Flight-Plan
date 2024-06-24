@@ -235,7 +235,7 @@ export async function getEventsByDate(date: string) {
       'start_time as startTime',
       'end_time as endTime',
       'description',
-      'notes',
+      'notes as note',
     )
   return event as Events[]
 }

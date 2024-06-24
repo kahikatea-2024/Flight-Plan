@@ -40,7 +40,7 @@ export function AddEvent() {
     }))
 
     // Perform validation checks and update the error state
-    if (name === 'title' && value.length < 3) {
+    if (name === 'title' && value.length < 5) {
       setFormErrors((prevState) => ({
         ...prevState,
         title: 'Please enter a descriptive title.',
@@ -78,7 +78,7 @@ export function AddEvent() {
     } else {
       setFormErrors((prevState) => ({
         ...prevState,
-        [name]: '', // Reset error message
+        [name]: ' ', // Reset error message
       }))
     }
   }
@@ -114,19 +114,19 @@ export function AddEvent() {
       createdBy: userId,
     }
 
-    // const isFormValid = Object.values(formErrors).every(
-    //   (error) => error === ' ',
-    // )
+    const isFormValid = Object.values(formErrors).every(
+      (error) => error === ' ',
+    )
 
-    // if (isFormValid) {
-    try {
-      console.log('data', eventData)
-      await addEvent(eventData)
-    } catch (error) {
-      console.error('Failed to add event:', error)
+    if (isFormValid) {
+      try {
+        console.log('data', eventData)
+        await addEvent(eventData)
+      } catch (error) {
+        console.error('Failed to add event:', error)
+      }
     }
   }
-  // }
 
   return (
     <section>
