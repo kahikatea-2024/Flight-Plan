@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { EventData } from '../../models/flightplan'
+import { EventData, Events } from '../../models/flightplan'
 import { addEvent, getEvents } from '../apis/events'
-import { useParams } from 'react-router-dom'
 
-export function AddEvent() {
-  const params = useParams()
-  // TODO update these!!
-  const tripId = Number(params.id)
-  const selectedDate = params.date
+interface AddEventProps {
+  date: string
+  tripId: string
+  setEvents: React.Dispatch<React.SetStateAction<Events[]>>
+}
+
+export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
   const userId = 1
 
   const [formData, setFormData] = useState({
@@ -36,7 +37,6 @@ export function AddEvent() {
     note: ' ',
   })
 
-  // Event handlers for form field changes
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prevState) => ({
@@ -107,7 +107,6 @@ export function AddEvent() {
     minutes: string,
     timeOfDay: string,
   ): string {
-    // Combine time and day using template literals
     return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
   }
 
@@ -129,7 +128,7 @@ export function AddEvent() {
       description: formData.title,
       location: formData.location,
       type: formData.type,
-      date: selectedDate as string,
+      date: date as string,
       startTime: startTimeCombined,
       endTime: endTimeCombined,
       note: formData.note,
@@ -143,10 +142,8 @@ export function AddEvent() {
     if (isFormValid) {
       try {
         await addEvent(eventData)
-        const events = await getEvents(
-          tripId.toString(),
-          selectedDate as string,
-        )
+        const events = await getEvents(tripId.toString(), date as string)
+        setEvents(events) // Update the events state
         console.log('get events', events)
       } catch (error) {
         console.error('Failed to add event:', error)
@@ -158,7 +155,7 @@ export function AddEvent() {
     <section>
       <div className="container is-fluid is-centered">
         <div className="columns is-fluid">
-          <div className="column  ">
+          <div className="column">
             <h2 className="is-size-2 has-text-centered has-text-primary">
               Add An Event
             </h2>
@@ -278,7 +275,6 @@ export function AddEvent() {
                           onChange={handleChange}
                         >
                           <option>Select</option>
-
                           <option>AM</option>
                           <option>PM</option>
                         </select>
@@ -324,7 +320,6 @@ export function AddEvent() {
                         onChange={handleChange}
                       >
                         <option>Select</option>
-
                         <option>AM</option>
                         <option>PM</option>
                       </select>
@@ -340,7 +335,6 @@ export function AddEvent() {
                     className="input"
                     placeholder="Event Note"
                     name="note"
-                    // rows="4"
                     value={formData.note}
                     onChange={handleChange}
                   />
