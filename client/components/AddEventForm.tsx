@@ -9,7 +9,6 @@ export function AddEvent() {
   const tripId = Number(params.id)
   const selectedDate = params.date
   const userId = 1
-  console.log('params', selectedDate)
 
   const [formData, setFormData] = useState({
     title: ' ',
@@ -44,6 +43,7 @@ export function AddEvent() {
       ...prevState,
       [name]: value,
     }))
+    console.log(formData.type)
 
     // Perform validation checks and update the error state
     if (name === 'title' && value.length < 5) {
@@ -51,19 +51,19 @@ export function AddEvent() {
         ...prevState,
         title: 'Please enter a descriptive title.',
       }))
-      // } else if (name === 'location' && value.length < 5) {
-      //   setFormErrors((prevState) => ({
-      //     ...prevState,
-      //     location: 'Please enter a location.',
-      //   }))
-    } else if (
-      name === 'type' &&
-      !['Event', 'Flight', 'Accommodation'].includes(value)
-    ) {
+    } else if (name === 'location' && value.length < 5) {
       setFormErrors((prevState) => ({
         ...prevState,
-        type: 'Please select a type.',
+        location: 'Please enter a location.',
       }))
+      // } else if (
+      //   name === 'type' &&
+      //   !['Event', 'Flight', 'Accommodation'].includes(value)
+      // ) {
+      //   setFormErrors((prevState) => ({
+      //     ...prevState,
+      //     type: 'Please select a type.',
+      //   }))
     } else if (name === 'startHour' && (value > 12 || isNaN(value))) {
       setFormErrors((prevState) => ({
         ...prevState,
@@ -204,7 +204,8 @@ export function AddEvent() {
                     <input
                       type="radio"
                       name="type"
-                      value={formData.type}
+                      value="Event"
+                      checked={formData.type === 'Event'}
                       onChange={handleChange}
                     />
                     Event
@@ -213,7 +214,8 @@ export function AddEvent() {
                     <input
                       type="radio"
                       name="type"
-                      value={formData.type}
+                      value="Flight"
+                      checked={formData.type === 'Flight'}
                       onChange={handleChange}
                     />
                     Flight
@@ -222,7 +224,8 @@ export function AddEvent() {
                     <input
                       type="radio"
                       name="type"
-                      value={formData.type}
+                      value="Accommodation"
+                      checked={formData.type === 'Accommodation'}
                       onChange={handleChange}
                     />
                     Accommodation
