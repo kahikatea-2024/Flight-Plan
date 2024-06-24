@@ -91,7 +91,7 @@ export function AddTraveller({
           </div>
         ))}
         <button className="button is-primary add-button" onClick={openModal}>
-          Add Travellers to Trip
+          +
         </button>
       </div>
 
