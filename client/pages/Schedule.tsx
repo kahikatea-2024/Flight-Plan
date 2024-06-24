@@ -86,7 +86,7 @@ export default function Schedule() {
                     key={ind}
                     onDoubleClick={() => handleRemoveFriend(friend.id)}
                   >
-                    {friend.username}
+                    {/* {friend.username} */}
                   </li>
                 ))}
               </ul>
