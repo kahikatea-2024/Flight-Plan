@@ -14,7 +14,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
   const [formData, setFormData] = useState({
     title: ' ',
     location: ' ',
-    type: ' ',
+    type: 'Event',
     startHour: ' ',
     startMinutes: ' ',
     startAMPM: ' ',
@@ -124,7 +124,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
     )
 
     const eventData: EventData = {
-      tripId: tripId,
+      tripId: Number(tripId),
       description: formData.title,
       location: formData.location,
       type: formData.type,
@@ -164,13 +164,16 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
               className="field-is-horizontal is-centered"
             >
               <div className="field">
-                <label className="label">Event Title</label>
+                <label className="label" htmlFor="title">
+                  Event Title
+                </label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     placeholder="Event Title"
                     name="title"
+                    id="title"
                     value={formData.title}
                     onChange={handleChange}
                   />
@@ -180,13 +183,16 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Event Location</label>
+                <label className="label" htmlFor="location">
+                  Event Location
+                </label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     placeholder="Event Location"
                     name="location"
+                    id="location"
                     value={formData.location}
                     onChange={handleChange}
                   />
@@ -195,32 +201,36 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                   )}
                 </div>
               </div>
+
               <div className="control">
                 <span className="radio">
-                  <label className="radio">
+                  <label className="radio" htmlFor="Event">
                     <input
                       type="radio"
                       name="type"
+                      id="Event"
                       value="Event"
                       checked={formData.type === 'Event'}
                       onChange={handleChange}
                     />
                     Event
                   </label>
-                  <label className="radio">
+                  <label className="radio" htmlFor="Flight">
                     <input
                       type="radio"
                       name="type"
+                      id="Flight"
                       value="Flight"
                       checked={formData.type === 'Flight'}
                       onChange={handleChange}
                     />
                     Flight
                   </label>
-                  <label className="radio">
+                  <label className="radio" htmlFor="Accommodation">
                     <input
                       type="radio"
                       name="type"
+                      id="Accommodation"
                       value="Accommodation"
                       checked={formData.type === 'Accommodation'}
                       onChange={handleChange}
@@ -237,13 +247,16 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
               <div className="event-time">
                 <div className="time-wrapper">
                   <div className="field has-addons">
-                    <label className="label">Event Time</label>
+                    <label className="label " htmlFor="startHour">
+                      Event Time
+                    </label>
                     <div className="control">
                       <input
                         className="input"
                         type="text"
                         placeholder="00"
                         name="startHour"
+                        id="startHour"
                         value={formData.startHour}
                         onChange={handleChange}
                       />
@@ -251,90 +264,110 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                         <div className="error">{formErrors.startHour}</div>
                       )}
                     </div>
+                    <label className="label " htmlFor="startMinutes">
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="text"
+                          placeholder="00"
+                          name="startMinutes"
+                          id="startMinutes"
+                          value={formData.startMinutes}
+                          onChange={handleChange}
+                        />
+                        {formErrors.startMinutes && (
+                          <div className="error">{formErrors.startMinutes}</div>
+                        )}
+                      </div>
+                    </label>
+                    <div className="control">
+                      <span className="select">
+                        <label className="label " htmlFor="startAMPM">
+                          <select
+                            name="startAMPM"
+                            id="startAMPM"
+                            value={formData.startAMPM}
+                            onChange={handleChange}
+                          >
+                            <option>Select</option>
+                            <option>AM</option>
+                            <option>PM</option>
+                          </select>
+                          {formErrors.startAMPM && (
+                            <span className="error">
+                              {formErrors.startAMPM}
+                            </span>
+                          )}
+                        </label>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="field has-addons ml-4">
+                  <label className="label " htmlFor="endHour">
                     <div className="control">
                       <input
                         className="input"
                         type="text"
                         placeholder="00"
-                        name="startMinutes"
-                        value={formData.startMinutes}
+                        name="endHour"
+                        id="endHour"
+                        value={formData.endHour}
                         onChange={handleChange}
                       />
-                      {formErrors.startMinutes && (
-                        <div className="error">{formErrors.startMinutes}</div>
+                      {formErrors.endHour && (
+                        <div className="error">{formErrors.endHour}</div>
                       )}
                     </div>
+                  </label>
+                  <label className="label " htmlFor="endMinutes">
                     <div className="control">
-                      <span className="select">
-                        {formErrors.startAMPM && (
-                          <span className="error">{formErrors.startAMPM}</span>
-                        )}
+                      <input
+                        className="input"
+                        type="text"
+                        name="endMinutes"
+                        id="endMinutes"
+                        placeholder="00"
+                        value={formData.endMinutes}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {formErrors.endMinutes && (
+                      <div className="error">{formErrors.endMinutes}</div>
+                    )}
+                  </label>
+                  <div className="control">
+                    <span className="select">
+                      <label className="label " htmlFor="endAMPM">
                         <select
-                          name="startAMPM"
-                          value={formData.startAMPM}
+                          name="endAMPM"
+                          id="endAMPM"
+                          value={formData.endAMPM}
                           onChange={handleChange}
                         >
                           <option>Select</option>
                           <option>AM</option>
                           <option>PM</option>
                         </select>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="field has-addons ml-4">
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder="00"
-                      name="endHour"
-                      value={formData.endHour}
-                      onChange={handleChange}
-                    />
-                    {formErrors.endHour && (
-                      <div className="error">{formErrors.endHour}</div>
-                    )}
-                  </div>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      name="endMinutes"
-                      placeholder="00"
-                      value={formData.endMinutes}
-                      onChange={handleChange}
-                    />
-                    {formErrors.endMinutes && (
-                      <div className="error">{formErrors.endMinutes}</div>
-                    )}
-                  </div>
-                  <div className="control">
-                    <span className="select">
-                      {formErrors.endAMPM && (
-                        <span className="error">{formErrors.endAMPM}</span>
-                      )}
-                      <select
-                        name="endAMPM"
-                        value={formData.endAMPM}
-                        onChange={handleChange}
-                      >
-                        <option>Select</option>
-                        <option>AM</option>
-                        <option>PM</option>
-                      </select>
+                        {formErrors.endAMPM && (
+                          <span className="error">{formErrors.endAMPM}</span>
+                        )}
+                      </label>
                     </span>
                   </div>
                 </div>
               </div>
               <div className="field">
-                <label className="label">Event Note</label>
+                <label className="label" htmlFor="note">
+                  Event Note
+                </label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     placeholder="Event Note"
                     name="note"
+                    id="note"
                     value={formData.note}
                     onChange={handleChange}
                   />
