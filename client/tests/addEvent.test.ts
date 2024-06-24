@@ -2,6 +2,7 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import { setupApp } from './setup.tsx'
 import nock from 'nock'
+// import { screen } from '@testing-library/react'
 
 beforeAll(() => {
   nock.disableNetConnect()
@@ -39,6 +40,16 @@ const fakeData = [
   },
 ]
 
+const fakeNewEvent = {
+  id: 4,
+  tripId: 123,
+  date: '04-08-2024',
+  description: 'bungy jump',
+  endTime: '10am',
+  notes: 'be brave',
+  startTime: '5am',
+}
+
 describe('The days events list', () => {
   it('shows some events', async () => {
     const scope = nock('http://localhost')
@@ -52,19 +63,3 @@ describe('The days events list', () => {
     expect(scope.isDone()).toBe(true)
   })
 })
-
-// describe('Add Event to date', () => {
-//   it('should add a new event', () => {
-//     //arrange
-//     const newEvent = {
-//       date: '04-08-2024',
-//       description: 'surf',
-//       endTime: '10am',
-//       notes: 'wetsuit',
-//       startTime: '5am',
-//     }
-//     //assert
-
-//     //expect
-//   })
-// })
