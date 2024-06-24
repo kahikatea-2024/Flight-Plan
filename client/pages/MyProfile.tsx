@@ -1,34 +1,99 @@
-// import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useUser } from '../hooks/useUsers'
-import ProfileForm from '../components/ProfileForm'
+import { useUpdateUser } from '../hooks/useUpdateUser'
 import { Users } from '../../models/flightplan'
+import { useAuth } from '../context/UserContext'
 
 export default function MyProfile() {
-  const { data, isLoading, mutation } = useUser(1)
+  const { state } = useAuth()
+  const { user: loggedInUser } = state
 
-  console.log(data?.id)
+  if (!loggedInUser) return <div>Please log in</div>
 
-  // const [formState, setFormState] = useState({ user })
+  const userId = loggedInUser.id
+  const { data: user, isLoading, error } = useUser(userId)
+  const updateUser = useUpdateUser(userId)
 
-  if (isLoading) {
-    return <div>Loading...</div>
+  const [formValues, setFormValues] = useState({
+    email: '',
+    phoneNumber: '',
+    username: '',
+    firstName: '',
+    lastName: '',
+    profilePicture: '',
+  })
+
+  useEffect(() => {
+    if (user) {
+      setFormValues({
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profilePicture: user.profilePicture,
+      })
+    }
+  }, [user])
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    })
   }
 
-  function handleSubmit(form: Users) {
-    mutation.mutate({ form })
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    updateUser.mutate(formValues)
   }
 
-  // const handleChange = (
-  //   evt: ChangeEvent<
-  //     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-  //   >,
-  // ) => {
-  //   const { name, value } = evt.target
-  //   setFormState((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }))
-  // }
-
-  return <ProfileForm handleSubmit={handleSubmit} user={data} />
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          name="email"
+          value={formValues.email}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        <input
+          name="phoneNumber"
+          value={formValues.phoneNumber}
+          onChange={handleChange}
+          placeholder="Phone Number"
+        />
+        <input
+          name="username"
+          value={formValues.username}
+          onChange={handleChange}
+          placeholder="Username"
+        />
+        <input
+          name="firstName"
+          value={formValues.firstName}
+          onChange={handleChange}
+          placeholder="First Name"
+        />
+        <input
+          name="lastName"
+          value={formValues.lastName}
+          onChange={handleChange}
+          placeholder="Last Name"
+        />
+        <input
+          name="profilePicture"
+          value={formValues.profilePicture}
+          onChange={handleChange}
+          placeholder="Profile Picture URL"
+        />
+        <button type="submit">Update Profile</button>
+      </form>
+    </div>
+  )
 }
