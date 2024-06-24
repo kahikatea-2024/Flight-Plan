@@ -9,7 +9,7 @@ import { Events } from '../../models/flightplan'
 
 export default function ViewDay() {
   const { date, id } = useParams()
-  const [events, setEvents] = useState([])
+  const [events, setEvents] = useState<Events[]>([])
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -35,7 +35,11 @@ export default function ViewDay() {
             <Notes />
           </div>
           <div className="column ">
-            <AddEvent date={date} tripId={id} setEvents={setEvents} />
+            <AddEvent
+              date={date as string}
+              tripId={id as string}
+              setEvents={setEvents}
+            />
           </div>
         </div>
         <EventsByDay events={events} />

@@ -1,4 +1,10 @@
-export function EventsByDay({ events }) {
+import { Events } from '../../models/flightplan'
+
+interface EventsByDayProps {
+  events: Events[]
+}
+
+export function EventsByDay({ events }: EventsByDayProps) {
   if (!events || events.length === 0) {
     return (
       <section className="mb-6">
@@ -17,7 +23,7 @@ export function EventsByDay({ events }) {
 
   // Sort the events by start time
   events.sort((a, b) => {
-    const parseTime = (time) => {
+    const parseTime = (time: string) => {
       const [hour, minute] = time.split(':')
       const isPM = time.toLowerCase().includes('pm')
       return { hour: parseInt(hour), minute: parseInt(minute), isPM }

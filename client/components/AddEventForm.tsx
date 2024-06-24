@@ -1,8 +1,14 @@
 import { useState } from 'react'
-import { EventData } from '../../models/flightplan'
+import { EventData, Events } from '../../models/flightplan'
 import { addEvent, getEvents } from '../apis/events'
 
-export function AddEvent({ date, tripId, setEvents }) {
+interface AddEventProps {
+  date: string
+  tripId: string
+  setEvents: React.Dispatch<React.SetStateAction<Events[]>>
+}
+
+export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
   const userId = 1
 
   const [formData, setFormData] = useState({
