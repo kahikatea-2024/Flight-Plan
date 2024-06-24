@@ -34,9 +34,10 @@ router.get('/:id', async (req, res, next) => {
 // Get event by Date
 router.get('/date/:id/:date', async (req, res, next) => {
   try {
-    console.log(req.params.date)
-    const date = req.params.date
     const id = req.params.id
+    const date = req.params.date
+
+    console.log('id events.ts', req.params)
     const event = await db.getEventsByDate(id, date)
 
     if (!event) {

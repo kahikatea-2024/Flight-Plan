@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { EventData } from '../../models/flightplan'
-import { addEvent } from '../apis/events'
+import { addEvent, getEvents } from '../apis/events'
 import { useParams } from 'react-router-dom'
 
 export function AddEvent() {
-  const selectedDate = useParams()
+  const params = useParams()
   // TODO update these!!
-  const tripId = 2
+  const tripId = Number(params.id)
+  const selectedDate = params.date
   const userId = 1
+  console.log('params', selectedDate)
 
   const [formData, setFormData] = useState({
     title: ' ',
@@ -92,7 +94,8 @@ export function AddEvent() {
     return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     const startTimeCombined = combineTimeAndDay(
       formData.startHour,
       formData.startMinutes,
@@ -107,7 +110,7 @@ export function AddEvent() {
     const eventData: EventData = {
       tripId: tripId,
       description: formData.title,
-      date: selectedDate.date as string,
+      date: selectedDate as string,
       startTime: startTimeCombined,
       endTime: endTimeCombined,
       note: formData.note,
@@ -120,8 +123,12 @@ export function AddEvent() {
 
     if (isFormValid) {
       try {
-        console.log('data', eventData)
         await addEvent(eventData)
+        const events = await getEvents(
+          tripId.toString(),
+          selectedDate as string,
+        )
+        console.log('get events', events)
       } catch (error) {
         console.error('Failed to add event:', error)
       }
