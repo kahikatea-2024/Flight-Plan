@@ -7,7 +7,7 @@ import { addTrip } from '../apis/trips'
 import { Trips } from '../../models/flightplan'
 import { useAuth } from '../context/UserContext'
 
-export function NewTrip() {
+export default function NewTrip() {
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [tripName, setTripName] = useState('')
