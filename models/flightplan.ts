@@ -12,6 +12,7 @@ export interface Events {
   id: number
   tripId: number
   description: string
+  location: string
   date: string
   startTime: string
   endTime: string

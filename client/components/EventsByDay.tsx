@@ -50,22 +50,29 @@ export function EventsByDay() {
         {/* <div className="column is-fluid"> */}
         {data.length >= 1 ? (
           <ul className="">
-            {data.map(({ id, description, startTime, endTime, note }) => (
-              <li
-                key={id + description}
-                className="card is-primary is-outlined"
-              >
-                <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
-                  <span> Start Time: {startTime} </span>
-                  <span className="ml-6">End Time: {endTime}</span>
-                </p>
+            {data.map(
+              ({ id, description, startTime, endTime, note, location }) => (
+                <li
+                  key={id + description}
+                  className="card is-primary is-outlined"
+                >
+                  <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
+                    <span> Start Time: {startTime} </span>
+                    <span className="ml-6">End Time: {endTime}</span>
+                  </p>
 
-                <p className="card-content is-size-5 pb-1">{description}</p>
-                <div className="">
-                  <p className="card-content is-size-5">Note: {note}</p>
-                </div>
-              </li>
-            ))}
+                  <p className="card-content is-size-5 pb-1">
+                    Event Title: {description}
+                  </p>
+                  <p className="card-content is-size-5 pb-1">
+                    Location: {location}
+                  </p>
+                  <div className="">
+                    <p className="card-content is-size-5">Note: {note}</p>
+                  </div>
+                </li>
+              ),
+            )}
           </ul>
         ) : (
           <>

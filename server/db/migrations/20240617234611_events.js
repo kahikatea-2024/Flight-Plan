@@ -15,6 +15,7 @@ export async function up(knex) {
     table.string('end_time')
     table.string('description')
     table.string('notes')
+    table.string('location')
   })
 }
 

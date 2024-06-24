@@ -16,6 +16,7 @@ export async function seed(knex) {
       end_time: '06:00pm',
       description: 'meet at zebra cafe',
       notes: 'bring sunblock',
+      location: '123 jump street',
     },
     {
       id: 2,
@@ -26,6 +27,7 @@ export async function seed(knex) {
       end_time: '10:00am',
       description: 'sunrise bar and grill',
       notes: 'casual dress',
+      location: 'the beach',
     },
     {
       id: 3,
@@ -36,6 +38,7 @@ export async function seed(knex) {
       end_time: '8:00pm',
       description: 'have a siesta',
       notes: 'bring pjs',
+      location: 'by the pool',
     },
   ])
 }

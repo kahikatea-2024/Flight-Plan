@@ -13,6 +13,7 @@ export function AddEvent() {
 
   const [formData, setFormData] = useState({
     title: ' ',
+    location: ' ',
     startHour: ' ',
     startMinutes: ' ',
     startAMPM: ' ',
@@ -24,6 +25,7 @@ export function AddEvent() {
 
   const [formErrors, setFormErrors] = useState({
     title: ' ',
+    location: ' ',
     startHour: ' ',
     startMinutes: ' ',
     startAMPM: ' ',
@@ -46,6 +48,11 @@ export function AddEvent() {
       setFormErrors((prevState) => ({
         ...prevState,
         title: 'Please enter a descriptive title.',
+      }))
+    } else if (name === 'location' && value.length < 5) {
+      setFormErrors((prevState) => ({
+        ...prevState,
+        location: 'Please enter a location.',
       }))
     } else if (name === 'startHour' && (value > 12 || isNaN(value))) {
       setFormErrors((prevState) => ({
@@ -110,6 +117,7 @@ export function AddEvent() {
     const eventData: EventData = {
       tripId: tripId,
       description: formData.title,
+      location: formData.location,
       date: selectedDate as string,
       startTime: startTimeCombined,
       endTime: endTimeCombined,
@@ -160,6 +168,22 @@ export function AddEvent() {
                   />
                   {formErrors.title && (
                     <div className="error">{formErrors.title}</div>
+                  )}
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Event Location</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder="Event Location"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                  />
+                  {formErrors.location && (
+                    <div className="error">{formErrors.location}</div>
                   )}
                 </div>
               </div>

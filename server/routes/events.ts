@@ -90,6 +90,7 @@ router.patch('/:id', async (req, res) => {
       description,
       notes,
       created_by,
+      location,
     } = req.body
 
     const updateEvents = await db.updateEventsById(id, {
@@ -100,6 +101,7 @@ router.patch('/:id', async (req, res) => {
       description,
       notes,
       created_by,
+      location,
     })
     if (updateEvents) {
       res.sendStatus(200)
