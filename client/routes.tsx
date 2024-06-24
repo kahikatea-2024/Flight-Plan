@@ -17,7 +17,7 @@ export default createRoutesFromElements(
     <Route path="/my-trips" element={<MyTrips />} />
     <Route path="/new-trip" element={<NewTrip />} />
     <Route path="/schedule" element={<Schedule />} />
-    <Route path="/date/:date" element={<ViewDay />} />
+    <Route path="date/:date" element={<ViewDay />} />
     <Route path="/my-profile" element={<MyProfile />} />
     <Route path="/my-friends" element={<MyFriends />} />
   </Route>,
