@@ -1,75 +1,60 @@
-import { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useMyFriends } from '../hooks/useMyFriends'
-interface User {
-  id?: number
-  username?: string
-  email?: string
-  auth0id?: string
-  first_name?: string
-  last_name?: string
-  phone_number?: string
-  profile_picture?: string
-}
+import { useFriends } from '../context/FriendsContext'
+import { useAuth } from '../context/UserContext'
 
 export default function MyFriends() {
   const [email, setEmail] = useState('')
-  const [addedFriends, setAddedFriends] = useState<User[]>([])
   const [message, setMessage] = useState('')
-
+  const { friends, addFriend: addFriendContext, removeFriend } = useFriends()
   const { data: users, isLoading, isError } = useMyFriends()
+  const { state } = useAuth()
+  const { user } = state
 
-  //Stores friends To local
-  useEffect(() => {
-    const storedFriends = localStorage.getItem('localStorage')
-    if (storedFriends) {
-      setAddedFriends(JSON.parse(storedFriends))
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('localStorage', JSON.stringify(addedFriends))
-  }, [addedFriends])
-
-  const handleFindFriend = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFindFriend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    if (!user || typeof user.id !== 'number') {
+      setMessage('Please log in to add friends.')
+      return
+    }
 
     if (!users) return
 
-    const user = users.find((user) => user.email === email)
-    if (user) {
-      const isAlreadyAdded = addedFriends.some(
-        (friend) => friend.email === email,
-      )
+    const foundUser = users.find((user) => user.email === email)
+
+    if (foundUser) {
+      const isAlreadyAdded = friends.some((friend) => friend.email === email)
 
       if (isAlreadyAdded) {
         setMessage('This friend is already added.')
       } else {
         setMessage('')
-        setAddedFriends((prevFriends) => [...prevFriends, user])
+        addFriendContext(foundUser) // Add friend to context
+        setEmail('')
       }
     } else {
       setMessage('User not found')
     }
-
-    setEmail('') // Clear the input after checking the friend
   }
 
   const handleRemoveFriend = (friendId: number | undefined) => {
+    if (!friendId) return
+
     const confirmed = window.confirm(
       'Are you sure you want to remove this friend?',
     )
     if (confirmed) {
-      setAddedFriends((prevFriends) =>
-        prevFriends.filter((friend) => friend.id !== friendId),
-      )
+      removeFriend(friendId)
     }
   }
+
   if (isLoading) return <p>Loading....</p>
   if (isError) return <p>Error loading users</p>
 
   return (
     <div className="container is-fluid">
-      <h1 className="title has-text-centered has-text-primary">My Trips</h1>
+      <h1 className="title has-text-centered has-text-primary">My Friends</h1>
       <h2 className="card-header-title is-centered is-size-4">Add Friend</h2>
       <h3 className="has-text-centered mb-5">
         Enter email to add to My Friends
@@ -98,13 +83,14 @@ export default function MyFriends() {
             </div>
           </form>
           {message && <p className="has-text-centered">{message}</p>}
-          {addedFriends.length > 0 && (
+
+          {friends.length > 0 && (
             <div className="box has-text-centered">
-              <h3 className="card-header-tittle is-centered is-size-4 mb-5">
+              <h3 className="card-header-title is-centered is-size-4 mb-5">
                 Added Friends:
               </h3>
-              {addedFriends.map((friend) => (
-                <div className="text mb-5" key={friend.id}>
+              {friends.map((friend) => (
+                <div className="text mb-5" key={`${friend.id}-${friend.email}`}>
                   <h4>Username: {friend.username}</h4>
                   <p>
                     Name: {friend.first_name} {friend.last_name}
