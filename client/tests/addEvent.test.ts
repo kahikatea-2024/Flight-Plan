@@ -55,7 +55,7 @@ describe('The days events list', () => {
     const scope = nock('http://localhost')
       .get('/api/v1/events/date/123/04-08-2024')
       .reply(200, fakeData)
-    ;('/tripId/:id/date/:date')
+    // ;('/tripId/:id/date/:date')
     const screen = setupApp('/tripId/123/date/04-08-2024') //front end route
 
     const description = await screen.findByText('surf some waves')

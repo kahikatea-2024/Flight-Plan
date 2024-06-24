@@ -148,13 +148,16 @@ export function AddEvent() {
               className="field-is-horizontal is-centered"
             >
               <div className="field">
-                <label className="label">Event Title</label>
+                <label className="label" htmlFor="title">
+                  Event Title
+                </label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     placeholder="Event Title"
                     name="title"
+                    id="title"
                     value={formData.title}
                     onChange={handleChange}
                   />
