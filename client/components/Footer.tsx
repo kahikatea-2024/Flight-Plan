@@ -23,7 +23,7 @@ export default function Footer() {
         }}
       />
       <h3 style={{ display: 'inline-block', margin: 0 }}>
-        Created by: Aimee K - Regie M - Brad C - Callum G
+        Created by: Aimee K | Regie M | Brad C | Callum G
       </h3>
     </footer>
   )

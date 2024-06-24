@@ -73,9 +73,8 @@ export default function LogIn() {
   return (
     <section>
       <div className="container is-fluid">
-        <h1 className="title has-text-centered has-text-primary">
-          Welcome to TripHive
-        </h1>
+        <img src="/1.png" className="login-logo" alt="logo" />
+
         <p className="has-text-centered mb-5">Sign Up or Log In</p>
         <div className="columns is-fluid">
           <div className="column is-half is-offset-one-quarter">
