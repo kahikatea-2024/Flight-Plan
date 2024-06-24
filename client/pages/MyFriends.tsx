@@ -11,7 +11,7 @@ interface User {
   profile_picture?: string
 }
 
-export function MyFriends() {
+export default function MyFriends() {
   const [email, setEmail] = useState('')
   const [addedFriends, setAddedFriends] = useState<User[]>([])
   const [message, setMessage] = useState('')
