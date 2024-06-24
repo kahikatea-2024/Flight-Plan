@@ -3,7 +3,7 @@ import { useUser } from '../hooks/useUsers'
 import ProfileForm from '../components/ProfileForm'
 import { Users } from '../../models/flightplan'
 
-export function MyProfile() {
+export default function MyProfile() {
   const { data, isLoading, mutation } = useUser(1)
 
   console.log(data?.id)

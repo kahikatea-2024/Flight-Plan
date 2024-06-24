@@ -3,7 +3,7 @@ import { useTrips } from '../hooks/useTrips'
 import { format } from 'date-fns'
 import { useAuth } from '../context/UserContext'
 
-export function MyTrips() {
+export default function MyTrips() {
   const { state } = useAuth()
   const userId = state.user?.id
   const { data, isLoading, isError } = useTrips(userId || 0)
