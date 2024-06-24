@@ -1,22 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useFriends } from '../context/FriendsContext'
 import { addUserToTrip } from '../apis/trips'
-
-interface User {
-  id: number
-  username: string
-  email: string
-  auth0id: string
-  firstName: string
-  lastName: string
-  phoneNumber: string
-  profilePicture: string
-}
+import { useSelectedFriends } from '../context/SelectedFriendsContext'
+import { Users } from '../../models/flightplan'
 
 interface AddTravellerProps {
-  onSelectFriend: (friend: User) => void
+  onSelectFriend: (friend: Users) => void
   onRemoveFriend: (friendId: number) => void
-  tripId: number // Ensure tripId is passed as a prop
+  tripId: number
 }
 
 export function AddTraveller({
@@ -25,19 +16,18 @@ export function AddTraveller({
   tripId,
 }: AddTravellerProps) {
   const { friends, removeFriend } = useFriends()
-  const [selectedFriends, setSelectedFriends] = useState<User[]>([])
+  const { selectedFriends, setSelectedFriends } = useSelectedFriends()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
-  const handleSelectFriend = async (friend: User) => {
+  const handleSelectFriend = async (friend: Users) => {
     try {
-      console.log('Selected friend:', friend) // Log the selected friend
-      console.log('Adding to trip with ID:', tripId) // Log the tripId
-      await addUserToTrip(tripId, friend.username) // Ensure tripId is passed here
+      console.log('Selected friend:', friend)
+      console.log('Adding to trip with ID:', tripId)
+      await addUserToTrip(tripId, friend.username)
       setSelectedFriends([...selectedFriends, friend])
-      onSelectFriend(friend)
       closeModal()
     } catch (error) {
       console.error('Error adding user to trip:', error)
@@ -56,15 +46,15 @@ export function AddTraveller({
   return (
     <div>
       <div className="friends-container">
-        {selectedFriends.map((friend) => (
-          <span
-            key={friend.id}
+        {selectedFriends.map((friend, index) => (
+          <div
+            key={index}
             className="tag is-info is-medium"
             onDoubleClick={() => handleRemoveFriend(friend.id)}
             style={{ cursor: 'pointer' }}
           >
-            {friend.username}
-          </span>
+            {friend.firstName}
+          </div>
         ))}
         <button className="button is-primary add-button" onClick={openModal}>
           Add Travellers to Trip
@@ -78,13 +68,16 @@ export function AddTraveller({
             <div className="box">
               <h2 className="title">Select a Friend</h2>
               <ul>
-                {friends.map((friend) => (
-                  <li key={friend.id}>
+                {friends.map((friend, e) => (
+                  <li key={e}>
                     <button
                       className="button"
-                      onClick={() => handleSelectFriend(friend)}
+                      onClick={() => {
+                        onSelectFriend(friend)
+                        handleSelectFriend(friend)
+                      }}
                     >
-                      {friend.username}
+                      {friend.first_name}
                     </button>
                   </li>
                 ))}

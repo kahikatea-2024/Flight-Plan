@@ -31,7 +31,7 @@ export function NewTrip() {
       await addTrip(tripData) // Adjust addTrip to return the new trip ID
 
       navigate(
-        `/schedule?startDate=${encodeURIComponent(tripData.startDate)}&endDate=${encodeURIComponent(tripData.endDate)}&tripName=${encodeURIComponent(tripData.tripName)}&tripId=${tripData.id}`,
+        `/schedule?tripId=${tripData.id}&startDate=${encodeURIComponent(tripData.startDate)}&endDate=${encodeURIComponent(tripData.endDate)}&tripName=${encodeURIComponent(tripData.tripName)}`,
       )
     } catch (error) {
       console.error('Failed to add trip:', error)

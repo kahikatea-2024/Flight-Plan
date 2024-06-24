@@ -130,19 +130,28 @@ export async function getTripById(id: number) {
 }
 
 // Get Users by Trip ID
-export async function geUsersByTripId(id: number) {
-  const trip = await db('trips')
+export async function getUsersByTripId(id: number): Promise<UserData[]> {
+  const tripUsers = await db('trips')
     .join('trip_users', 'trips.id', 'trip_users.trip_id')
     .join('users', 'trip_users.user_id', 'users.id')
     .where('trips.id', id)
     .select(
-      'first_name as firstName',
-      'last_name as lastName',
-      'trip_name as tripName',
-      'email',
-      'phone_number as phoneNumber',
+      'users.first_name as firstName',
+      'users.last_name as lastName',
+      'trips.trip_name as tripName',
+      'users.email',
+      'users.phone_number as phoneNumber',
     )
-  return trip as Trips[]
+  return tripUsers as UserData[]
+}
+export async function deleteUserFromTrip(
+  tripId: number,
+  userId: number,
+): Promise<number> {
+  return await db('trip_users')
+    .where('trip_id', tripId)
+    .andWhere('user_id', userId)
+    .del()
 }
 
 // Get Events by Trip ID

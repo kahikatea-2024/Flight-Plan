@@ -1,14 +1,17 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { format, eachDayOfInterval } from 'date-fns'
 import { AddTraveller } from '../components/AddTraveller'
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { Users as User } from '../../models/flightplan'
+import { fetchTravelers } from '../apis/trips'
+import { useSelectedFriends } from '../context/SelectedFriendsContext'
 
 const generateDateList = (startDate: Date, endDate: Date): Date[] => {
   return eachDayOfInterval({ start: startDate, end: endDate })
 }
 
 export function Schedule() {
+  const { selectedFriends, setSelectedFriends } = useSelectedFriends()
   const navigate = useNavigate()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
@@ -19,15 +22,34 @@ export function Schedule() {
   const start = new Date(startDate)
   const end = new Date(endDate)
   const dates = generateDateList(start, end)
-  const [selectedFriends, setSelectedFriends] = useState<User[]>([])
 
   // Parse tripId from URL parameters
   const parsedTripId = parseInt(searchParams.get('tripId') || '', 10) // Ensure to handle NaN if not found or invalid
 
   console.log('Parsed tripId:', parsedTripId) // Log the parsed tripId
 
+  useEffect(() => {
+    console.log('Fetching travelers for trip:', parsedTripId)
+    if (!isNaN(parsedTripId)) {
+      fetchTravelers(parsedTripId)
+        .then((data) => {
+          console.log('Fetched travelers:', data)
+          setSelectedFriends(data)
+        })
+        .catch(console.error)
+    }
+  }, [parsedTripId, setSelectedFriends])
+
   const handleSelectFriend = (friend: User) => {
-    setSelectedFriends((prevFriends) => [...prevFriends, friend])
+    // Check if the friend is already in the selectedFriends list
+    if (
+      !selectedFriends.some((selectedFriend) => selectedFriend.id === friend.id)
+    ) {
+      setSelectedFriends((prevFriends) => [...prevFriends, friend])
+    } else {
+      console.log(`Friend with id ${friend.id} is already selected.`)
+      // Optionally, you can provide feedback to the user that the friend is already selected.
+    }
   }
 
   const handleRemoveFriend = (friendId: number) => {
@@ -59,12 +81,12 @@ export function Schedule() {
           <div className="selected-friends-list">
             {selectedFriends.length > 0 && (
               <ul>
-                {selectedFriends.map((friend) => (
+                {selectedFriends.map((friend, ind) => (
                   <li
-                    key={friend.id}
+                    key={ind}
                     onDoubleClick={() => handleRemoveFriend(friend.id)}
                   >
-                    {friend.firstName}
+                    {friend.username}
                   </li>
                 ))}
               </ul>

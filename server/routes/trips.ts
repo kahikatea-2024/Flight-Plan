@@ -30,17 +30,40 @@ router.get('/:id', async (req, res, next) => {
 })
 // Get Users by Trip ID
 
-router.get('/:id/users', async (req, res, next) => {
+router.get('/:id/users', async (req, res) => {
   try {
-    const id = Number(req.params.id)
-    const users = await db.geUsersByTripId(id)
-    if (!users) {
-      res.sendStatus(404)
-    } else {
-      res.json(users)
+    const tripId = Number(req.params.id)
+    if (isNaN(tripId)) {
+      return res.status(400).json({ message: 'Invalid trip ID' })
     }
-  } catch (err) {
-    next(err)
+
+    const users = await db.getUsersByTripId(tripId)
+    res.status(200).json(users)
+  } catch (error) {
+    console.error('Error fetching users by trip ID:', error)
+    res.status(500).json({ message: 'Something went wrong' })
+  }
+})
+
+// Delete a user from a trip
+router.delete('/:tripId/users/:userId', async (req, res) => {
+  try {
+    const tripId = Number(req.params.tripId)
+    const userId = Number(req.params.userId)
+
+    if (isNaN(tripId) || isNaN(userId)) {
+      return res.status(400).json({ message: 'Invalid trip ID or user ID' })
+    }
+
+    const result = await db.deleteUserFromTrip(tripId, userId)
+    if (result) {
+      res.status(200).json({ message: 'User removed from trip successfully' })
+    } else {
+      res.status(404).json({ message: 'User or trip not found' })
+    }
+  } catch (error) {
+    console.error('Error removing user from trip:', error)
+    res.status(500).json({ message: 'Something went wrong' })
   }
 })
 
