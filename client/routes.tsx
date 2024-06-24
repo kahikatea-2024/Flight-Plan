@@ -63,7 +63,7 @@ export default createRoutesFromElements(
       }
     />
     <Route
-      path="/date/:date"
+      path="/tripId/:id/date/:date"
       element={
         <Suspense>
           <ViewDay />

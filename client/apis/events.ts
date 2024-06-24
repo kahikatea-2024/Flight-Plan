@@ -6,7 +6,7 @@ const rootUrl = '/api/v1/'
 export function getEvents(id: string, date: string) {
   // return request.get('users/1/trips').then((res) => {
   return request.get(rootUrl + `events/date/${id}/${date}`).then((res) => {
-    console.log('get event', res.body)
+    console.log('get event', id, date)
     return res.body as Events[]
   })
 }
@@ -14,7 +14,6 @@ export function getEvents(id: string, date: string) {
 
 export async function addEvent(eventData: EventData) {
   const { date, ...rest } = eventData
-  console.log('api', date, rest)
   await request
     .post(`/api/v1/events/date/${date}`)
     .set('Content-Type', 'application/json')

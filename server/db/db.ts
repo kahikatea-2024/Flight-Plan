@@ -130,19 +130,28 @@ export async function getTripById(id: number) {
 }
 
 // Get Users by Trip ID
-export async function geUsersByTripId(id: number) {
-  const trip = await db('trips')
+export async function getUsersByTripId(id: number): Promise<UserData[]> {
+  const tripUsers = await db('trips')
     .join('trip_users', 'trips.id', 'trip_users.trip_id')
     .join('users', 'trip_users.user_id', 'users.id')
     .where('trips.id', id)
     .select(
-      'first_name as firstName',
-      'last_name as lastName',
-      'trip_name as tripName',
-      'email',
-      'phone_number as phoneNumber',
+      'users.first_name as firstName',
+      'users.last_name as lastName',
+      'trips.trip_name as tripName',
+      'users.email',
+      'users.phone_number as phoneNumber',
     )
-  return trip as Trips[]
+  return tripUsers as UserData[]
+}
+export async function deleteUserFromTrip(
+  tripId: number,
+  userId: number,
+): Promise<number> {
+  return await db('trip_users')
+    .where('trip_id', tripId)
+    .andWhere('user_id', userId)
+    .del()
 }
 
 // Get Events by Trip ID
@@ -174,6 +183,7 @@ export async function addUserToTrip(tripId: number, username: string) {
     .where('username', username)
     .first()
   const attendeeData = { user_id: userId.id, trip_id: tripId }
+  console.log('Inserting attendee data:', attendeeData)
   return await db('trip_users').insert(attendeeData)
 }
 
@@ -222,7 +232,6 @@ export async function getAllEvents() {
 }
 // Get event by ID
 export async function getEventById(id: number) {
-  console.log(id)
   const event = await db('events').select().first().where({ id })
   return event as Events
 }
@@ -231,15 +240,16 @@ export async function getEventById(id: number) {
 export async function getEventsByDate(id: string, date: string) {
   const event = await db('events')
     .where('date', date)
-    .join('events', 'events.trip_id', 'trips.id')
+    .join('trips', 'events.trip_id', 'trips.id')
     .where('trips.id', id)
     .select(
-      'date',
+      'date as events.date',
       'start_time as startTime',
       'end_time as endTime',
       'description',
       'notes as note',
     )
+
   return event as Events[]
 }
 //Add New Event

@@ -1,86 +1,63 @@
 import { useState } from 'react'
-import { SanitizedUser } from '../../models/flightplan'
-import { useAddUserToTrips } from '../hooks/useTrips'
+import { useFriends } from '../context/FriendsContext'
 import { addUserToTrip } from '../apis/trips'
+import { useSelectedFriends } from '../context/SelectedFriendsContext'
+import { Users } from '../../models/flightplan'
 
-export function AddTravller() {
-  const fakeFriends: SanitizedUser[] = [
-    {
-      id: 2,
-      username: 'AimeeK',
-      firstName: 'Aimee',
-      lastName: 'Kilmartin',
-      profilePicture: '',
-    },
-    {
-      id: 3,
-      username: 'BradC',
-      firstName: 'Brad',
-      lastName: 'Craig',
-      profilePicture: '',
-    },
-    {
-      id: 4,
-      username: 'RegieM',
-      firstName: 'Regie',
-      lastName: 'Malonzo',
-      profilePicture: '',
-    },
-  ]
+interface AddTravellerProps {
+  onSelectFriend: (friend: Users) => void
+  onRemoveFriend: (friendId: number) => void
+  tripId: number
+}
 
+export function AddTraveller({
+  onSelectFriend,
+  onRemoveFriend,
+  tripId,
+}: AddTravellerProps) {
+  const { friends, removeFriend } = useFriends()
+  const { selectedFriends, setSelectedFriends } = useSelectedFriends()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedFriends, setSelectedFriends] = useState<SanitizedUser[]>([])
-  // const { isLoading, isError } = useAddUserToTrips()
 
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
-  const handleSelectFriend = (friend: SanitizedUser) => {
-    if (
-      !selectedFriends?.some(
-        (selectedFriend) => selectedFriend.id === friend.id,
-      )
-    ) {
+  const handleSelectFriend = async (friend: Users) => {
+    try {
+      console.log('Selected friend:', friend)
+      console.log('Adding to trip with ID:', tripId)
+      await addUserToTrip(tripId, friend.username)
       setSelectedFriends([...selectedFriends, friend])
+      closeModal()
+    } catch (error) {
+      console.error('Error adding user to trip:', error)
+      // Handle error as needed
     }
-    closeModal()
   }
 
   const handleRemoveFriend = (friendId: number) => {
+    onRemoveFriend(friendId)
+    removeFriend(friendId)
     setSelectedFriends(
       selectedFriends.filter((friend) => friend.id !== friendId),
     )
   }
 
-  const handleAddTravellers = async () => {
-  
-    selectedFriends.forEach(async (friend) => {
-      try {
-        await addUserToTrip(tripId, friend.username)
-        console.log(friend.username)
-        console.log(`Added ${friend.username} to the trip successfully`)
-      } catch (error) {
-        console.error(`Failed to add ${friend.username} to the trip`, error)
-      }
-    })
-    setSelectedFriends([])
-  }
-
   return (
     <div>
       <div className="friends-container">
-        {selectedFriends?.map((friend) => (
-          <span
-            key={friend.id}
+        {selectedFriends.map((friend, index) => (
+          <div
+            key={index}
             className="tag is-info is-medium"
-            onDoubleClick={() => handleRemoveFriend(friend.id as number)}
+            onDoubleClick={() => handleRemoveFriend(friend.id)}
             style={{ cursor: 'pointer' }}
           >
-            {friend.username}
-          </span>
+            {friend.firstName}
+          </div>
         ))}
         <button className="button is-primary add-button" onClick={openModal}>
-          +
+          Add Travellers to Trip
         </button>
       </div>
 
@@ -91,13 +68,16 @@ export function AddTravller() {
             <div className="box">
               <h2 className="title">Select a Friend</h2>
               <ul>
-                {fakeFriends.map((friend) => (
-                  <li key={friend.id}>
+                {friends.map((friend, e) => (
+                  <li key={e}>
                     <button
                       className="button"
-                      onClick={() => handleSelectFriend(friend)}
+                      onClick={() => {
+                        onSelectFriend(friend)
+                        handleSelectFriend(friend)
+                      }}
                     >
-                      {friend.username}
+                      {friend.first_name}
                     </button>
                   </li>
                 ))}
@@ -110,12 +90,6 @@ export function AddTravller() {
           ></button>
         </div>
       )}
-      <button className="button is-success" onClick={handleAddTravellers}>
-        Add Travellers to Trip
-      </button>
     </div>
   )
 }
-// function useaddUserToTrips(tripId: any, username: string) {
-//   throw new Error('Function not implemented.')
-// }
