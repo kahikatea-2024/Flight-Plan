@@ -50,9 +50,15 @@
     align-items: flex-start;
   }
 
-  .date-text, .button {
+  .date-text {
     margin-bottom: 5px;
     width: 100%;
+  }
+
+  .button {
+    width: auto; /* Ensure buttons don't take full width */
+    align-self: flex-end; /* Align buttons to the start of the flex container */
+    margin-bottom: 5px;
   }
 }
 
