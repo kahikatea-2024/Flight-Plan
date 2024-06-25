@@ -105,3 +105,8 @@
   height: auto; /* Scales appropriately */
 }
 
+.centered-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
