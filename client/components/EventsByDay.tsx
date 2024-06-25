@@ -1,10 +1,18 @@
 import { Events } from '../../models/flightplan'
+import { useState } from 'react'
+import { EventItem } from './EventItem'
 
 interface EventsByDayProps {
   events: Events[]
 }
 
 export function EventsByDay({ events }: EventsByDayProps) {
+  const [activeIndex, setActiveIndex] = useState(-1)
+
+  const handleItemClick = (index: number) => {
+    setActiveIndex(index === activeIndex ? -1 : index)
+  }
+
   if (!events || events.length === 0) {
     return (
       <section className="mb-6">
@@ -40,32 +48,52 @@ export function EventsByDay({ events }: EventsByDayProps) {
 
   return (
     <section className="mb-6">
-      <div className="container is-fluid">
+      <div className="container">
         <h1 className="is-size-2 has-text-centered has-text-primary">Events</h1>
-        <ul>
-          {events.map(
-            ({ id, description, startTime, endTime, note, location, type }) => (
-              <li key={id} className="card is-primary is-outlined">
-                <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
-                  <span> Start Time: {startTime} </span>
-                  <span className="ml-6">End Time: {endTime}</span>
-                </p>
-                <p className="card-content is-size-5 pb-1">{description}</p>
-                <p className="card-content is-size-5 pb-1">
-                  Event Type: {type}
-                </p>
-                <p className="card-content is-size-5 pb-1">
-                  Location: {location}
-                </p>
 
-                <div>
-                  <p className="card-content is-size-5">Note: {note}</p>
-                </div>
-              </li>
-            ),
-          )}
-        </ul>
+        {events.map(
+          ({
+            index,
+            id,
+            description,
+            startTime,
+            endTime,
+            note,
+            location,
+            type,
+          }) => (
+            <EventItem
+              key={id}
+              startTime={startTime}
+              endTime={endTime}
+              description={description}
+              type={type}
+              location={location}
+              note={note}
+              isOpen={activeIndex === index}
+              onClick={() => handleItemClick(index)}
+            />
+          ),
+        )}
       </div>
     </section>
   )
 }
+
+// key={id} className="card is-primary is-outlined">
+// <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
+//   <span> Start Time: {startTime} </span>
+//   <span className="ml-6">End Time: {endTime}</span>
+// </p>
+// <p className="card-content is-size-5 pb-1">{description}</p>
+// <p className="card-content is-size-5 pb-1">
+//   Event Type: {type}
+// </p>
+// <p className="card-content is-size-5 pb-1">
+//   Location: {location}
+// </p>
+
+// <div>
+//   <p className="card-content is-size-5">Note: {note}</p>
+// </div>
+// </li>
