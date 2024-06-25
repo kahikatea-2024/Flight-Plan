@@ -74,12 +74,16 @@
 
 .event-time {
   display: flex;
-
+  
 }
 
-.time-wrapper{
-  display: flex;
-  flex-direction: column;
+//for grouped form fields
+.grouped-wrapper{
+  max-width: 100px;
+  .control.level-item.field.is-horizontal{
+    display: flex; 
+    
+  }
 }
 
 /* Logo.css */
@@ -139,70 +143,26 @@
   align-items: center;
 }
 
-//DEFAULT STYLING FOR ACCORDIAN
-// * {
-//   padding: 0;
-//   margin: 0;
-//   box-sizing: border-box;
-// }
+// STYLING FOR ACCORDION
 
-
-.overall-container{
-  overflow: hidden;
-  padding-bottom: 10px;
-}
 
 .event-title-wrapper {
-  border-bottom: 1px solid black;
-  // margin-bottom: 10px;
-  width: 100%;
-  background: transparent;
+  width: 90%;
   border: none;
   display: flex;
-  overflow: hidden;
+  overflow: wrap;
   justify-content: space-between;
   align-items: center;
   margin:auto;
 }
 
-//  .title-container {
-//   width: 90%;
-//   background: transparent;
-//   border: none;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-bottom: 10px;
-//   padding-bottom: 10px;
-  
-// }
-
-// .title-container.active {
-//   color: #1db954;
-//   background-image: linear-gradient(90deg,transparent,rgba(0,0,0,0.04),transparent);
-// }
-// .wrapper .title-container:hover {
-//   background-image: linear-gradient(90deg,transparent,rgba(0,0,0,0.04),transparent);
-// }
-
-// .wrapper .arrow {
-//   font-size: 2rem;
-//   transition: .5s ease-in-out;
-// }
-
-// .arrow.active {
-//   rotate: 180deg;
-//   color: #1db954;
-// }
-
 .event-container {
   padding: 0 1rem;
   transition: height .7s ease-in-out;
+  overflow: hidden;
 }
 
- .event-content {
+.event-content {
   padding: 1rem 0;
-  font-size: 20px;
-  font-style: italic;
-  margin-top: 10px;
 }
+

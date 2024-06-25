@@ -26,23 +26,21 @@ export function EventItem(props: Props) {
   )
 
   return (
-    <div className="box event-title-wrapper">
-      <div className="columns ">
+    <div className="panel is-primary">
+      <div className=" panel-heading ">
         <button
-          className={`event-title-wrapper  ${isOpen ? 'active' : ''}`}
+          className={`event-title-wrapper has-text-primary-dark has-text-weight-semibold  ${isOpen ? 'active' : ''}`}
           onClick={onClick}
         >
-          <div className="column">
-            <p>{startTime}</p>
-            <p>{endTime}</p>
+          <div className="column has-text-left ">
+            <p>Start:{startTime}</p>
+            <p>End: {endTime}</p>
           </div>
-          <div className="column">
+          <div className=" column">
             <p>{type}</p>
           </div>
-          <div className="column is-flex-end">
-            <p className="is-size-4 has-text-right has-text-primary">
-              {description}
-            </p>
+          <div className="column ">
+            <p className=" has-text-right is-size-4">{description}</p>
           </div>
           {/* <i className={`arrow ${isOpen ? 'active' : ''}`} /> */}
         </button>
@@ -50,7 +48,7 @@ export function EventItem(props: Props) {
 
       <div
         ref={contentHeight}
-        className="event-container"
+        className=" event-container"
         style={
           isOpen
             ? {
@@ -61,8 +59,9 @@ export function EventItem(props: Props) {
             : { height: '0px' }
         }
       >
-        <div className="event-content">
-          <p>{location}</p>
+        <div className="event-content text-has-weight-semibold">
+          <p>Location: {location}</p>
+
           <p>{note}</p>
         </div>
       </div>

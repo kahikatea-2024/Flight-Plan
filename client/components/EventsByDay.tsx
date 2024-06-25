@@ -47,9 +47,11 @@ export function EventsByDay({ events }: EventsByDayProps) {
   })
 
   return (
-    <section className="mb-6">
+    <section className="m-6">
       <div className="container">
-        <h1 className="is-size-2 has-text-centered has-text-primary">Events</h1>
+        <h1 className="is-size-2 has-text-centered has-text-primary mb-4">
+          Events
+        </h1>
 
         {events.map(
           ({
