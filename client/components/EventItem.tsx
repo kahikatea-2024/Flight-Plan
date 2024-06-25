@@ -33,14 +33,14 @@ export function EventItem(props: Props) {
           onClick={onClick}
         >
           <div className="column has-text-left ">
-            <p>Start:{startTime}</p>
+            <p>Start: {startTime}</p>
             <p>End: {endTime}</p>
           </div>
-          <div className=" column">
-            <p>{type}</p>
-          </div>
           <div className="column ">
-            <p className=" has-text-right is-size-4">{description}</p>
+            <p className="is-size-4">{description}</p>
+          </div>
+          <div className=" column">
+            <p className="is-uppercase  has-text-right">{type}</p>
           </div>
           {/* <i className={`arrow ${isOpen ? 'active' : ''}`} /> */}
         </button>
