@@ -30,11 +30,11 @@ export default function ViewDay() {
         <div className="title has-text-primary">
           {format(date as string, 'EEE dd MMM')}
         </div>
-        <div className="columns">
-          <div className="column is-half ">
+        <div className="">
+          {/* <div className="column is-half ">
             <Notes />
-          </div>
-          <div className="column ">
+          </div> */}
+          <div className=" ">
             <AddEvent
               date={date as string}
               tripId={id as string}

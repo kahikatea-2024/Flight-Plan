@@ -98,69 +98,69 @@
 
 
 //DEFAULT STYLING FOR ACCORDIAN
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #f2f2f2;
-}
-
-// .container {
-//   max-width: 650px;
-//   width: 100%;
-//   // position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%);
+// * {
+//   padding: 0;
+//   margin: 0;
+//   box-sizing: border-box;
 // }
 
-.wrapper {
-  border-bottom: 1px solid black;
+
+.overall-container{
   overflow: hidden;
+  padding-bottom: 10px;
 }
 
-.wrapper .title-container {
+.event-title-wrapper {
+  border-bottom: 1px solid black;
+  // margin-bottom: 10px;
   width: 100%;
-  text-align: left;
-  padding: 20px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 500;
-  font-size: 20px;
   background: transparent;
   border: none;
-  cursor: pointer;
+  display: flex;
+  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  margin:auto;
 }
 
-.title-container.active {
-  color: #1db954;
-  background-image: linear-gradient(90deg,transparent,rgba(0,0,0,0.04),transparent);
-}
-.wrapper .title-container:hover {
-  background-image: linear-gradient(90deg,transparent,rgba(0,0,0,0.04),transparent);
-}
+//  .title-container {
+//   width: 90%;
+//   background: transparent;
+//   border: none;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   margin-bottom: 10px;
+//   padding-bottom: 10px;
+  
+// }
 
-.wrapper .arrow {
-  font-size: 2rem;
-  transition: .5s ease-in-out;
-}
+// .title-container.active {
+//   color: #1db954;
+//   background-image: linear-gradient(90deg,transparent,rgba(0,0,0,0.04),transparent);
+// }
+// .wrapper .title-container:hover {
+//   background-image: linear-gradient(90deg,transparent,rgba(0,0,0,0.04),transparent);
+// }
 
-.arrow.active {
-  rotate: 180deg;
-  color: #1db954;
-}
+// .wrapper .arrow {
+//   font-size: 2rem;
+//   transition: .5s ease-in-out;
+// }
 
-.wrapper .event-container {
+// .arrow.active {
+//   rotate: 180deg;
+//   color: #1db954;
+// }
+
+.event-container {
   padding: 0 1rem;
   transition: height .7s ease-in-out;
 }
 
-.wrapper .event-content {
+ .event-content {
   padding: 1rem 0;
   font-size: 20px;
   font-style: italic;
+  margin-top: 10px;
 }

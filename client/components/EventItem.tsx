@@ -26,19 +26,27 @@ export function EventItem(props: Props) {
   )
 
   return (
-    <div className="wrapper">
-      <button
-        className={`title-container ${isOpen ? 'active' : ''}`}
-        onClick={onClick}
-      >
-        <div className="title-content">
-          <p>{startTime}</p>
-          <p>{endTime}</p>
-          <p>{type}</p>
-          <p>{description}</p>
-        </div>
-        {/* <i className={`arrow ${isOpen ? 'active' : ''}`} /> */}
-      </button>
+    <div className="box event-title-wrapper">
+      <div className="columns ">
+        <button
+          className={`event-title-wrapper  ${isOpen ? 'active' : ''}`}
+          onClick={onClick}
+        >
+          <div className="column">
+            <p>{startTime}</p>
+            <p>{endTime}</p>
+          </div>
+          <div className="column">
+            <p>{type}</p>
+          </div>
+          <div className="column is-flex-end">
+            <p className="is-size-4 has-text-right has-text-primary">
+              {description}
+            </p>
+          </div>
+          {/* <i className={`arrow ${isOpen ? 'active' : ''}`} /> */}
+        </button>
+      </div>
 
       <div
         ref={contentHeight}
