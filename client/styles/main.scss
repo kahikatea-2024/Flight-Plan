@@ -104,4 +104,53 @@
   max-width: 100%;
   height: auto; /* Scales appropriately */
 }
+// .footer-css {
+//   position: sticky;
+//   bottom: 0;
+//   width: 100%;
+//   background-color: transparent;
+//   padding: 10px;
+//   text-align: left;
+//   white-space: nowrap;
+//   display: flex;
+//   align-items: center;
+
+// }
+
+// .footer-img {
+//   height: 1.5em;
+//   margin-right: 10px;
+// }
+
+// .footer-h3 {
+//   display: inline-block;
+//   margin: 0;
+// }
+
+/* styles.css or App.css */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+  max-height: 100vh; 
+}
+
+.footer-css {
+  margin-top: auto; 
+  background-color: transparent;
+  padding: 10px;
+  text-align: center;
+}
+
+.footer-img {
+  height: 1.5em;
+  margin-right: 10px;
+}
+
+.footer-h3 {
+  display: inline-block;
+  margin: 0;
+}
+/* Adjust styles as needed */
 

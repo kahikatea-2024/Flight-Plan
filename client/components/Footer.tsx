@@ -1,20 +1,7 @@
 export default function Footer() {
   return (
-    <footer
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        backgroundColor: 'transparent',
-        padding: '10px',
-
-        textAlign: 'left',
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <img
+    <footer className="footer-css">
+      <img className="footer-img"
         src="/2.png"
         alt="logo"
         style={{
@@ -22,7 +9,7 @@ export default function Footer() {
           marginRight: '10px',
         }}
       />
-      <h3 style={{ display: 'inline-block', margin: 0 }}>
+      <h3 className="footer-h3" style={{ display: 'inline-block', margin: 0 }}>
         Created by: Aimee K | Regie M | Brad C | Callum G
       </h3>
     </footer>

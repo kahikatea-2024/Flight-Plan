@@ -9,9 +9,8 @@ function App() {
       <UserProvider>
         <div className="app">
           <NavBar />
-
           <Outlet />
-          <Footer />
+          <Footer  />
         </div>
       </UserProvider>
     </>
