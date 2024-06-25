@@ -80,12 +80,16 @@
 
 .event-time {
   display: flex;
-
+  
 }
 
-.time-wrapper{
-  display: flex;
-  flex-direction: column;
+//for grouped form fields
+.grouped-wrapper{
+  max-width: 100px;
+  .control.level-item.field.is-horizontal{
+    display: flex; 
+    
+  }
 }
 
 /* Logo.css */
@@ -144,3 +148,27 @@
   justify-content: center;
   align-items: center;
 }
+
+// STYLING FOR ACCORDION
+
+
+.event-title-wrapper {
+  width: 90%;
+  border: none;
+  display: flex;
+  overflow: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin:auto;
+}
+
+.event-container {
+  padding: 0 1rem;
+  transition: height .7s ease-in-out;
+  overflow: hidden;
+}
+
+.event-content {
+  padding: 1rem 0;
+}
+

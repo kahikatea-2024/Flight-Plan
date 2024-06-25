@@ -163,11 +163,11 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
               onSubmit={handleSubmit}
               className="field-is-horizontal is-centered"
             >
-              <div className="field">
-                <label className="label" htmlFor="title">
+              <div className="field level">
+                <label className="label level-left" htmlFor="title">
                   Event Title
                 </label>
-                <div className="control">
+                <div className="control level-item">
                   <input
                     type="text"
                     className="input"
@@ -182,11 +182,11 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                   )}
                 </div>
               </div>
-              <div className="field">
-                <label className="label" htmlFor="location">
+              <div className="field level">
+                <label className="label level-left" htmlFor="location">
                   Event Location
                 </label>
-                <div className="control">
+                <div className="control level-item">
                   <input
                     type="text"
                     className="input"
@@ -202,141 +202,153 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                 </div>
               </div>
 
-              <div className="control">
-                <span className="radio">
-                  <label className="radio" htmlFor="Event">
-                    <input
-                      type="radio"
-                      name="type"
-                      id="Event"
-                      value="Event"
-                      checked={formData.type === 'Event'}
-                      onChange={handleChange}
-                    />
-                    Event
-                  </label>
-                  <label className="radio" htmlFor="Flight">
-                    <input
-                      type="radio"
-                      name="type"
-                      id="Flight"
-                      value="Flight"
-                      checked={formData.type === 'Flight'}
-                      onChange={handleChange}
-                    />
-                    Flight
-                  </label>
-                  <label className="radio" htmlFor="Accommodation">
-                    <input
-                      type="radio"
-                      name="type"
-                      id="Accommodation"
-                      value="Accommodation"
-                      checked={formData.type === 'Accommodation'}
-                      onChange={handleChange}
-                    />
-                    Accommodation
-                  </label>
-
-                  {formErrors.type && (
-                    <span className="error">{formErrors.type}</span>
-                  )}
-                </span>
-              </div>
-
-              <div className="event-time">
-                <div className="time-wrapper">
-                  <div className="field has-addons">
-                    <label className="label " htmlFor="startHour">
-                      Event Time
+              <div className="control level field is-horizontal">
+                <div className="level-left">
+                  <div className="field-label level field is-horizontal">
+                    Event Type
+                  </div>
+                  <span className="radio level-item pr-4 pl-4">
+                    <label
+                      className="radio field is-horizontal"
+                      htmlFor="Event"
+                    >
+                      <input
+                        type="radio"
+                        name="type"
+                        id="Event"
+                        value="Event"
+                        checked={formData.type === 'Event'}
+                        onChange={handleChange}
+                      />
+                      Event
                     </label>
-                    <div className="control">
+                    <label
+                      className="radio field is-horizontal"
+                      htmlFor="Flight"
+                    >
+                      <input
+                        type="radio"
+                        name="type"
+                        id="Flight"
+                        value="Flight"
+                        checked={formData.type === 'Flight'}
+                        onChange={handleChange}
+                      />
+                      Flight
+                    </label>
+                    <label
+                      className="radio field is-horizontal"
+                      htmlFor="Accommodation"
+                    >
+                      <input
+                        type="radio"
+                        name="type"
+                        id="Accommodation"
+                        value="Accommodation"
+                        checked={formData.type === 'Accommodation'}
+                        onChange={handleChange}
+                      />
+                      Accommodation
+                    </label>
+
+                    {formErrors.type && (
+                      <span className="error">{formErrors.type}</span>
+                    )}
+                  </span>
+                </div>
+              </div>
+              <div className="field is-horizontal ">
+                <label className="field-label level-left " htmlFor="startHour">
+                  Event Start
+                </label>
+                <div className="field-body is-flex">
+                  <div className="grouped-wrapper">
+                    <input
+                      className="input"
+                      type="text"
+                      placeholder="00"
+                      name="startHour"
+                      id="startHour"
+                      value={formData.startHour}
+                      onChange={handleChange}
+                    />
+                    {formErrors.startHour && (
+                      <div className="error">{formErrors.startHour}</div>
+                    )}
+                  </div>
+                  <div className="grouped-wrapper">
+                    <label className="label " htmlFor="startMinutes">
                       <input
                         className="input"
                         type="text"
                         placeholder="00"
-                        name="startHour"
-                        id="startHour"
-                        value={formData.startHour}
+                        name="startMinutes"
+                        id="startMinutes"
+                        value={formData.startMinutes}
                         onChange={handleChange}
                       />
-                      {formErrors.startHour && (
-                        <div className="error">{formErrors.startHour}</div>
+                      {formErrors.startMinutes && (
+                        <div className="error">{formErrors.startMinutes}</div>
                       )}
-                    </div>
-                    <label className="label " htmlFor="startMinutes">
-                      <div className="control">
-                        <input
-                          className="input"
-                          type="text"
-                          placeholder="00"
-                          name="startMinutes"
-                          id="startMinutes"
-                          value={formData.startMinutes}
-                          onChange={handleChange}
-                        />
-                        {formErrors.startMinutes && (
-                          <div className="error">{formErrors.startMinutes}</div>
-                        )}
-                      </div>
                     </label>
-                    <div className="control">
-                      <span className="select">
-                        <label className="label " htmlFor="startAMPM">
-                          <select
-                            name="startAMPM"
-                            id="startAMPM"
-                            value={formData.startAMPM}
-                            onChange={handleChange}
-                          >
-                            <option>Select</option>
-                            <option>AM</option>
-                            <option>PM</option>
-                          </select>
-                          {formErrors.startAMPM && (
-                            <span className="error">
-                              {formErrors.startAMPM}
-                            </span>
-                          )}
-                        </label>
-                      </span>
-                    </div>
+                  </div>
+                  <div className=" grouped-wrapper">
+                    <span className="select">
+                      <label className="label " htmlFor="startAMPM">
+                        <select
+                          name="startAMPM"
+                          id="startAMPM"
+                          value={formData.startAMPM}
+                          onChange={handleChange}
+                        >
+                          <option>Select</option>
+                          <option>AM</option>
+                          <option>PM</option>
+                        </select>
+                        {formErrors.startAMPM && (
+                          <span className="error">{formErrors.startAMPM}</span>
+                        )}
+                      </label>
+                    </span>
                   </div>
                 </div>
-                <div className="field has-addons ml-4">
-                  <label className="label " htmlFor="endHour">
-                    <div className="control">
+              </div>
+              <div className="field is-horizontal ">
+                <label className="field-label level-left" htmlFor="endHour">
+                  Event End
+                </label>
+                <div className="field-body is-flex">
+                  <div className="grouped-wrapper">
+                    <input
+                      className="input"
+                      type="text"
+                      placeholder="00"
+                      name="endHour"
+                      id="endHour"
+                      value={formData.endHour}
+                      onChange={handleChange}
+                    />
+                    {formErrors.endHour && (
+                      <div className="error">{formErrors.endHour}</div>
+                    )}
+                  </div>
+                  <div className="grouped-wrapper">
+                    <label className="label " htmlFor="endMinutes">
                       <input
                         className="input"
                         type="text"
                         placeholder="00"
-                        name="endHour"
-                        id="endHour"
-                        value={formData.endHour}
-                        onChange={handleChange}
-                      />
-                      {formErrors.endHour && (
-                        <div className="error">{formErrors.endHour}</div>
-                      )}
-                    </div>
-                  </label>
-                  <label className="label " htmlFor="endMinutes">
-                    <div className="control">
-                      <input
-                        className="input"
-                        type="text"
                         name="endMinutes"
                         id="endMinutes"
-                        placeholder="00"
                         value={formData.endMinutes}
                         onChange={handleChange}
                       />
-                    </div>
-                    {formErrors.endMinutes && (
-                      <div className="error">{formErrors.endMinutes}</div>
-                    )}
-                  </label>
-                  <div className="control">
+                      {formErrors.endMinutes && (
+                        <div className="error">{formErrors.endMinutes}</div>
+                      )}
+                    </label>
+                  </div>
+                  <div className=" grouped-wrapper">
                     <span className="select">
                       <label className="label " htmlFor="endAMPM">
                         <select
@@ -357,11 +369,11 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                   </div>
                 </div>
               </div>
-              <div className="field">
-                <label className="label" htmlFor="note">
+              <div className="field level">
+                <label className="label level-left" htmlFor="note">
                   Event Note
                 </label>
-                <div className="control">
+                <div className="control level-item">
                   <input
                     type="text"
                     className="input"
