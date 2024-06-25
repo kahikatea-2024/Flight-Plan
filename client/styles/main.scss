@@ -82,6 +82,7 @@
   flex-direction: column;
 }
 
+/* Logo.css */
 
 .navbar-logo {
   max-height: 3rem; 
@@ -96,6 +97,47 @@
 //   transform: scale(1.1);
 // }
 
+
+.login-logo {
+  display: block;
+  margin: 0 auto; /* Center horizontally */
+  max-width: 100%;
+  height: auto; /* Scales appropriately */
+}
+/* App Container */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+  max-height: 100vh; 
+}
+
+/* Footer.css */
+
+.footer-css {
+  margin-top: auto; 
+  background-color: transparent;
+  padding: 10px;
+  text-align: center;
+}
+
+.footer-img {
+  height: 1.5em;
+  margin-right: 10px;
+}
+
+.footer-h3 {
+  display: inline-block;
+  margin: 0;
+}
+
+
+.centered-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 //DEFAULT STYLING FOR ACCORDIAN
 // * {

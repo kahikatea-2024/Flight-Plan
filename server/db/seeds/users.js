@@ -16,7 +16,8 @@ export async function seed(knex) {
       first_name: 'callum',
       last_name: 'green',
       phone_number: '0213456789',
-      profile_picture: '',
+      profile_picture:
+        'https://www.gstatic.com/android/keyboard/emojikitchen/20240206/u1f3fa/u1f3fa_u1f47f.png',
     },
     {
       id: 2,
@@ -26,7 +27,8 @@ export async function seed(knex) {
       first_name: 'Aimee',
       last_name: 'kilmartin',
       phone_number: '021334577',
-      profile_picture: '',
+      profile_picture:
+        'https://www.gstatic.com/android/keyboard/emojikitchen/20240206/u1f4ac/u1f4ac_u1f9f3.png',
     },
     {
       id: 3,
@@ -36,7 +38,8 @@ export async function seed(knex) {
       first_name: 'Brad',
       last_name: 'Craig',
       phone_number: '0213575644',
-      profile_picture: '',
+      profile_picture:
+        'https://www.gstatic.com/android/keyboard/emojikitchen/20240206/u1f4be/u1f4be_u1f3b6.png',
     },
     {
       id: 4,
@@ -46,7 +49,8 @@ export async function seed(knex) {
       first_name: 'regie',
       last_name: 'malonzo',
       phone_number: '0213456757',
-      profile_picture: '',
+      profile_picture:
+        'https://i.pinimg.com/originals/1a/1d/88/1a1d88a880db8670c804e130d7be20d0.png',
     },
   ])
 }
