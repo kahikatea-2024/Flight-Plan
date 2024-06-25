@@ -49,7 +49,7 @@ export function AddTraveller({
   onRemoveFriend,
   tripId,
 }: AddTravellerProps) {
-  const { friends, removeFriend } = useFriends()
+  const { friends } = useFriends()
   const { selectedFriends, setSelectedFriends } = useSelectedFriends()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -69,12 +69,16 @@ export function AddTraveller({
     }
   }
 
-  const handleRemoveFriend = (friendId: number) => {
-    onRemoveFriend(friendId)
-    removeFriend(friendId)
-    setSelectedFriends(
-      selectedFriends.filter((friend) => friend.id !== friendId),
-    )
+  const handleRemoveFriend = async (friendId: number) => {
+    try {
+      onRemoveFriend(friendId)
+      setSelectedFriends(
+        selectedFriends.filter((friend) => friend.id !== friendId),
+      )
+    } catch (error) {
+      console.error('Error removing user from trip:', error)
+      // Handle error as needed
+    }
   }
 
   return (
@@ -84,7 +88,9 @@ export function AddTraveller({
           <div
             key={index}
             className="tag is-info is-medium"
-            onDoubleClick={() => handleRemoveFriend(friend.id)}
+            onDoubleClick={() => {
+              handleRemoveFriend(friend.id)
+            }}
             style={{ cursor: 'pointer' }}
           >
             {friend.firstName}
