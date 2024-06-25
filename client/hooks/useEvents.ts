@@ -8,7 +8,7 @@ export function useEvents(id: string, date: string) {
     queryKey: ['events', id, date],
     queryFn: async () => {
       const res = getEvents(id, date)
-      console.log('hook', id, date)
+
       return res
     },
   })

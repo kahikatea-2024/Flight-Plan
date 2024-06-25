@@ -37,7 +37,6 @@ router.get('/date/:id/:date', async (req, res, next) => {
     const id = req.params.id
     const date = req.params.date
 
-    console.log('id events.ts', req.params)
     const event = await db.getEventsByDate(id, date)
 
     if (!event) {
@@ -90,6 +89,8 @@ router.patch('/:id', async (req, res) => {
       description,
       notes,
       created_by,
+      location,
+      type,
     } = req.body
 
     const updateEvents = await db.updateEventsById(id, {
@@ -100,6 +101,8 @@ router.patch('/:id', async (req, res) => {
       description,
       notes,
       created_by,
+      location,
+      type,
     })
     if (updateEvents) {
       res.sendStatus(200)

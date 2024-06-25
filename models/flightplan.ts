@@ -12,11 +12,13 @@ export interface Events {
   id: number
   tripId: number
   description: string
+  location: string
   date: string
   startTime: string
   endTime: string
   note: string
   createdBy: number
+  type: string
 }
 export type EventWithoutDate = Omit<Events, 'date'>
 export type EventData = Omit<Events, 'id'>

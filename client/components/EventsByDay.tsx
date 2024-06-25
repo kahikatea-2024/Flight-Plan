@@ -43,18 +43,27 @@ export function EventsByDay({ events }: EventsByDayProps) {
       <div className="container is-fluid">
         <h1 className="is-size-2 has-text-centered has-text-primary">Events</h1>
         <ul>
-          {events.map(({ id, description, startTime, endTime, note }) => (
-            <li key={id} className="card is-primary is-outlined">
-              <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
-                <span> Start Time: {startTime} </span>
-                <span className="ml-6">End Time: {endTime}</span>
-              </p>
-              <p className="card-content is-size-5 pb-1">{description}</p>
-              <div>
-                <p className="card-content is-size-5">Note: {note}</p>
-              </div>
-            </li>
-          ))}
+          {events.map(
+            ({ id, description, startTime, endTime, note, location, type }) => (
+              <li key={id} className="card is-primary is-outlined">
+                <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
+                  <span> Start Time: {startTime} </span>
+                  <span className="ml-6">End Time: {endTime}</span>
+                </p>
+                <p className="card-content is-size-5 pb-1">{description}</p>
+                <p className="card-content is-size-5 pb-1">
+                  Event Type: {type}
+                </p>
+                <p className="card-content is-size-5 pb-1">
+                  Location: {location}
+                </p>
+
+                <div>
+                  <p className="card-content is-size-5">Note: {note}</p>
+                </div>
+              </li>
+            ),
+          )}
         </ul>
       </div>
     </section>
