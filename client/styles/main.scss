@@ -50,9 +50,15 @@
     align-items: flex-start;
   }
 
-  .date-text, .button {
+  .date-text {
     margin-bottom: 5px;
     width: 100%;
+  }
+
+  .button {
+    width: auto; /* Ensure buttons don't take full width */
+    align-self: flex-end; /* Align buttons to the start of the flex container */
+    margin-bottom: 5px;
   }
 }
 
@@ -74,14 +80,19 @@
 
 .event-time {
   display: flex;
-
+  
 }
 
-.time-wrapper{
-  display: flex;
-  flex-direction: column;
+//for grouped form fields
+.grouped-wrapper{
+  max-width: 100px;
+  .control.level-item.field.is-horizontal{
+    display: flex; 
+    
+  }
 }
 
+/* Logo.css */
 
 .navbar-logo {
   max-height: 3rem; 
@@ -95,3 +106,69 @@
 // .navbar-logo:hover {
 //   transform: scale(1.1);
 // }
+
+
+.login-logo {
+  display: block;
+  margin: 0 auto; /* Center horizontally */
+  max-width: 100%;
+  height: auto; /* Scales appropriately */
+}
+/* App Container */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+  max-height: 100vh; 
+}
+
+/* Footer.css */
+
+.footer-css {
+  margin-top: auto; 
+  background-color: transparent;
+  padding: 10px;
+  text-align: center;
+}
+
+.footer-img {
+  height: 1.5em;
+  margin-right: 10px;
+}
+
+.footer-h3 {
+  display: inline-block;
+  margin: 0;
+}
+
+
+.centered-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// STYLING FOR ACCORDION
+
+
+.event-title-wrapper {
+  width: 90%;
+  border: none;
+  display: flex;
+  overflow: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin:auto;
+}
+
+.event-container {
+  padding: 0 1rem;
+  transition: height .7s ease-in-out;
+  overflow: hidden;
+}
+
+.event-content {
+  padding: 1rem 0;
+}
+

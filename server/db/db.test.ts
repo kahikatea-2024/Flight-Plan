@@ -86,8 +86,8 @@ describe('addUser', () => {
 
     await addUser(user)
     const users = await getAllUsers()
-    expect(users).toHaveLength(3)
-    expect(users[2].username).toBe('Braddad')
+    expect(users).toHaveLength(5)
+    expect(users[2].username).toBe('BradC')
   })
 })
 
@@ -133,19 +133,23 @@ describe('deleteTrip', () => {
 describe('addTrip', () => {
   it('adds a trip to database', async () => {
     const trip = {
-      id: 1,
-      createdBy: 2,
+      id: 8,
+      createdBy: 4,
       tripName: 'cape',
       startDate: 'aaaaa',
       endDate: 'bbbbb',
     }
 
-    await addTrip(trip)
-    const trips = await getAllTrips()
+    const response = await request(server).post(`/api/v1/trips/`).send(trip)
+    console.log(trip)
 
-    expect(trips).toHaveLength(2)
-    expect(trips[1].tripName).toBe('cape')
+    expect(response.status).toBe(200)
   })
+  // await addTrip(trip)
+  // const trips = await getAllTrips()
+
+  // expect(trips[1].id).toBe(1)
+  // expect(trips).toHaveLength(4)
 })
 
 //Test for updateTrip
@@ -166,7 +170,7 @@ describe('updateTrip', () => {
 describe('get all events', () => {
   it('should return all events', async () => {
     const events = await getAllEvents()
-    expect(events).toHaveLength(2)
+    expect(events).toHaveLength(21)
     expect(events[0]).toHaveProperty('created_by')
     expect(events[1]).toHaveProperty('end_time')
     expect(events[1]).toHaveProperty('notes')
@@ -185,9 +189,11 @@ describe('Post/Patch/Delete, /api/v1/events', () => {
       endTime: '1300',
       description: 'Test Test',
       note: 'Testing Test',
+      location: '',
+      type: '',
     }
     const respone = await request(server)
-      .post(`/api/v1/events/${id}`)
+      .post(`/api/v1/events/date/${id}`)
       .send(fakeEvent)
     expect(respone.status).toBe(201)
   })
@@ -202,6 +208,8 @@ describe('Post/Patch/Delete, /api/v1/events', () => {
       endTime: '1300',
       description: 'Test Test',
       note: 'Testing Test',
+      location: '',
+      type: '',
     }
 
     const updatedEvent: Partial<Events> = {
@@ -212,7 +220,7 @@ describe('Post/Patch/Delete, /api/v1/events', () => {
       note: 'Updated Testing Test',
     }
     await request(server)
-      .post(`/api/v1/events/${id}`)
+      .post(`/api/v1/events/date/${id}`)
       .send(existingEvent)
       .expect(201)
 

@@ -2,7 +2,28 @@ import { useState } from 'react'
 import { useFriends } from '../context/FriendsContext'
 import { addUserToTrip } from '../apis/trips'
 import { useSelectedFriends } from '../context/SelectedFriendsContext'
-import { Users } from '../../models/flightplan'
+
+// Define User and Users interfaces
+interface User {
+  id: number
+  username: string
+  email: string
+  auth0id: string
+  first_name: string
+  last_name: string
+  phone_number: string
+  profile_picture: string
+}
+
+interface Users {
+  id: number
+  username: string
+  email: string
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  profilePicture: string
+}
 
 interface AddTravellerProps {
   onSelectFriend: (friend: Users) => void
@@ -10,12 +31,25 @@ interface AddTravellerProps {
   tripId: number
 }
 
+// Conversion function
+const convertUserToUsers = (user: User): Users => {
+  return {
+    id: user.id,
+    username: user.username,
+    email: user.email,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    phoneNumber: user.phone_number,
+    profilePicture: user.profile_picture,
+  }
+}
+
 export function AddTraveller({
   onSelectFriend,
   onRemoveFriend,
   tripId,
 }: AddTravellerProps) {
-  const { friends, removeFriend } = useFriends()
+  const { friends } = useFriends()
   const { selectedFriends, setSelectedFriends } = useSelectedFriends()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -35,12 +69,16 @@ export function AddTraveller({
     }
   }
 
-  const handleRemoveFriend = (friendId: number) => {
-    onRemoveFriend(friendId)
-    removeFriend(friendId)
-    setSelectedFriends(
-      selectedFriends.filter((friend) => friend.id !== friendId),
-    )
+  const handleRemoveFriend = async (friendId: number) => {
+    try {
+      onRemoveFriend(friendId)
+      setSelectedFriends(
+        selectedFriends.filter((friend) => friend.id !== friendId),
+      )
+    } catch (error) {
+      console.error('Error removing user from trip:', error)
+      // Handle error as needed
+    }
   }
 
   return (
@@ -50,14 +88,16 @@ export function AddTraveller({
           <div
             key={index}
             className="tag is-info is-medium"
-            onDoubleClick={() => handleRemoveFriend(friend.id)}
+            onDoubleClick={() => {
+              handleRemoveFriend(friend.id)
+            }}
             style={{ cursor: 'pointer' }}
           >
             {friend.firstName}
           </div>
         ))}
         <button className="button is-primary add-button" onClick={openModal}>
-          Add Travellers to Trip
+          +
         </button>
       </div>
 
@@ -73,8 +113,9 @@ export function AddTraveller({
                     <button
                       className="button"
                       onClick={() => {
-                        onSelectFriend(friend)
-                        handleSelectFriend(friend)
+                        const userAsUsers = convertUserToUsers(friend)
+                        onSelectFriend(userAsUsers)
+                        handleSelectFriend(userAsUsers)
                       }}
                     >
                       {friend.first_name}

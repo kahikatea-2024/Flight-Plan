@@ -9,4 +9,15 @@ export default defineConfig({
       '/api': 'http://localhost:3000',
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          $green: #52B788;
+          $primary: $green;
+          @import "bulma/bulma";
+        `,
+      },
+    },
+  },
 })

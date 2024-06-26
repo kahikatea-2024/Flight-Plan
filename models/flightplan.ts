@@ -12,11 +12,13 @@ export interface Events {
   id: number
   tripId: number
   description: string
+  location: string
   date: string
   startTime: string
   endTime: string
   note: string
   createdBy: number
+  type: string
 }
 export type EventWithoutDate = Omit<Events, 'date'>
 export type EventData = Omit<Events, 'id'>
@@ -57,4 +59,22 @@ export interface Trip_users {
 export interface Friends {
   friendId: number
   userId: number
+}
+export interface User {
+  id: number
+  username: string
+  email: string
+  auth0id: string
+  first_name: string
+  last_name: string
+  phone_number: string
+  profile_picture: string
+}
+
+export interface Friend {
+  id: number
+  first_name: string
+  last_name: string
+  username: string
+  profile_picture: string
 }

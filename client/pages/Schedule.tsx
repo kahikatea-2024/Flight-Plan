@@ -86,7 +86,7 @@ export default function Schedule() {
                     key={ind}
                     onDoubleClick={() => handleRemoveFriend(friend.id)}
                   >
-                    {friend.username}
+                    {/* {friend.username} */}
                   </li>
                 ))}
               </ul>
@@ -105,7 +105,7 @@ export default function Schedule() {
                   className="button is-primary"
                   onClick={() => handleDateClick(tripId, date)}
                 >
-                  Edit
+                  View Day
                 </button>
               </li>
             ))}

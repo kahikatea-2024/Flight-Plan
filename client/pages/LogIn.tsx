@@ -3,45 +3,6 @@ import { useAuth } from '../context/UserContext'
 import { useState } from 'react'
 import { useFetchUsers } from '../hooks/useFetchUsers'
 
-// const users: Users[] = [
-//   {
-//     id: 1,
-//     username: 'callumG',
-//     email: 'callum@example.com',
-//     firstName: 'callum',
-//     lastName: 'green',
-//     phoneNumber: '0213456789',
-//     profilePicture: '',
-//   },
-//   {
-//     id: 2,
-//     username: 'AimeeK',
-//     email: 'Aimee@example.com',
-//     firstName: 'Aimee',
-//     lastName: 'kilmartin',
-//     phoneNumber: '021334577',
-//     profilePicture: '',
-//   },
-//   {
-//     id: 3,
-//     username: 'BradC',
-//     email: 'Brad@example.com',
-//     firstName: 'Brad',
-//     lastName: 'Craig',
-//     phoneNumber: '0213575644',
-//     profilePicture: '',
-//   },
-//   {
-//     id: 4,
-//     username: 'RegieM',
-//     email: 'regie@example.com',
-//     firstName: 'regie',
-//     lastName: 'malonzo',
-//     phoneNumber: '0213456757',
-//     profilePicture: '',
-//   },
-// ]
-
 export default function LogIn() {
   //TODO if user is already logged in, direct to another page
   //ADD all the Auth
@@ -56,7 +17,7 @@ export default function LogIn() {
     e.preventDefault()
     const user = users.find((user) => user.email === email)
     if (user) {
-      dispatch({ type: 'LOGIN', user })
+      dispatch({ type: 'LOGIN', payload: user })
       navigate('/my-trips')
     } else {
       alert('Invalid email')
@@ -73,9 +34,8 @@ export default function LogIn() {
   return (
     <section>
       <div className="container is-fluid">
-        <h1 className="title has-text-centered has-text-primary">
-          Welcome to TripHive
-        </h1>
+        <img src="/1.png" className="login-logo" alt="logo" />
+
         <p className="has-text-centered mb-5">Sign Up or Log In</p>
         <div className="columns is-fluid">
           <div className="column is-half is-offset-one-quarter">
@@ -84,12 +44,15 @@ export default function LogIn() {
               onSubmit={handleLogin}
             >
               <div className="field">
-                <label className="label is-medium">Email</label>
+                <label className="label is-medium" htmlFor="email">
+                  Email
+                </label>
                 <div className="control">
                   <input
                     type="text"
                     className="input"
                     placeholder="Email"
+                    id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />

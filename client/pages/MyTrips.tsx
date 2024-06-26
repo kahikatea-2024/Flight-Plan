@@ -69,7 +69,7 @@ export default function MyTrips() {
                       }}
                     >
                       <button className="button is-primary is-centered mb-5">
-                        View Detail
+                        View Schedule
                       </button>
                     </Link>
                   </li>

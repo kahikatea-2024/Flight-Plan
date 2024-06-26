@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
 import 'bulma/css/bulma.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
 import { Trips } from '../../models/flightplan'
 import { useAuth } from '../context/UserContext'
 
-// import './styles.scss'
-
 export function NavBar() {
   const [isActive, setIsActive] = useState(false)
-  const { data: trips } = useTrips(1)
+  const { state, handleLogout } = useAuth()
+  const userId = state.user ? state.user.id : null
+  const { data: trips } = useTrips(userId)
   const [firstTrip, setFirstTrip] = useState<Trips | null>(null)
-
-  const { state } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (trips && trips.length > 0) {
@@ -21,8 +20,13 @@ export function NavBar() {
   }, [trips])
 
   const schedulePath = firstTrip
-    ? `/schedule?startDate=${encodeURIComponent(firstTrip.startDate)}&endDate=${encodeURIComponent(firstTrip.endDate)}&tripName=${encodeURIComponent(firstTrip.tripName)}`
+    ? `/schedule?tripId=${firstTrip.id}&startDate=${encodeURIComponent(firstTrip.startDate)}&endDate=${encodeURIComponent(firstTrip.endDate)}&tripName=${encodeURIComponent(firstTrip.tripName)}`
     : '#'
+
+  const handleLogoutClick = () => {
+    handleLogout()
+    navigate('/') // Redirect to the home or login page after logging out
+  }
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -68,9 +72,9 @@ export function NavBar() {
                 My Friends
               </Link>
               <hr className="navbar-divider" />
-              <Link to={'/'} className="navbar-item">
+              <button onClick={handleLogoutClick} className="navbar-item">
                 Log Out
-              </Link>
+              </button>
             </div>
           </div>
         </div>

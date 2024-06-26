@@ -1,33 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
 import { getTrips } from '../apis/trips'
 
-export function useTrips(userId: number) {
+export function useTrips(userId: number | null) {
   // const queryClient = useQueryClient()
   const { data, isLoading, isError } = useQuery({
     queryKey: ['trips', userId],
     queryFn: async () => {
+      if (userId === null) return []
       const res = await getTrips(userId)
 
       return res
     },
+    enabled: userId !== null, // Disable the query if userId is null
   })
-  // const mutation = useMutation({
-  //   mutationFn: (data) => addTrip(data),
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['trips'] })
-  //   },
-  // })
-  // return { data, mutation, isLoading }
   return { data, isLoading, isError }
 }
-
-// export function useAddUserToTrips(id: number, username: string) {
-//   const { data, isLoading, isError } = useQuery<void, Error>({
-//     queryKey: ['addUserToTrip', id, username],
-//     queryFn: async () => {
-//       await addUserToTrip(id, username)
-//     },
-//   })
-
-//   return { data, isLoading, isError }
-//
