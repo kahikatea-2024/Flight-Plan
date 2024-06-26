@@ -1,4 +1,3 @@
-// import '@testing-library/jest-dom'
 import { beforeEach, expect } from 'vitest'
 import { cleanup, render } from '@testing-library/react/pure'
 import * as matchers from '@testing-library/jest-dom/matchers'
