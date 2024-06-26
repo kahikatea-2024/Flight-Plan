@@ -105,7 +105,7 @@ export default function Schedule() {
                   className="button is-primary"
                   onClick={() => handleDateClick(tripId, date)}
                 >
-                  Edit
+                  View Day
                 </button>
               </li>
             ))}

@@ -34,6 +34,7 @@ export default function ViewDay() {
           {/* <div className="column is-half ">
             <Notes />
           </div> */}
+          <EventsByDay events={events} />
           <div className=" ">
             <AddEvent
               date={date as string}
@@ -42,7 +43,6 @@ export default function ViewDay() {
             />
           </div>
         </div>
-        <EventsByDay events={events} />
       </div>
     </>
   )
