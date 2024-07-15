@@ -3,12 +3,13 @@ import 'bulma/css/bulma.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTrips } from '../hooks/useTrips'
 import { Trips } from '../../models/flightplan'
-import { useAuth } from '../context/UserContext'
+import { useAuth0 } from '@auth0/auth0-react'
 
 export function NavBar() {
   const [isActive, setIsActive] = useState(false)
-  const { state, handleLogout } = useAuth()
-  const userId = state.user ? state.user.id : null
+  const { isAuthenticated, user, logout } = useAuth0()
+  const userId = isAuthenticated && user ? user.sub : null
+  // Auth0 id is a string, useTrips currently using number id
   const { data: trips } = useTrips(userId)
   const [firstTrip, setFirstTrip] = useState<Trips | null>(null)
   const navigate = useNavigate()
@@ -24,7 +25,7 @@ export function NavBar() {
     : '#'
 
   const handleLogoutClick = () => {
-    handleLogout()
+    logout({ returnTo: window.location.origin })
     navigate('/') // Redirect to the home or login page after logging out
   }
 
@@ -81,9 +82,8 @@ export function NavBar() {
 
         <div className="navbar-end">
           <div className="navbar-item">
-            {/* TODO: Conditional render user with AUTH */}
-            {state.user ? (
-              <div>{state.user.username}</div>
+            {isAuthenticated ? (
+              <div>{user?.nickname || user?.name}</div>
             ) : (
               <div>Please Sign In</div>
             )}
