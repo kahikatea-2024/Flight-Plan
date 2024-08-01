@@ -1,16 +1,24 @@
 import { Events } from '../../models/flightplan'
 import { useState } from 'react'
 import { EventItem } from './EventItem'
+import { EditEvent } from './EditEventForm'
 
 interface EventsByDayProps {
   events: Events[]
+  setEvents: React.Dispatch<React.SetStateAction<Events[]>>
 }
 
-export function EventsByDay({ events }: EventsByDayProps) {
-  const [activeIndex, setActiveIndex] = useState(-1)
+export function EventsByDay({ events, setEvents }: EventsByDayProps) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [editId, setEditId] = useState<number | null>(null)
 
   const handleItemClick = (index: number) => {
-    setActiveIndex(index === activeIndex ? -1 : index)
+    setActiveIndex(index === activeIndex ? null : index)
+  }
+
+  const handleEditClick = (id: number) => {
+    setEditId((prevId) => (prevId === id ? null : id))
+    console.log(`Current editId: ${editId}, Clicked ID: ${id}`)
   }
 
   if (!events || events.length === 0) {
@@ -52,50 +60,36 @@ export function EventsByDay({ events }: EventsByDayProps) {
         <h1 className="is-size-2 has-text-centered has-text-primary mb-4">
           Events
         </h1>
-
-        {events.map(
-          ({
-            index,
-            id,
-            description,
-            startTime,
-            endTime,
-            note,
-            location,
-            type,
-          }) => (
-            <EventItem
-              key={id}
-              startTime={startTime}
-              endTime={endTime}
-              description={description}
-              type={type}
-              location={location}
-              note={note}
-              isOpen={activeIndex === index}
-              onClick={() => handleItemClick(index)}
-            />
-          ),
-        )}
+        {events.map((event, index) => (
+          <div key={event.id}>
+            {editId === event.id ? (
+              <EditEvent
+                date={event.date}
+                tripId={event.tripId}
+                id={event.id}
+                events={events}
+                setEvents={setEvents}
+              />
+            ) : (
+              <>
+                <EventItem
+                  startTime={event.startTime}
+                  endTime={event.endTime}
+                  description={event.description}
+                  type={event.type}
+                  location={event.location}
+                  note={event.note}
+                  isOpen={activeIndex === index}
+                  onClick={() => handleItemClick(index)}
+                />
+              </>
+            )}
+            <button onClick={() => handleEditClick(event.id)}>
+              {editId === event.id ? 'Close' : 'Edit'}
+            </button>
+          </div>
+        ))}
       </div>
     </section>
   )
 }
-
-// key={id} className="card is-primary is-outlined">
-// <p className="card-content has-text-left is-size-5 pb-1 has-background-primary-light">
-//   <span> Start Time: {startTime} </span>
-//   <span className="ml-6">End Time: {endTime}</span>
-// </p>
-// <p className="card-content is-size-5 pb-1">{description}</p>
-// <p className="card-content is-size-5 pb-1">
-//   Event Type: {type}
-// </p>
-// <p className="card-content is-size-5 pb-1">
-//   Location: {location}
-// </p>
-
-// <div>
-//   <p className="card-content is-size-5">Note: {note}</p>
-// </div>
-// </li>

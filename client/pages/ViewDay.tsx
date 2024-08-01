@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { AddEvent } from '../components/AddEventForm'
 import { EventsByDay } from '../components/EventsByDay'
-import { Notes } from '../components/Notes'
+// import { Notes } from '../components/Notes'
 import { useParams } from 'react-router-dom'
 import { getEvents } from '../apis/events' // Import the getEvents function
 import { Events } from '../../models/flightplan'
@@ -34,7 +34,7 @@ export default function ViewDay() {
           {/* <div className="column is-half ">
             <Notes />
           </div> */}
-          <EventsByDay events={events} />
+          <EventsByDay events={events} setEvents={setEvents} />
           <div className=" ">
             <AddEvent
               date={date as string}
