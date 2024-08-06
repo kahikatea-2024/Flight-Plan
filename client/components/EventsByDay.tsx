@@ -5,10 +5,11 @@ import { EditEvent } from './EditEventForm'
 
 interface EventsByDayProps {
   events: Events[]
+  date: string
   setEvents: React.Dispatch<React.SetStateAction<Events[]>>
 }
 
-export function EventsByDay({ events, setEvents }: EventsByDayProps) {
+export function EventsByDay({ events, setEvents, date }: EventsByDayProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [editId, setEditId] = useState<number | null>(null)
 
@@ -64,10 +65,10 @@ export function EventsByDay({ events, setEvents }: EventsByDayProps) {
           <div key={event.id}>
             {editId === event.id ? (
               <EditEvent
-                date={event.date}
+                date={date}
                 tripId={event.tripId}
                 id={event.id}
-                events={events}
+                event={event}
                 setEvents={setEvents}
               />
             ) : (

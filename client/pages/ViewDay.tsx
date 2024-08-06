@@ -24,26 +24,28 @@ export default function ViewDay() {
     fetchEvents()
   }, [date, id])
 
-  return (
-    <>
-      <div className="container">
-        <div className="title has-text-primary">
-          {format(date as string, 'EEE dd MMM')}
-        </div>
-        <div className="">
-          {/* <div className="column is-half ">
+  if (date) {
+    return (
+      <>
+        <div className="container">
+          <div className="title has-text-primary">
+            {format(date as string, 'EEE dd MMM')}
+          </div>
+          <div className="">
+            {/* <div className="column is-half ">
             <Notes />
           </div> */}
-          <EventsByDay events={events} setEvents={setEvents} />
-          <div className=" ">
-            <AddEvent
-              date={date as string}
-              tripId={id as string}
-              setEvents={setEvents}
-            />
+            <EventsByDay date={date} events={events} setEvents={setEvents} />
+            <div className=" ">
+              <AddEvent
+                date={date as string}
+                tripId={id as string}
+                setEvents={setEvents}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </>
-  )
+      </>
+    )
+  }
 }

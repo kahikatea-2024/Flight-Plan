@@ -1,27 +1,26 @@
 import { useState } from 'react'
 import { Events } from '../../models/flightplan'
-import { getEvents } from '../apis/events'
-import { UseEvents } from '../hooks/useEvents'
+import { useEvents } from '../hooks/useEvents'
 
 interface EditEventProps {
   date: string
   tripId: number
   id: number
   setEvents: React.Dispatch<React.SetStateAction<Events[]>>
-  events: Events[]
+  event: Events
 }
 
 export function EditEvent({
   date,
   tripId,
   id,
+  event,
   setEvents,
-  events,
 }: EditEventProps) {
   const userId = 1
 
   const [formData, setFormData] = useState({
-    ...events,
+    ...event,
   })
 
   const [formErrors, setFormErrors] = useState({
@@ -43,7 +42,6 @@ export function EditEvent({
       ...prevState,
       [name]: value,
     }))
-    console.log(formData.type)
 
     // Perform validation checks and update the error state
     if (name === 'title' && value.length < 5) {
@@ -94,39 +92,42 @@ export function EditEvent({
     }
   }
 
-  function combineTimeAndDay(
-    hour: string,
-    minutes: string,
-    timeOfDay: string,
-  ): string {
-    return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
+  // function combineTimeAndDay(
+  //   hour: string,
+  //   minutes: string,
+  //   timeOfDay: string,
+  // ): string {
+  //   return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
+  // }
+
+  // const startTimeCombined = combineTimeAndDay(
+  //   formData.startHour,
+  //   formData.startMinutes,
+  //   formData.startAMPM,
+  // )
+  // const endTimeCombined = combineTimeAndDay(
+  //   formData.endHour,
+  //   formData.endMinutes,
+  //   formData.endAMPM,
+  // )
+
+  const eventData: Events = {
+    id: id,
+    tripId: Number(tripId),
+    description: formData.title,
+    location: formData.location,
+    type: formData.type,
+    date: date as string,
+    // startTime: startTimeCombined,
+    // endTime: endTimeCombined,
+    note: formData.note,
+    createdBy: userId,
   }
+
+  const editEventMutation = useEvents(tripId.toString(), date, setEvents)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const startTimeCombined = combineTimeAndDay(
-      formData.startHour,
-      formData.startMinutes,
-      formData.startAMPM,
-    )
-    const endTimeCombined = combineTimeAndDay(
-      formData.endHour,
-      formData.endMinutes,
-      formData.endAMPM,
-    )
-
-    const eventData: Events = {
-      id: id,
-      tripId: Number(tripId),
-      description: formData.title,
-      location: formData.location,
-      type: formData.type,
-      date: date as string,
-      startTime: startTimeCombined,
-      endTime: endTimeCombined,
-      note: formData.note,
-      createdBy: userId,
-    }
 
     const isFormValid = Object.values(formErrors).every(
       (error) => error === ' ',
@@ -134,12 +135,13 @@ export function EditEvent({
 
     if (isFormValid) {
       try {
-        await UseEvents(date, tripId)
-        const events = await getEvents(tripId.toString(), date as string)
-        setEvents(events) // Update the events state
-        console.log('get events', events)
+        editEventMutation.mutate(eventData, {
+          onSuccess: async () => {
+            console.log('event mutated')
+          },
+        })
       } catch (error) {
-        console.error('Failed to add event:', error)
+        console.error('Failed to edit event:', error)
       }
     }
   }
