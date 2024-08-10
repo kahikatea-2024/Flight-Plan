@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Events } from '../../models/flightplan'
 import { useEvents } from '../hooks/useEvents'
+import { combineTimeAndDay, splitTimeAndDay } from '../utilities/eventTimes'
 
 interface EditEventProps {
   date: string
@@ -19,12 +20,26 @@ export function EditEvent({
 }: EditEventProps) {
   const userId = 1
 
+  const startTime = splitTimeAndDay(event.startTime)
+  const endTime = splitTimeAndDay(event.endTime)
+
   const [formData, setFormData] = useState({
-    ...event,
+    description: event.description,
+    location: event.location,
+    type: event.type,
+    startHour: startTime.hour,
+    startMinutes: startTime.minutes,
+    startAMPM: startTime.timeOfDay,
+    endHour: endTime.hour,
+    endMinutes: endTime.minutes,
+    endAMPM: endTime.timeOfDay,
+    startTime: event.startTime,
+    endTime: event.endTime,
+    note: event.note,
   })
 
   const [formErrors, setFormErrors] = useState({
-    title: ' ',
+    description: ' ',
     location: ' ',
     type: ' ',
     startHour: ' ',
@@ -42,12 +57,13 @@ export function EditEvent({
       ...prevState,
       [name]: value,
     }))
+    console.log('data', formData)
 
     // Perform validation checks and update the error state
-    if (name === 'title' && value.length < 5) {
+    if (name === 'description' && value.length < 5) {
       setFormErrors((prevState) => ({
         ...prevState,
-        title: 'Please enter a descriptive title.',
+        description: 'Please enter a descriptive description.',
       }))
     } else if (name === 'location' && value.length < 5) {
       setFormErrors((prevState) => ({
@@ -92,42 +108,34 @@ export function EditEvent({
     }
   }
 
-  // function combineTimeAndDay(
-  //   hour: string,
-  //   minutes: string,
-  //   timeOfDay: string,
-  // ): string {
-  //   return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
-  // }
-
-  // const startTimeCombined = combineTimeAndDay(
-  //   formData.startHour,
-  //   formData.startMinutes,
-  //   formData.startAMPM,
-  // )
-  // const endTimeCombined = combineTimeAndDay(
-  //   formData.endHour,
-  //   formData.endMinutes,
-  //   formData.endAMPM,
-  // )
-
-  const eventData: Events = {
-    id: id,
-    tripId: Number(tripId),
-    description: formData.title,
-    location: formData.location,
-    type: formData.type,
-    date: date as string,
-    // startTime: startTimeCombined,
-    // endTime: endTimeCombined,
-    note: formData.note,
-    createdBy: userId,
-  }
-
   const editEventMutation = useEvents(tripId.toString(), date, setEvents)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const startTimeCombined = combineTimeAndDay(
+      formData.startHour,
+      formData.startMinutes,
+      formData.startAMPM,
+    )
+    const endTimeCombined = combineTimeAndDay(
+      formData.endHour,
+      formData.endMinutes,
+      formData.endAMPM,
+    )
+
+    const eventData: Events = {
+      id: id,
+      tripId: Number(tripId),
+      description: formData.description,
+      location: formData.location,
+      type: formData.type,
+      date: date as string,
+      startTime: startTimeCombined,
+      endTime: endTimeCombined,
+      note: formData.note,
+      createdBy: userId,
+    }
 
     const isFormValid = Object.values(formErrors).every(
       (error) => error === ' ',
@@ -159,21 +167,21 @@ export function EditEvent({
               className="field-is-horizontal is-centered"
             >
               <div className="field level">
-                <label className="label level-left" htmlFor="title">
-                  Event Title
+                <label className="label level-left" htmlFor="description">
+                  Event description
                 </label>
                 <div className="control level-item">
                   <input
                     type="text"
                     className="input"
                     placeholder="Event Title"
-                    name="title"
-                    id="title"
-                    value={formData.title}
+                    name="description"
+                    id="description"
+                    value={formData.description}
                     onChange={handleChange}
                   />
-                  {formErrors.title && (
-                    <div className="error">{formErrors.title}</div>
+                  {formErrors.description && (
+                    <div className="error">{formErrors.description}</div>
                   )}
                 </div>
               </div>
