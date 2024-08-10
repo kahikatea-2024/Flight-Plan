@@ -8,6 +8,7 @@ interface EditEventProps {
   tripId: number
   id: number
   setEvents: React.Dispatch<React.SetStateAction<Events[]>>
+  handleEditClick
   event: Events
 }
 
@@ -17,6 +18,7 @@ export function EditEvent({
   id,
   event,
   setEvents,
+  handleEditClick,
 }: EditEventProps) {
   const userId = 1
 
@@ -143,7 +145,9 @@ export function EditEvent({
     if (isFormValid) {
       try {
         editEventMutation.mutate(eventData, {
-          onSuccess: async () => {},
+          onSuccess: async () => {
+            handleEditClick(id)
+          },
         })
       } catch (error) {
         console.error('Failed to edit event:', error)

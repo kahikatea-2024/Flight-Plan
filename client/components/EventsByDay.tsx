@@ -70,6 +70,7 @@ export function EventsByDay({ events, setEvents, date }: EventsByDayProps) {
                 id={event.id}
                 event={event}
                 setEvents={setEvents}
+                handleEditClick={handleEditClick}
               />
             ) : (
               <>
