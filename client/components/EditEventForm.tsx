@@ -57,7 +57,6 @@ export function EditEvent({
       ...prevState,
       [name]: value,
     }))
-    console.log('data', formData)
 
     // Perform validation checks and update the error state
     if (name === 'description' && value.length < 5) {
@@ -144,9 +143,7 @@ export function EditEvent({
     if (isFormValid) {
       try {
         editEventMutation.mutate(eventData, {
-          onSuccess: async () => {
-            console.log('event mutated')
-          },
+          onSuccess: async () => {},
         })
       } catch (error) {
         console.error('Failed to edit event:', error)

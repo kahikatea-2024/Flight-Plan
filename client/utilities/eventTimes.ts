@@ -3,9 +3,6 @@ export function combineTimeAndDay(
   minutes: string,
   timeOfDay: string,
 ) {
-  console.log(`Hour: '${hour}'`)
-  console.log(`Minutes: '${minutes}'`)
-  console.log(`Time of Day: '${timeOfDay}'`)
   return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
 }
 
@@ -15,7 +12,6 @@ export function splitTimeAndDay(timeInput: string): {
   timeOfDay: string
 } {
   const match = timeInput.match(/^(\d{2}):(\d{2})(am|pm)$/i)
-  console.log('time', timeInput)
 
   if (match) {
     return {

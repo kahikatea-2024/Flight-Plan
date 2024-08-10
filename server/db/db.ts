@@ -303,7 +303,7 @@ export async function updateEventsById(
     startTime: string
     endTime: string
     createdBy: number
-    notes: string
+    note: string
     location: string
     type: string
   },
@@ -313,7 +313,7 @@ export async function updateEventsById(
     start_time: updatedEvent.startTime,
     end_time: updatedEvent.endTime,
     created_by: updatedEvent.createdBy,
-    notes: updatedEvent.notes,
+    notes: updatedEvent.note,
     location: updatedEvent.location,
     type: updatedEvent.type,
   })
