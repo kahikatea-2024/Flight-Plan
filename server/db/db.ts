@@ -297,18 +297,26 @@ export async function addNewEventByTripDate(newEvent: EventData) {
 export async function updateEventsById(
   id: number,
   updatedEvent: {
-    trip_id: number
+    tripId: number
     description: string
     date: string
-    start_time: string
-    end_time: string
-    created_by: number
+    startTime: string
+    endTime: string
+    createdBy: number
     notes: string
     location: string
     type: string
   },
 ) {
-  const eventToUpdate = await db('events').where({ id }).update(updatedEvent)
+  const eventToUpdate = await db('events').where({ id }).update({
+    description: updatedEvent.description,
+    start_time: updatedEvent.startTime,
+    end_time: updatedEvent.endTime,
+    created_by: updatedEvent.createdBy,
+    notes: updatedEvent.notes,
+    location: updatedEvent.location,
+    type: updatedEvent.type,
+  })
   return eventToUpdate
 }
 
