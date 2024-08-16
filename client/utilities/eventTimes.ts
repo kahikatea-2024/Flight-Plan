@@ -3,9 +3,9 @@ export function combineTimeAndDay(
   minutes: string,
   timeOfDay: string,
 ) {
-  //   // Add leading zeros if needed
-  const formattedHour = hour.padStart(2, '0')
-  const formattedMinutes = minutes.padStart(2, '0')
+  // trim then leading zeros if needed
+  const formattedHour = hour.trim().padStart(2, '0')
+  const formattedMinutes = minutes.trim().padStart(2, '0')
 
   return `${formattedHour}:${formattedMinutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
 }
