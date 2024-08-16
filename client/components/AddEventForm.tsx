@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { EventData, Events } from '../../models/flightplan'
 import { addEvent, getEvents } from '../apis/events'
+import { combineTimeAndDay, eventFormValidation } from '../utilities/eventTimes'
 
 interface AddEventProps {
   date: string
@@ -8,109 +9,66 @@ interface AddEventProps {
   setEvents: React.Dispatch<React.SetStateAction<Events[]>>
 }
 
+interface FormData {
+  description: string
+  location: string
+  type: string
+  startHour: string
+  startMinutes: string
+  startAMPM: string
+  endHour: string
+  endMinutes: string
+  endAMPM: string
+  note: string
+}
+
+const initialFormData = {
+  description: '',
+  location: '',
+  type: 'Event',
+  startHour: '',
+  startMinutes: '',
+  startAMPM: '',
+  endHour: '',
+  endMinutes: '',
+  endAMPM: '',
+  note: '',
+}
+
+const initialFormErrors = {
+  description: '',
+  location: '',
+  type: '',
+  startHour: '',
+  startMinutes: '',
+  startAMPM: '',
+  endHour: '',
+  endMinutes: '',
+  endAMPM: '',
+  note: '',
+}
+
 export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
   const userId = 1
 
-  const [formData, setFormData] = useState({
-    title: ' ',
-    location: ' ',
-    type: 'Event',
-    startHour: ' ',
-    startMinutes: ' ',
-    startAMPM: ' ',
-    endHour: ' ',
-    endMinutes: ' ',
-    endAMPM: ' ',
-    note: ' ',
-  })
+  const [formData, setFormData] = useState<FormData>(initialFormData)
+  const [formErrors, setFormErrors] = useState<FormData>(initialFormErrors)
 
-  const [formErrors, setFormErrors] = useState({
-    title: ' ',
-    location: ' ',
-    type: ' ',
-    startHour: ' ',
-    startMinutes: ' ',
-    startAMPM: ' ',
-    endHour: ' ',
-    endMinutes: ' ',
-    endAMPM: ' ',
-    note: ' ',
-  })
-
-  const handleChange = (e) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }))
-    console.log(formData.type)
 
-    // Perform validation checks and update the error state
-    if (name === 'title' && value.length < 5) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        title: 'Please enter a descriptive title.',
-      }))
-    } else if (name === 'location' && value.length < 5) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        location: 'Please enter a location.',
-      }))
-      // } else if (
-      //   name === 'type' &&
-      //   !['Event', 'Flight', 'Accommodation'].includes(value)
-      // ) {
-      //   setFormErrors((prevState) => ({
-      //     ...prevState,
-      //     type: 'Please select a type.',
-      //   }))
-    } else if (name === 'startHour' && (value > 12 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        startHour: 'Please enter a valid hour between 0 - 12.',
-      }))
-    } else if (name === 'startMinutes' && (value > 60 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        startMinutes: 'Please choose a valid time between 0 - 60 minutes.',
-      }))
-    } else if (name === 'startAMPM' && !['AM', 'PM'].includes(value)) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        startAMPM: 'Please choose AM or PM.',
-      }))
-    } else if (name === 'endHour' && (value > 12 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        endHour: 'Please enter a valid hour between 0 - 12.',
-      }))
-    } else if (name === 'endMinutes' && (value > 60 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        endMinutes: 'Please choose a valid time between 0 - 60 minutes.',
-      }))
-    } else if (name === 'endAMPM' && !['AM', 'PM'].includes(value)) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        endAMPM: 'Please choose AM or PM.',
-      }))
-    } else {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        [name]: ' ', // Reset error message
-      }))
-    }
+    eventFormValidation(name, value, setFormErrors)
   }
 
-  function combineTimeAndDay(
-    hour: string,
-    minutes: string,
-    timeOfDay: string,
-  ): string {
-    return `${hour}:${minutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
-  }
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const startTimeCombined = combineTimeAndDay(
       formData.startHour,
@@ -125,7 +83,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
 
     const eventData: EventData = {
       tripId: Number(tripId),
-      description: formData.title,
+      description: formData.description,
       location: formData.location,
       type: formData.type,
       date: date as string,
@@ -135,16 +93,12 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
       createdBy: userId,
     }
 
-    const isFormValid = Object.values(formErrors).every(
-      (error) => error === ' ',
-    )
-
-    if (isFormValid) {
+    if (Object.values(formErrors).every((error) => error === '')) {
       try {
         await addEvent(eventData)
+        setFormData(initialFormData)
         const events = await getEvents(tripId.toString(), date as string)
         setEvents(events) // Update the events state
-        console.log('get events', events)
       } catch (error) {
         console.error('Failed to add event:', error)
       }
@@ -164,21 +118,21 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
               className="field-is-horizontal is-centered"
             >
               <div className="field level">
-                <label className="label level-left" htmlFor="title">
-                  Event Title
+                <label className="label level-left" htmlFor="description">
+                  Event Name
                 </label>
                 <div className="control level-item">
                   <input
                     type="text"
                     className="input"
-                    placeholder="Event Title"
-                    name="title"
-                    id="title"
-                    value={formData.title}
+                    placeholder="Event Name"
+                    name="description"
+                    id="description"
+                    value={formData.description}
                     onChange={handleChange}
                   />
-                  {formErrors.title && (
-                    <div className="error">{formErrors.title}</div>
+                  {formErrors.description && (
+                    <div className="error">{formErrors.description}</div>
                   )}
                 </div>
               </div>
@@ -265,7 +219,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                   <div className="grouped-wrapper">
                     <input
                       className="input"
-                      type="text"
+                      type="number"
                       placeholder="00"
                       name="startHour"
                       id="startHour"
@@ -280,7 +234,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                     <label className="label " htmlFor="startMinutes">
                       <input
                         className="input"
-                        type="text"
+                        type="number"
                         placeholder="00"
                         name="startMinutes"
                         id="startMinutes"
@@ -321,7 +275,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                   <div className="grouped-wrapper">
                     <input
                       className="input"
-                      type="text"
+                      type="number"
                       placeholder="00"
                       name="endHour"
                       id="endHour"
@@ -336,7 +290,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
                     <label className="label " htmlFor="endMinutes">
                       <input
                         className="input"
-                        type="text"
+                        type="number"
                         placeholder="00"
                         name="endMinutes"
                         id="endMinutes"

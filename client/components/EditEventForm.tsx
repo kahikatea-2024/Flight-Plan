@@ -29,6 +29,19 @@ interface FormData {
   note: string
 }
 
+const initialFormErrors = {
+  description: '',
+  location: '',
+  type: '',
+  startHour: '',
+  startMinutes: '',
+  startAMPM: '',
+  endHour: '',
+  endMinutes: '',
+  endAMPM: '',
+  note: '',
+}
+
 export function EditEvent({
   date,
   tripId,
@@ -55,18 +68,7 @@ export function EditEvent({
     note: event.note,
   })
 
-  const [formErrors, setFormErrors] = useState<FormData>({
-    description: '',
-    location: '',
-    type: '',
-    startHour: '',
-    startMinutes: '',
-    startAMPM: '',
-    endHour: '',
-    endMinutes: '',
-    endAMPM: '',
-    note: '',
-  })
+  const [formErrors, setFormErrors] = useState<FormData>(initialFormErrors)
 
   const handleChange = (
     e:
@@ -111,9 +113,7 @@ export function EditEvent({
       createdBy: userId,
     }
 
-    const isFormValid = Object.values(formErrors).every((error) => error === '')
-
-    if (isFormValid) {
+    if (Object.values(formErrors).every((error) => error === '')) {
       try {
         editEventMutation.mutate(eventData, {
           onSuccess: async () => {
