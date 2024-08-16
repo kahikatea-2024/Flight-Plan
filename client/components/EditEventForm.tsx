@@ -8,7 +8,7 @@ interface EditEventProps {
   tripId: number
   id: number
   setEvents: React.Dispatch<React.SetStateAction<Events[]>>
-  handleEditClick
+  handleEditClick: React.Dispatch<React.SetStateAction<number>>
   event: Events
 }
 
@@ -21,6 +21,8 @@ export function EditEvent({
   handleEditClick,
 }: EditEventProps) {
   const userId = 1
+
+  console.log('start', event.startTime, 'end', event.endTime)
 
   const startTime = splitTimeAndDay(event.startTime)
   const endTime = splitTimeAndDay(event.endTime)
@@ -41,78 +43,89 @@ export function EditEvent({
   })
 
   const [formErrors, setFormErrors] = useState({
-    description: ' ',
-    location: ' ',
-    type: ' ',
-    startHour: ' ',
-    startMinutes: ' ',
-    startAMPM: ' ',
-    endHour: ' ',
-    endMinutes: ' ',
-    endAMPM: ' ',
-    note: ' ',
+    description: '',
+    location: '',
+    type: '',
+    startHour: '',
+    startMinutes: '',
+    startAMPM: '',
+    endHour: '',
+    endMinutes: '',
+    endAMPM: '',
+    note: '',
   })
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }))
 
-    // Perform validation checks and update the error state
-    if (name === 'description' && value.length < 5) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        description: 'Please enter a descriptive description.',
-      }))
-    } else if (name === 'location' && value.length < 5) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        location: 'Please enter a location.',
-      }))
-    } else if (name === 'startHour' && (value > 12 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        startHour: 'Please enter a valid hour between 0 - 12.',
-      }))
-    } else if (name === 'startMinutes' && (value > 60 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        startMinutes: 'Please choose a valid time between 0 - 60 minutes.',
-      }))
-    } else if (name === 'startAMPM' && !['AM', 'PM'].includes(value)) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        startAMPM: 'Please choose AM or PM.',
-      }))
-    } else if (name === 'endHour' && (value > 12 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        endHour: 'Please enter a valid hour between 0 - 12.',
-      }))
-    } else if (name === 'endMinutes' && (value > 60 || isNaN(value))) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        endMinutes: 'Please choose a valid time between 0 - 60 minutes.',
-      }))
-    } else if (name === 'endAMPM' && !['AM', 'PM'].includes(value)) {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        endAMPM: 'Please choose AM or PM.',
-      }))
-    } else {
-      setFormErrors((prevState) => ({
-        ...prevState,
-        [name]: ' ', // Reset error message
-      }))
+    const handleValidation = (name: string, value: string) => {
+      const numberValue = Number(value)
+
+      // Perform validation checks and update the error state
+      if (name === 'description' && value.length < 5) {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          [name]: 'Please enter a descriptive description.',
+        }))
+      } else if (name === 'location' && value.length < 5) {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          [name]: 'Please enter a location.',
+        }))
+      } else if (
+        (name === 'startHour' || name === 'endHour') &&
+        (isNaN(numberValue) || numberValue > 12 || numberValue < 0)
+      ) {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          [name]: 'Please enter a valid hour between 0 - 12.',
+        }))
+      } else if (
+        (name === 'startMinutes' || name === 'endMinutes') &&
+        (isNaN(numberValue) || numberValue > 60 || numberValue < 0)
+      ) {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          [name]: 'Please choose a valid time between 0 - 60 minutes.',
+        }))
+      } else if (
+        (name === 'startAMPM' || name === 'endAMPM') &&
+        !['AM', 'PM'].includes(value)
+      ) {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          [name]: 'Please choose AM or PM.',
+        }))
+      } else {
+        setFormErrors((prevState) => ({
+          ...prevState,
+          [name]: '', // Reset error message
+        }))
+      }
     }
+
+    handleValidation(name, value)
   }
 
   const editEventMutation = useEvents(tripId.toString(), date, setEvents)
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    console.log(
+      'time',
+      formData.startHour,
+      formData.startMinutes,
+      formData.startAMPM,
+    )
 
     const startTimeCombined = combineTimeAndDay(
       formData.startHour,
@@ -138,9 +151,7 @@ export function EditEvent({
       createdBy: userId,
     }
 
-    const isFormValid = Object.values(formErrors).every(
-      (error) => error === ' ',
-    )
+    const isFormValid = Object.values(formErrors).every((error) => error === '')
 
     if (isFormValid) {
       try {
@@ -269,7 +280,7 @@ export function EditEvent({
                   <div className="grouped-wrapper">
                     <input
                       className="input"
-                      type="text"
+                      type="number"
                       placeholder="00"
                       name="startHour"
                       id="startHour"
@@ -284,7 +295,7 @@ export function EditEvent({
                     <label className="label " htmlFor="startMinutes">
                       <input
                         className="input"
-                        type="text"
+                        type="number"
                         placeholder="00"
                         name="startMinutes"
                         id="startMinutes"
@@ -325,7 +336,7 @@ export function EditEvent({
                   <div className="grouped-wrapper">
                     <input
                       className="input"
-                      type="text"
+                      type="number"
                       placeholder="00"
                       name="endHour"
                       id="endHour"
@@ -340,7 +351,7 @@ export function EditEvent({
                     <label className="label " htmlFor="endMinutes">
                       <input
                         className="input"
-                        type="text"
+                        type="number"
                         placeholder="00"
                         name="endMinutes"
                         id="endMinutes"
@@ -354,7 +365,7 @@ export function EditEvent({
                   </div>
                   <div className=" grouped-wrapper">
                     <span className="select">
-                      <label className="label " htmlFor="endAMPM">
+                      <label className="label" htmlFor="endAMPM">
                         <select
                           name="endAMPM"
                           id="endAMPM"
