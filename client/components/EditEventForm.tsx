@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { Events } from '../../models/flightplan'
 import { useEvents } from '../hooks/useEvents'
-import { combineTimeAndDay, splitTimeAndDay } from '../utilities/eventTimes'
+import {
+  eventFormValidation,
+  combineTimeAndDay,
+  splitTimeAndDay,
+} from '../utilities/eventTimes'
 
 interface EditEventProps {
   date: string
@@ -10,6 +14,19 @@ interface EditEventProps {
   setEvents: React.Dispatch<React.SetStateAction<Events[]>>
   handleEditClick: React.Dispatch<React.SetStateAction<number>>
   event: Events
+}
+
+interface FormData {
+  description: string
+  location: string
+  type: string
+  startHour: string
+  startMinutes: string
+  startAMPM: string
+  endHour: string
+  endMinutes: string
+  endAMPM: string
+  note: string
 }
 
 export function EditEvent({
@@ -22,12 +39,10 @@ export function EditEvent({
 }: EditEventProps) {
   const userId = 1
 
-  console.log('start', event.startTime, 'end', event.endTime)
-
   const startTime = splitTimeAndDay(event.startTime)
   const endTime = splitTimeAndDay(event.endTime)
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     description: event.description,
     location: event.location,
     type: event.type,
@@ -37,12 +52,10 @@ export function EditEvent({
     endHour: endTime.hour,
     endMinutes: endTime.minutes,
     endAMPM: endTime.timeOfDay,
-    startTime: event.startTime,
-    endTime: event.endTime,
     note: event.note,
   })
 
-  const [formErrors, setFormErrors] = useState({
+  const [formErrors, setFormErrors] = useState<FormData>({
     description: '',
     location: '',
     type: '',
@@ -66,66 +79,13 @@ export function EditEvent({
       [name]: value,
     }))
 
-    const handleValidation = (name: string, value: string) => {
-      const numberValue = Number(value)
-
-      // Perform validation checks and update the error state
-      if (name === 'description' && value.length < 5) {
-        setFormErrors((prevState) => ({
-          ...prevState,
-          [name]: 'Please enter a descriptive description.',
-        }))
-      } else if (name === 'location' && value.length < 5) {
-        setFormErrors((prevState) => ({
-          ...prevState,
-          [name]: 'Please enter a location.',
-        }))
-      } else if (
-        (name === 'startHour' || name === 'endHour') &&
-        (isNaN(numberValue) || numberValue > 12 || numberValue < 0)
-      ) {
-        setFormErrors((prevState) => ({
-          ...prevState,
-          [name]: 'Please enter a valid hour between 0 - 12.',
-        }))
-      } else if (
-        (name === 'startMinutes' || name === 'endMinutes') &&
-        (isNaN(numberValue) || numberValue > 60 || numberValue < 0)
-      ) {
-        setFormErrors((prevState) => ({
-          ...prevState,
-          [name]: 'Please choose a valid time between 0 - 60 minutes.',
-        }))
-      } else if (
-        (name === 'startAMPM' || name === 'endAMPM') &&
-        !['AM', 'PM'].includes(value)
-      ) {
-        setFormErrors((prevState) => ({
-          ...prevState,
-          [name]: 'Please choose AM or PM.',
-        }))
-      } else {
-        setFormErrors((prevState) => ({
-          ...prevState,
-          [name]: '', // Reset error message
-        }))
-      }
-    }
-
-    handleValidation(name, value)
+    eventFormValidation(name, value, setFormErrors)
   }
 
   const editEventMutation = useEvents(tripId.toString(), date, setEvents)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    console.log(
-      'time',
-      formData.startHour,
-      formData.startMinutes,
-      formData.startAMPM,
-    )
 
     const startTimeCombined = combineTimeAndDay(
       formData.startHour,
