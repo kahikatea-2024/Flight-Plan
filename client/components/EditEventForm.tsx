@@ -12,7 +12,7 @@ interface EditEventProps {
   tripId: number
   id: number
   setEvents: React.Dispatch<React.SetStateAction<Events[]>>
-  handleEditClick: React.Dispatch<React.SetStateAction<number>>
+  handleEditClick: (id: number) => void
   event: Events
 }
 
@@ -128,12 +128,9 @@ export function EditEvent({
 
   return (
     <section>
-      <div className="container is-fluid is-centered">
+      <div className="card edit-event-container is-fluid is-centered ">
         <div className="columns is-fluid">
           <div className="column">
-            <h2 className="is-size-2 has-text-centered has-text-primary">
-              Edit Event
-            </h2>
             <form
               onSubmit={handleSubmit}
               className="field-is-horizontal is-centered"

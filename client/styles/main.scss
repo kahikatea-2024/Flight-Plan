@@ -168,6 +168,14 @@
   overflow: hidden;
 }
 
+.edit-event-container {
+  transition: height .7s ease-in-out;
+  overflow: hidden;
+  border: 2px solid;
+  border-color: $primary;
+  padding: 2rem;
+}
+
 .event-content {
   padding: 1rem 0;
 }

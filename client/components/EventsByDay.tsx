@@ -18,8 +18,7 @@ export function EventsByDay({ events, setEvents, date }: EventsByDayProps) {
   }
 
   const handleEditClick = (id: number) => {
-    setEditId((prevId) => (prevId === id ? null : id))
-    console.log(`Current editId: ${editId}, Clicked ID: ${id}`)
+    setEditId(id === editId ? null : id)
   }
 
   if (!events || events.length === 0) {
@@ -62,7 +61,7 @@ export function EventsByDay({ events, setEvents, date }: EventsByDayProps) {
           Events
         </h1>
         {events.map((event, index) => (
-          <div key={event.id}>
+          <div className="block" key={event.id}>
             {editId === event.id ? (
               <EditEvent
                 date={date}
@@ -75,6 +74,7 @@ export function EventsByDay({ events, setEvents, date }: EventsByDayProps) {
             ) : (
               <>
                 <EventItem
+                  id={event.id}
                   startTime={event.startTime}
                   endTime={event.endTime}
                   description={event.description}
@@ -83,12 +83,10 @@ export function EventsByDay({ events, setEvents, date }: EventsByDayProps) {
                   note={event.note}
                   isOpen={activeIndex === index}
                   onClick={() => handleItemClick(index)}
+                  handleEditClick={handleEditClick}
                 />
               </>
             )}
-            <button onClick={() => handleEditClick(event.id)}>
-              {editId === event.id ? 'Close' : 'Edit'}
-            </button>
           </div>
         ))}
       </div>
