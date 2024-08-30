@@ -58,6 +58,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
 
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const [formErrors, setFormErrors] = useState<FormData>(initialFormErrors)
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false)
 
   const handleChange = (
     e:
@@ -102,6 +103,7 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
       try {
         await addEvent(eventData)
         setFormData(initialFormData)
+        // setIsFormOpen(false)
         const events = await getEvents(tripId.toString(), date as string)
         setEvents(events) // Update the events state
       } catch (error) {
@@ -110,151 +112,160 @@ export function AddEvent({ date, tripId, setEvents }: AddEventProps) {
     }
   }
 
+  const openForm = () => setIsFormOpen((open) => !open)
+
   return (
     <section>
       <div className="container is-fluid is-centered">
         <div className="columns is-fluid">
-          {/* <div className="column"> */}
-          <h2 className="is-size-2 has-text-centered has-text-primary">
-            Add An Event
-          </h2>
-          <div>
-            <form
-              onSubmit={handleSubmit}
-              className="field-is-horizontal is-centered"
-            >
-              <div className="field is-horizontal">
-                <FormLabel label="Title" id={'description'} />
-                <FormText
-                  placeholder="Event Title"
-                  name={'description'}
-                  id={'description'}
-                  value={formData.description}
-                  handleChange={handleChange}
-                  formErrors={formErrors.description}
-                />
-              </div>
-              <div className="field is-horizontal">
-                <FormLabel label="Location" id={'location'} />
-                <FormText
-                  placeholder="Event Location"
-                  name={'location'}
-                  id={'location'}
-                  value={formData.location}
-                  handleChange={handleChange}
-                  formErrors={formErrors.location}
-                />
-              </div>
+          <div className="column">
+            <h2 className="is-size-2 has-text-centered has-text-primary">
+              Add An Event
+            </h2>
 
-              <div className="field is-horizontal">
-                <div className="field-label">
-                  <p className="label">Event Type</p>
+            {isFormOpen ? (
+              <>
+                <div className="field is-grouped is-grouped-centered mt-4">
+                  <button type="submit" className="button is-primary">
+                    Save
+                  </button>
                 </div>
-                <div className="field-body">
-                  <div className="field is-narrow">
-                    <div className="control">
-                      <FormRadio
-                        name={'type'}
-                        id={'Event'}
-                        value={'Event'}
-                        check={formData.type}
+                <form
+                  onSubmit={handleSubmit}
+                  className="field-is-horizontal is-centered"
+                >
+                  <div className="field is-horizontal">
+                    <FormLabel label="Title" id={'description'} />
+                    <FormText
+                      placeholder="Event Title"
+                      name={'description'}
+                      id={'description'}
+                      value={formData.description}
+                      handleChange={handleChange}
+                      formErrors={formErrors.description}
+                    />
+                  </div>
+                  <div className="field is-horizontal">
+                    <FormLabel label="Location" id={'location'} />
+                    <FormText
+                      placeholder="Event Location"
+                      name={'location'}
+                      id={'location'}
+                      value={formData.location}
+                      handleChange={handleChange}
+                      formErrors={formErrors.location}
+                    />
+                  </div>
+
+                  <div className="field is-horizontal">
+                    <div className="field-label">
+                      <p className="label">Event Type</p>
+                    </div>
+                    <div className="field-body">
+                      <div className="field is-narrow">
+                        <div className="control">
+                          <FormRadio
+                            name={'type'}
+                            id={'Event'}
+                            value={'Event'}
+                            check={formData.type}
+                            handleChange={handleChange}
+                          />
+                          <FormRadio
+                            name={'type'}
+                            id={'Flight'}
+                            value={'Flight'}
+                            check={formData.type}
+                            handleChange={handleChange}
+                          />
+                          <FormRadio
+                            name={'type'}
+                            id={'Accommodation'}
+                            value={'Accommodation'}
+                            check={formData.type}
+                            handleChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="field is-horizontal">
+                    <FormLabel label="Start Time" id={'startTime'} />
+                    <div className="field-body is-horizontal">
+                      <FormTime
+                        placeholder="00"
+                        name={'startHour'}
+                        id={'startHour'}
+                        value={formData.startHour}
                         handleChange={handleChange}
+                        formErrors={formErrors.startHour}
                       />
-                      <FormRadio
-                        name={'type'}
-                        id={'Flight'}
-                        value={'Flight'}
-                        check={formData.type}
+                      <FormTime
+                        placeholder="00"
+                        name={'startMinutes'}
+                        id={'startMinutes'}
+                        value={formData.startMinutes}
                         handleChange={handleChange}
+                        formErrors={formErrors.startMinutes}
                       />
-                      <FormRadio
-                        name={'type'}
-                        id={'Accommodation'}
-                        value={'Accommodation'}
-                        check={formData.type}
+                      <FormSelect
+                        name={'startAMPM'}
+                        id={'startAMPM'}
+                        value={formData.startAMPM}
                         handleChange={handleChange}
+                        formErrors={formErrors.startAMPM}
                       />
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="field is-horizontal">
-                <FormLabel label="Start Time" id={'startTime'} />
-                <div className="field-body is-horizontal">
-                  <FormTime
-                    placeholder="00"
-                    name={'startHour'}
-                    id={'startHour'}
-                    value={formData.startHour}
-                    handleChange={handleChange}
-                    formErrors={formErrors.startHour}
-                  />
-                  <FormTime
-                    placeholder="00"
-                    name={'startMinutes'}
-                    id={'startMinutes'}
-                    value={formData.startMinutes}
-                    handleChange={handleChange}
-                    formErrors={formErrors.startMinutes}
-                  />
-                  <FormSelect
-                    name={'startAMPM'}
-                    id={'startAMPM'}
-                    value={formData.startAMPM}
-                    handleChange={handleChange}
-                    formErrors={formErrors.startAMPM}
-                  />
-                </div>
-              </div>
+                  <div className="field is-horizontal">
+                    <FormLabel label="End Time" id={'endTime'} />
+                    <div className="field-body is-horizontal">
+                      <FormTime
+                        placeholder="00"
+                        name={'endHour'}
+                        id={'endHour'}
+                        value={formData.endHour}
+                        handleChange={handleChange}
+                        formErrors={formErrors.endHour}
+                      />
+                      <FormTime
+                        placeholder="00"
+                        name={'endMinutes'}
+                        id={'endMinutes'}
+                        value={formData.endMinutes}
+                        handleChange={handleChange}
+                        formErrors={formErrors.endMinutes}
+                      />
+                      <FormSelect
+                        name={'endAMPM'}
+                        id={'endAMPM'}
+                        value={formData.endAMPM}
+                        handleChange={handleChange}
+                        formErrors={formErrors.endAMPM}
+                      />
+                    </div>
+                  </div>
 
-              <div className="field is-horizontal">
-                <FormLabel label="End Time" id={'endTime'} />
-                <div className="field-body is-horizontal">
-                  <FormTime
-                    placeholder="00"
-                    name={'endHour'}
-                    id={'endHour'}
-                    value={formData.endHour}
-                    handleChange={handleChange}
-                    formErrors={formErrors.endHour}
-                  />
-                  <FormTime
-                    placeholder="00"
-                    name={'endMinutes'}
-                    id={'endMinutes'}
-                    value={formData.endMinutes}
-                    handleChange={handleChange}
-                    formErrors={formErrors.endMinutes}
-                  />
-                  <FormSelect
-                    name={'endAMPM'}
-                    id={'endAMPM'}
-                    value={formData.endAMPM}
-                    handleChange={handleChange}
-                    formErrors={formErrors.endAMPM}
-                  />
-                </div>
-              </div>
-
-              <div className="field is-horizontal">
-                <FormLabel label="Note" id={'note'} />
-                <FormText
-                  placeholder="Event note"
-                  name={'note'}
-                  id={'note'}
-                  value={formData.note}
-                  handleChange={handleChange}
-                  formErrors={formErrors.note}
-                />
-              </div>
-
+                  <div className="field is-horizontal">
+                    <FormLabel label="Note" id={'note'} />
+                    <FormText
+                      placeholder="Event note"
+                      name={'note'}
+                      id={'note'}
+                      value={formData.note}
+                      handleChange={handleChange}
+                      formErrors={formErrors.note}
+                    />
+                  </div>
+                </form>
+              </>
+            ) : (
               <div className="field is-grouped is-grouped-centered mt-4">
-                <button type="submit" className="button is-primary">
-                  Save
-                </button>
+                <button onClick={openForm}>Add</button>
               </div>
-            </form>
+            )}
           </div>
         </div>
       </div>
