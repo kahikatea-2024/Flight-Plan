@@ -11,21 +11,19 @@ export function FormTime(props: Props) {
   const { placeholder, name, id, value, handleChange, formErrors } = props
 
   return (
-    <div className="field-body">
-      <div className="field is-narrow">
-        <div className="control">
-          <input
-            type="number"
-            className="input"
-            placeholder={placeholder}
-            name={name}
-            id={id}
-            value={value}
-            onChange={handleChange}
-          />
-        </div>
-        <p>{formErrors && <div className="error">{formErrors}</div>}</p>
+    <div className="field is-narrow">
+      <div className="control">
+        <input
+          type="number"
+          className="input"
+          placeholder={placeholder}
+          name={name}
+          id={id}
+          value={value}
+          onChange={handleChange}
+        />
       </div>
+      {formErrors && <div className="error">{formErrors}</div>}
     </div>
   )
 }

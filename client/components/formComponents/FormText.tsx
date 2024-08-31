@@ -24,7 +24,7 @@ export function FormText(props: Props) {
             onChange={handleChange}
           />
         </div>
-        <p>{formErrors && <div className="error">{formErrors}</div>}</p>
+        {formErrors && <div className="error">{formErrors}</div>}
       </div>
     </div>
   )

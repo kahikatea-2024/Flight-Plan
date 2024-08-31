@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import { AddEvent } from '../components/AddEventForm'
+import { AddEvent } from '../components/AddEvent'
 import { EventsByDay } from '../components/EventsByDay'
 // import { Notes } from '../components/Notes'
 import { useParams } from 'react-router-dom'
