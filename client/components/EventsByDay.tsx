@@ -1,7 +1,7 @@
 import { Events } from '../../models/flightplan'
 import { useState } from 'react'
 import { EventItem } from './EventItem'
-import { EditEvent } from './EditEventForm'
+import { EditEvent } from './EditEvent'
 
 interface EventsByDayProps {
   events: Events[]
@@ -65,8 +65,6 @@ export function EventsByDay({ events, setEvents, date }: EventsByDayProps) {
             {editId === event.id ? (
               <EditEvent
                 date={date}
-                tripId={event.tripId}
-                id={event.id}
                 event={event}
                 setEvents={setEvents}
                 handleEditClick={handleEditClick}
