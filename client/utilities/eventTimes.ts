@@ -1,3 +1,5 @@
+import { FormErrors, FormInputData } from '../../models/flightplan'
+
 export function combineTimeAndDay(
   hour: string,
   minutes: string,
@@ -31,20 +33,7 @@ export function splitTimeAndDay(timeInput: string): {
 export function eventFormValidation(
   name: string,
   value: string,
-  setFormErrors: React.Dispatch<
-    React.SetStateAction<{
-      description: string
-      location: string
-      type: string
-      startHour: string
-      startMinutes: string
-      startAMPM: string
-      endHour: string
-      endMinutes: string
-      endAMPM: string
-      note: string
-    }>
-  >,
+  setFormErrors: React.Dispatch<React.SetStateAction<FormErrors>>,
 ) {
   const numberValue = Number(value)
 
@@ -90,4 +79,39 @@ export function eventFormValidation(
     }))
   }
   return setFormErrors
+}
+
+//Validation for empty fields on submit
+//note is not a required field
+export async function submitValidation(
+  formData: FormInputData,
+): Promise<FormErrors> {
+  const emptyInput: FormErrors = {}
+
+  Object.keys(formData).forEach((key) => {
+    const value = formData[key as keyof FormInputData]
+
+    if (typeof value === 'string') {
+      // Handle time values
+      if (key == 'startHour' || key == 'startMinutes' || key == 'startAMPM') {
+        if (value.trim() === '') {
+          emptyInput['startTime'] = `Please enter a start time.`
+        }
+      }
+
+      if (key == 'endHour' || key == 'endMinutes' || key == 'endAMPM') {
+        if (value.trim() === '') {
+          emptyInput['endTime'] = `Please enter an end time.`
+        }
+      }
+
+      // Handle other values
+      else if (key == 'description' || key == 'location') {
+        if (value.trim() === '') {
+          emptyInput[key] = `Please enter a ${key} for the event.`
+        }
+      }
+    }
+  })
+  return emptyInput
 }

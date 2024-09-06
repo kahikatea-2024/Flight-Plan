@@ -78,3 +78,20 @@ export interface Friend {
   username: string
   profile_picture: string
 }
+
+export interface FormInputData {
+  description: string
+  location: string
+  type: string
+  startHour: string
+  startMinutes: string
+  startAMPM: string
+  endHour: string
+  endMinutes: string
+  endAMPM: string
+  note: string
+}
+
+export interface FormErrors {
+  [key: string]: string
+}

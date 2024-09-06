@@ -4,28 +4,19 @@ import { FormRadio } from './formComponents/FormRadio'
 import { FormSelect } from './formComponents/FormSelect'
 import { FormTime } from './formComponents/FormTime'
 import { FormText } from './formComponents/FormText'
-import { combineTimeAndDay, eventFormValidation } from '../utilities/eventTimes'
-import { EventData } from '../../models/flightplan'
+import {
+  combineTimeAndDay,
+  eventFormValidation,
+  submitValidation,
+} from '../utilities/eventTimes'
+import { EventData, FormErrors, FormInputData } from '../../models/flightplan'
 
 interface Props {
   date: string
-  tripId: string
+  tripId: string | number
   userId: number
-  initialFormData: FormData
+  initialFormData: FormInputData
   onSubmit: (data: EventData) => Promise<void>
-}
-
-interface FormData {
-  description: string
-  location: string
-  type: string
-  startHour: string
-  startMinutes: string
-  startAMPM: string
-  endHour: string
-  endMinutes: string
-  endAMPM: string
-  note: string
 }
 
 export function EventForm(props: Props) {
@@ -35,17 +26,19 @@ export function EventForm(props: Props) {
     description: '',
     location: '',
     type: '',
+    startTime: '',
     startHour: '',
     startMinutes: '',
     startAMPM: '',
+    endTime: '',
     endHour: '',
     endMinutes: '',
     endAMPM: '',
     note: '',
   }
 
-  const [formErrors, setFormErrors] = useState<FormData>(initialFormErrors)
-  const [formData, setFormData] = useState<FormData>(initialFormData)
+  const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors)
+  const [formData, setFormData] = useState<FormInputData>(initialFormData)
 
   const handleChange = (
     e:
@@ -61,36 +54,52 @@ export function EventForm(props: Props) {
     eventFormValidation(name, value, setFormErrors)
   }
 
-  const startTimeCombined = combineTimeAndDay(
-    formData.startHour,
-    formData.startMinutes,
-    formData.startAMPM,
-  )
-  const endTimeCombined = combineTimeAndDay(
-    formData.endHour,
-    formData.endMinutes,
-    formData.endAMPM,
-  )
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
 
-  const eventData: EventData = {
-    tripId: Number(tripId),
-    description: formData.description,
-    location: formData.location,
-    type: formData.type,
-    date: date as string,
-    startTime: startTimeCombined,
-    endTime: endTimeCombined,
-    note: formData.note,
-    createdBy: userId,
-  }
+    try {
+      // Call async validation, check against validation from handlechange as well
+      const validationErrors = await submitValidation(formData)
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (Object.values(formErrors).every((error) => error === '')) {
-      event.preventDefault()
+      if (
+        Object.values(formErrors).every((error) => error !== '') ||
+        Object.keys(validationErrors).length > 0
+      ) {
+        setFormErrors(validationErrors)
+        alert('Please complete all required fields.')
+        return
+      }
+
+      const startTimeCombined = combineTimeAndDay(
+        formData.startHour,
+        formData.startMinutes,
+        formData.startAMPM,
+      )
+
+      const endTimeCombined = combineTimeAndDay(
+        formData.endHour,
+        formData.endMinutes,
+        formData.endAMPM,
+      )
+
+      const eventData: EventData = {
+        tripId: Number(tripId),
+        description: formData.description,
+        location: formData.location,
+        type: formData.type,
+        date: date as string,
+        startTime: startTimeCombined,
+        endTime: endTimeCombined,
+        note: formData.note,
+        createdBy: userId,
+      }
+
       onSubmit(eventData)
       setFormData(initialFormData)
-    } else alert('please resolve errors')
-    //TODO logic to show the relevant error message(s)
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      alert('An error occurred while submitting the form.')
+    }
   }
 
   return (
@@ -179,6 +188,7 @@ export function EventForm(props: Props) {
               formErrors={formErrors.startAMPM}
             />
           </div>
+          {formErrors.startTime}
         </div>
 
         <div className="field is-horizontal">
@@ -208,6 +218,7 @@ export function EventForm(props: Props) {
               formErrors={formErrors.endAMPM}
             />
           </div>
+          {formErrors.endTime}
         </div>
 
         <div className="field is-horizontal">
