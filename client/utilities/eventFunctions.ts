@@ -30,55 +30,63 @@ export function validateInputs(
   name: string,
   value: string,
   setFormErrors: React.Dispatch<React.SetStateAction<FormErrors>>,
+  formErrors: FormErrors,
 ) {
-  const numberValue = Number(value)
+  // Define key groups with a map to group key
+  const keyToGroupMap: { [key: string]: string } = {
+    endHour: 'endTime',
+    endMinutes: 'endTime',
+    endAMPM: 'endTime',
+    startHour: 'startTime',
+    startMinutes: 'startTime',
+    startAMPM: 'startTime',
+  }
+
+  // Define error messages for each group
+  const validationMessages: { [key: string]: string } = {
+    endTime: 'Please enter an end time.',
+    startTime: 'Please enter a start time.',
+  }
+  const groupKey = keyToGroupMap[name]
 
   // Perform validation checks and update the error state
-  if (name === 'description' && value.length < 5) {
+  if ((name === 'description' || name === 'location') && value.length < 5) {
     setFormErrors((prevState) => ({
       ...prevState,
-      [name]: 'Please enter a descriptive title.',
+      [name]: `Please enter a ${name}.`,
     }))
-  } else if (name === 'location' && value.length < 5) {
+  } else if (groupKey && (value.trim() === '' || value === 'Select')) {
     setFormErrors((prevState) => ({
       ...prevState,
-      [name]: 'Please enter a location.',
-    }))
-  } else if (
-    (name === 'startHour' || name === 'endHour') &&
-    (isNaN(numberValue) || numberValue > 12 || numberValue < 0)
-  ) {
-    setFormErrors((prevState) => ({
-      ...prevState,
-      [name]: 'Please enter a valid hour between 0 - 12.',
-    }))
-  } else if (
-    (name === 'startMinutes' || name === 'endMinutes') &&
-    (isNaN(numberValue) || numberValue > 60 || numberValue < 0)
-  ) {
-    setFormErrors((prevState) => ({
-      ...prevState,
-      [name]: 'Please choose a valid time between 0 - 59 minutes.',
-    }))
-  } else if (
-    (name === 'startAMPM' || name === 'endAMPM') &&
-    !['AM', 'PM'].includes(value)
-  ) {
-    setFormErrors((prevState) => ({
-      ...prevState,
-      [name]: 'Please choose AM or PM.',
+      [name]: validationMessages[groupKey],
+      [groupKey]: validationMessages[groupKey],
     }))
   } else {
     setFormErrors((prevState) => ({
       ...prevState,
       [name]: '', // Reset error message
     }))
+
+    const groupFields = Object.keys(keyToGroupMap).filter(
+      (key) => keyToGroupMap[key] === groupKey,
+    )
+
+    const allFieldsValid = groupFields.every(
+      (field) => formErrors[field] === '' || formErrors[field] === undefined,
+    )
+
+    setFormErrors((prevState) => ({
+      ...prevState,
+      [groupKey]: allFieldsValid ? '' : validationMessages[groupKey],
+    }))
   }
+
   return setFormErrors
 }
 
 //Validation for empty fields on submit
 //note is not a required field
+
 export async function validateSubmit(
   formData: FormInputData,
 ): Promise<FormErrors> {
@@ -91,12 +99,12 @@ export async function validateSubmit(
       // Handle time values
       if (key == 'startHour' || key == 'startMinutes' || key == 'startAMPM') {
         if (value.trim() === '') {
-          emptyInput['startTime'] = `Please enter a start time.`
+          emptyInput['startTime'] = `Please enter a start time submit.`
         }
       }
 
-      if (key == 'endHour' || key == 'endMinutes' || key == 'endAMPM') {
-        if (value.trim() === '') {
+      if (key == 'endTime' || key == 'endMinutes' || key == 'endAMPM') {
+        if (value.trim() === '' || value === 'Select') {
           emptyInput['endTime'] = `Please enter an end time.`
         }
       }

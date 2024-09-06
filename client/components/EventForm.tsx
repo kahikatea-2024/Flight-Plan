@@ -31,7 +31,7 @@ export function EventForm(props: Props) {
       [name]: value,
     }))
 
-    form.validateInputs(name, value, setFormErrors)
+    form.validateInputs(name, value, setFormErrors, formErrors)
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -190,7 +190,6 @@ export function EventForm(props: Props) {
                   value={formData[`start${time}` as keyof FormInputData]}
                   selectOption={selectTime[`${time}`]}
                   handleChange={handleChange}
-                  formErrors={formErrors[`start${time}`]}
                 />
               </div>
             ))}
@@ -209,7 +208,6 @@ export function EventForm(props: Props) {
                   value={formData[`end${time}` as keyof FormInputData]}
                   selectOption={selectTime[`${time}`]}
                   handleChange={handleChange}
-                  formErrors={formErrors[`end${time}`]}
                 />
               </div>
             ))}
