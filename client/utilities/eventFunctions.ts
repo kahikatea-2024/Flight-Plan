@@ -1,10 +1,6 @@
 import { FormErrors, FormInputData } from '../../models/flightplan'
 
-export function combineTimeAndDay(
-  hour: string,
-  minutes: string,
-  timeOfDay: string,
-) {
+export function mergeTime(hour: string, minutes: string, timeOfDay: string) {
   // trim then leading zeros if needed
   const formattedHour = hour.trim().padStart(2, '0')
   const formattedMinutes = minutes.trim().padStart(2, '0')
@@ -12,7 +8,7 @@ export function combineTimeAndDay(
   return `${formattedHour}:${formattedMinutes}${timeOfDay.toLowerCase()}` // Convert AM/PM to lowercase
 }
 
-export function splitTimeAndDay(timeInput: string): {
+export function splitTime(timeInput: string): {
   hour: string
   minutes: string
   timeOfDay: string
@@ -30,7 +26,7 @@ export function splitTimeAndDay(timeInput: string): {
   }
 }
 
-export function eventFormValidation(
+export function validateInputs(
   name: string,
   value: string,
   setFormErrors: React.Dispatch<React.SetStateAction<FormErrors>>,
@@ -83,7 +79,7 @@ export function eventFormValidation(
 
 //Validation for empty fields on submit
 //note is not a required field
-export async function submitValidation(
+export async function validateSubmit(
   formData: FormInputData,
 ): Promise<FormErrors> {
   const emptyInput: FormErrors = {}

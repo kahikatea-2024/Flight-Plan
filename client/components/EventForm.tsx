@@ -4,11 +4,7 @@ import { FormRadio } from './formComponents/FormRadio'
 import { FormSelect } from './formComponents/FormSelect'
 import { FormTime } from './formComponents/FormTime'
 import { FormText } from './formComponents/FormText'
-import {
-  combineTimeAndDay,
-  eventFormValidation,
-  submitValidation,
-} from '../utilities/eventTimes'
+import * as form from '../utilities/eventFunctions'
 import { EventData, FormErrors, FormInputData } from '../../models/flightplan'
 
 interface Props {
@@ -22,22 +18,7 @@ interface Props {
 export function EventForm(props: Props) {
   const { date, tripId, userId, initialFormData, onSubmit } = props
 
-  const initialFormErrors = {
-    description: '',
-    location: '',
-    type: '',
-    startTime: '',
-    startHour: '',
-    startMinutes: '',
-    startAMPM: '',
-    endTime: '',
-    endHour: '',
-    endMinutes: '',
-    endAMPM: '',
-    note: '',
-  }
-
-  const [formErrors, setFormErrors] = useState<FormErrors>(initialFormErrors)
+  const [formErrors, setFormErrors] = useState<FormErrors>({})
   const [formData, setFormData] = useState<FormInputData>(initialFormData)
 
   const handleChange = (
@@ -51,7 +32,7 @@ export function EventForm(props: Props) {
       [name]: value,
     }))
 
-    eventFormValidation(name, value, setFormErrors)
+    form.validateInputs(name, value, setFormErrors)
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,7 +40,7 @@ export function EventForm(props: Props) {
 
     try {
       // Call async validation, check against validation from handlechange as well
-      const validationErrors = await submitValidation(formData)
+      const validationErrors = await form.validateSubmit(formData)
 
       if (
         Object.values(formErrors).every((error) => error !== '') ||
@@ -70,13 +51,13 @@ export function EventForm(props: Props) {
         return
       }
 
-      const startTimeCombined = combineTimeAndDay(
+      const startTimeCombined = form.mergeTime(
         formData.startHour,
         formData.startMinutes,
         formData.startAMPM,
       )
 
-      const endTimeCombined = combineTimeAndDay(
+      const endTimeCombined = form.mergeTime(
         formData.endHour,
         formData.endMinutes,
         formData.endAMPM,
