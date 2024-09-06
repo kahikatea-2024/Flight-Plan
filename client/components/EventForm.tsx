@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { FormLabel } from './formComponents/FormLabel'
 import { FormRadio } from './formComponents/FormRadio'
 import { FormSelect } from './formComponents/FormSelect'
-import { FormTime } from './formComponents/FormTime'
 import { FormText } from './formComponents/FormText'
 import * as form from '../utilities/eventFunctions'
 import { EventData, FormErrors, FormInputData } from '../../models/flightplan'
@@ -83,6 +82,44 @@ export function EventForm(props: Props) {
     }
   }
 
+  const selectTime: { [key: string]: string[] } = {
+    Hour: [
+      'Select',
+      '01',
+      '02',
+      '03',
+      '04',
+      '05',
+      '06',
+      '07',
+      '08',
+      '09',
+      '10',
+      '11',
+      '12',
+    ],
+    Minutes: [
+      'Select',
+      '00',
+      '05',
+      '10',
+      '15',
+      '20',
+      '25',
+      '30',
+      '35',
+      '40',
+      '45',
+      '50',
+      '55',
+    ],
+    AMPM: ['Select', 'AM', 'PM'],
+  }
+
+  type SelectTimeKeys = keyof typeof selectTime
+
+  const timeInputs: SelectTimeKeys[] = ['Hour', 'Minutes', 'AMPM']
+
   return (
     <div>
       <form onSubmit={handleSubmit} className="field-is-horizontal is-centered">
@@ -145,61 +182,39 @@ export function EventForm(props: Props) {
         <div className="field is-horizontal">
           <FormLabel label="Start Time" id={'startTime'} />
           <div className="field-body is-horizontal">
-            <FormTime
-              placeholder="00"
-              name={'startHour'}
-              id={'startHour'}
-              value={formData.startHour}
-              handleChange={handleChange}
-              formErrors={formErrors.startHour}
-            />
-            <FormTime
-              placeholder="00"
-              name={'startMinutes'}
-              id={'startMinutes'}
-              value={formData.startMinutes}
-              handleChange={handleChange}
-              formErrors={formErrors.startMinutes}
-            />
-            <FormSelect
-              name={'startAMPM'}
-              id={'startAMPM'}
-              value={formData.startAMPM}
-              handleChange={handleChange}
-              formErrors={formErrors.startAMPM}
-            />
+            {timeInputs.map((time) => (
+              <div key={time}>
+                <FormSelect
+                  name={`start${time}`}
+                  id={`start${time}`}
+                  value={formData[`start${time}` as keyof FormInputData]}
+                  selectOption={selectTime[`${time}`]}
+                  handleChange={handleChange}
+                  formErrors={formErrors[`start${time}`]}
+                />
+              </div>
+            ))}
+            {formErrors.startTime}
           </div>
-          {formErrors.startTime}
         </div>
 
         <div className="field is-horizontal">
           <FormLabel label="End Time" id={'endTime'} />
           <div className="field-body is-horizontal">
-            <FormTime
-              placeholder="00"
-              name={'endHour'}
-              id={'endHour'}
-              value={formData.endHour}
-              handleChange={handleChange}
-              formErrors={formErrors.endHour}
-            />
-            <FormTime
-              placeholder="00"
-              name={'endMinutes'}
-              id={'endMinutes'}
-              value={formData.endMinutes}
-              handleChange={handleChange}
-              formErrors={formErrors.endMinutes}
-            />
-            <FormSelect
-              name={'endAMPM'}
-              id={'endAMPM'}
-              value={formData.endAMPM}
-              handleChange={handleChange}
-              formErrors={formErrors.endAMPM}
-            />
+            {timeInputs.map((time) => (
+              <div key={time}>
+                <FormSelect
+                  name={`end${time}`}
+                  id={`end${time}`}
+                  value={formData[`end${time}` as keyof FormInputData]}
+                  selectOption={selectTime[`${time}`]}
+                  handleChange={handleChange}
+                  formErrors={formErrors[`end${time}`]}
+                />
+              </div>
+            ))}
+            {formErrors.endTime}
           </div>
-          {formErrors.endTime}
         </div>
 
         <div className="field is-horizontal">
