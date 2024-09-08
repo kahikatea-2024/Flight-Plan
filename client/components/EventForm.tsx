@@ -42,40 +42,40 @@ export function EventForm(props: Props) {
       const validationErrors = await form.validateSubmit(formData)
 
       if (
-        Object.values(formErrors).every((error) => error !== '') ||
+        Object.values(formErrors).some((error) => error !== '') ||
         Object.keys(validationErrors).length > 0
       ) {
         setFormErrors(validationErrors)
         alert('Please complete all required fields.')
         return
+      } else {
+        const startTimeCombined = form.mergeTime(
+          formData.startHour,
+          formData.startMinutes,
+          formData.startAMPM,
+        )
+
+        const endTimeCombined = form.mergeTime(
+          formData.endHour,
+          formData.endMinutes,
+          formData.endAMPM,
+        )
+
+        const eventData: EventData = {
+          tripId: Number(tripId),
+          description: formData.description,
+          location: formData.location,
+          type: formData.type,
+          date: date as string,
+          startTime: startTimeCombined,
+          endTime: endTimeCombined,
+          note: formData.note,
+          createdBy: userId,
+        }
+
+        onSubmit(eventData)
+        setFormData(initialFormData)
       }
-
-      const startTimeCombined = form.mergeTime(
-        formData.startHour,
-        formData.startMinutes,
-        formData.startAMPM,
-      )
-
-      const endTimeCombined = form.mergeTime(
-        formData.endHour,
-        formData.endMinutes,
-        formData.endAMPM,
-      )
-
-      const eventData: EventData = {
-        tripId: Number(tripId),
-        description: formData.description,
-        location: formData.location,
-        type: formData.type,
-        date: date as string,
-        startTime: startTimeCombined,
-        endTime: endTimeCombined,
-        note: formData.note,
-        createdBy: userId,
-      }
-
-      onSubmit(eventData)
-      setFormData(initialFormData)
     } catch (error) {
       console.error('Error submitting form:', error)
       alert('An error occurred while submitting the form.')

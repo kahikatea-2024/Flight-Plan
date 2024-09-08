@@ -98,7 +98,7 @@ export async function validateSubmit(
     if (typeof value === 'string') {
       // Handle time values
       if (key == 'startHour' || key == 'startMinutes' || key == 'startAMPM') {
-        if (value.trim() === '') {
+        if (value.trim() === '' || value === 'Select') {
           emptyInput['startTime'] = `Please enter a start time submit.`
         }
       }
