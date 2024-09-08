@@ -81,29 +81,9 @@ router.post('/date/:date', async (req, res) => {
 router.patch('/:id', async (req, res) => {
   try {
     const id = Number(req.params.id)
-    const {
-      trip_id,
-      date,
-      start_time,
-      end_time,
-      description,
-      notes,
-      created_by,
-      location,
-      type,
-    } = req.body
+    const updatedEvent = req.body
 
-    const updateEvents = await db.updateEventsById(id, {
-      trip_id,
-      date,
-      start_time,
-      end_time,
-      description,
-      notes,
-      created_by,
-      location,
-      type,
-    })
+    const updateEvents = await db.updateEventsById(id, updatedEvent)
     if (updateEvents) {
       res.sendStatus(200)
     }

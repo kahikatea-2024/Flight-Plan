@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 interface Props {
+  id: number
   description: string
   startTime: string
   endTime: string
@@ -8,9 +9,11 @@ interface Props {
   type: string
   isOpen: boolean
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  handleEditClick: (id: number) => void
 }
 export function EventItem(props: Props) {
   const {
+    id,
     description,
     startTime,
     endTime,
@@ -19,6 +22,7 @@ export function EventItem(props: Props) {
     type,
     isOpen,
     onClick,
+    handleEditClick,
   } = props
 
   const contentHeight = useRef<HTMLDivElement>(
@@ -28,6 +32,9 @@ export function EventItem(props: Props) {
   return (
     <div className="panel is-primary">
       <div className=" panel-heading ">
+        <button className="is-pulled-right" onClick={() => handleEditClick(id)}>
+          <i className="fas fa-pen-to-square"></i>
+        </button>
         <button
           className={`event-title-wrapper has-text-primary-dark has-text-weight-semibold  ${isOpen ? 'active' : ''}`}
           onClick={onClick}
